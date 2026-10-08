@@ -1,17 +1,17 @@
 :root {
-    /* Design System SynapseQ — Dark Mode / Glassmorphism */
-    --bg-primary: #07070A;
-    --bg-elevated: #0D0D12;
-    --accent-cyan: #00E5FF;
-    --accent-purple: #8A2BE2;
-    --text-primary: #F0F4F8;
-    --text-secondary: #8B93A7;
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --glow-cyan: rgba(0, 229, 255, 0.35);
-    --glow-purple: rgba(138, 43, 226, 0.30);
+    /* Design System SynapseQ — paleta de marca "Qorvex" (Dark Mode / Glassmorphism) */
+    --bg-primary: #0B0814;       /* Grafite */
+    --bg-elevated: #15111F;      /* Grafite, um tom mais claro */
+    --accent-primary: #3B82F6;   /* Azul Tech */
+    --accent-secondary: #6B46FF; /* Violeta Quantum */
+    --text-primary: #F4F5FF;     /* Luz */
+    --text-secondary: rgba(244, 245, 255, 0.6); /* Luz a 60% */
+    --border-glass: rgba(244, 245, 255, 0.08);
+    --glow-primary: rgba(59, 130, 246, 0.35);
+    --glow-secondary: rgba(107, 70, 255, 0.30);
 
-    --fonte-titulo: "Space Grotesk", sans-serif;
-    --fonte-corpo: "Inter", sans-serif;
+    --fonte-titulo: "Sora", sans-serif;
+    --fonte-corpo: "Sora", sans-serif;
     --fonte-codigo: "JetBrains Mono", monospace;
 }
 
@@ -102,7 +102,7 @@ main {
     bottom: -4px;
     width: 0;
     height: 1px;
-    background: var(--accent-cyan);
+    background: var(--accent-primary);
     transition: width 0.25s ease;
 }
 
@@ -134,16 +134,16 @@ main {
 }
 
 .actions a:hover {
-    border-color: rgba(0, 229, 255, 0.5);
-    background: rgba(0, 229, 255, 0.05);
-    box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.08);
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.08);
 }
 
 /* ===== BOTÕES GLOBAIS ===== */
 
 .btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, #00E5FF 0%, #00B8D9 100%);
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
     color: var(--bg-primary);
     font-family: var(--fonte-corpo);
     font-weight: 600;
@@ -158,8 +158,8 @@ main {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--glow-cyan), 0 0 40px rgba(0, 229, 255, 0.15);
-    background: linear-gradient(135deg, #22EBFF 0%, #00CFEE 100%);
+    box-shadow: 0 8px 24px var(--glow-primary), 0 0 40px rgba(59, 130, 246, 0.15);
+    background: linear-gradient(135deg, #5B9BFF 0%, #3B82F6 100%);
 }
 
 .btn-secondary {
@@ -177,9 +177,9 @@ main {
 }
 
 .btn-secondary:hover {
-    border-color: rgba(0, 229, 255, 0.5);
-    background: rgba(0, 229, 255, 0.05);
-    box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.08);
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(59, 130, 246, 0.05);
+    box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.08);
 }
 
 /* ===== CARDS (GLASSMORPHISM) ===== */
@@ -196,7 +196,7 @@ main {
 
 .card-glass:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 229, 255, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.12);
 }
 
 /* ===== TIPOGRAFIA ===== */
@@ -272,7 +272,7 @@ p {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: var(--accent-cyan);
+    color: var(--accent-primary);
 }
 
 .footer-nav ul {
@@ -291,7 +291,7 @@ p {
 }
 
 .footer-nav a:hover {
-    color: var(--accent-cyan);
+    color: var(--accent-primary);
 }
 
 .footer-bottom {
