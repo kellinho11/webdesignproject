@@ -47,8 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
             header.querySelectorAll(".nav a").forEach((link) => {
                 link.addEventListener("click", () => definirMenu(false));
             });
+            // Esc fecha e devolve o foco ao botão (quem usa teclado não se perde)
             document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") definirMenu(false);
+                if (e.key === "Escape" && header.classList.contains("nav-open")) {
+                    definirMenu(false);
+                    botaoMenu.focus();
+                }
+            });
+            // Clique fora do header fecha o menu
+            document.addEventListener("click", (e) => {
+                if (header.classList.contains("nav-open") && !header.contains(e.target)) {
+                    definirMenu(false);
+                }
             });
             window.matchMedia("(min-width: 901px)").addEventListener("change", (e) => {
                 if (e.matches) definirMenu(false);
@@ -57,12 +67,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------------------------------------------------------------
-    // 3. Hero — parallax reativo ao cursor (desktop, sem reduced motion)
+    // 3 e 4. Hero — parallax pelo cursor + fade/escala ao rolar.
+    //    Os dois mexem no transform do mesmo elemento, então guardam
+    //    seu estado e um único aplicarHero() monta o transform final
+    //    (antes um sobrescrevia o outro).
     // ---------------------------------------------------------------
     const hero = document.querySelector(".hero");
     const heroBg = document.querySelector(".hero-bg");
     const heroContent = document.querySelector(".hero-content");
     const podeFazerHover = window.matchMedia("(hover: hover)").matches;
+    const estadoHero = { x: 0, y: 0, escala: 1 };
+
+    const aplicarHero = () => {
+        heroContent.style.transform =
+            `translate(${estadoHero.x}px, ${estadoHero.y}px) scale(${estadoHero.escala})`;
+    };
 
     if (hero && heroBg && heroContent && podeFazerHover && !prefersReducedMotion) {
         hero.addEventListener("mousemove", (evento) => {
@@ -71,18 +90,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const relY = (evento.clientY - limites.top) / limites.height - 0.5;
 
             heroBg.style.transform = `translate(${relX * 16}px, ${relY * 10}px)`;
-            heroContent.style.transform = `translate(${relX * -6}px, ${relY * -4}px)`;
+            estadoHero.x = relX * -6;
+            estadoHero.y = relY * -4;
+            aplicarHero();
         });
 
         hero.addEventListener("mouseleave", () => {
             heroBg.style.transform = "translate(0, 0)";
-            heroContent.style.transform = "translate(0, 0)";
+            estadoHero.x = 0;
+            estadoHero.y = 0;
+            aplicarHero();
         });
     }
 
-    // ---------------------------------------------------------------
-    // 4. Hero — fade de saída suave conforme rola para a próxima seção
-    // ---------------------------------------------------------------
     if (hero && heroContent) {
         window.addEventListener("scroll", () => {
             const limites = hero.getBoundingClientRect();
@@ -94,16 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (progresso > 0.05) {
                 heroContent.classList.add("hero-fading");
                 heroContent.style.opacity = String(1 - progresso * 0.7);
-                heroContent.style.setProperty(
-                    "transform",
-                    `scale(${1 - progresso * 0.03})`
-                );
+                // com "reduzir movimento" só a opacidade muda, sem escala
+                estadoHero.escala = prefersReducedMotion ? 1 : 1 - progresso * 0.03;
             } else {
                 heroContent.classList.remove("hero-fading");
                 heroContent.style.opacity = "";
-                heroContent.style.transform = "";
+                estadoHero.escala = 1;
             }
-        });
+            aplicarHero();
+        }, { passive: true });
     }
 
     // ---------------------------------------------------------------
@@ -253,6 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const mensagem = document.createElement("p");
             mensagem.className = "form-success";
+            mensagem.setAttribute("role", "status"); // leitor de tela anuncia o envio
             mensagem.textContent = "Recebido! Nossa equipe de relações com investidores entrará em contato em breve.";
             leadForm.appendChild(mensagem);
             leadForm.reset();

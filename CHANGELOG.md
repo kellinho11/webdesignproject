@@ -20,6 +20,23 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [1.2.1] — 2026-10-15 · PATCH
+
+Correções encontradas numa bateria de 87 testes isolados (14 larguras de tela, JS desligado, "reduzir movimento", toque, teclado e formulário).
+
+### Corrigido
+- Com o JavaScript desligado, 28 blocos de conteúdo ficavam invisíveis e o gráfico de complexidade aparecia vazio. Agora as animações de entrada só escondem o conteúdo quando o JS está ativo (classe `js` no `<html>`), e o gráfico já vem desenhado no HTML.
+- O parallax do Hero apagava o efeito de escala da rolagem, porque os dois sobrescreviam o mesmo `transform`. Agora os dois efeitos são combinados.
+- Com "reduzir movimento" ativado, o Hero ainda encolhia ao rolar. Agora só a opacidade muda.
+- Menu mobile: a tecla Tab pulava os links do menu aberto, o Esc não devolvia o foco ao botão e clicar fora não fechava o menu.
+- Rolagem horizontal em telas de 320px e 360px (rodapé e cabeçalho).
+- Os campos do formulário tinham só placeholder e nenhum rótulo para leitores de tela. A mensagem de sucesso não era anunciada.
+- Faltava a meta description da página.
+
+### Observação
+- É PATCH porque só corrige comportamento. Âncoras e classes que já existiam continuam iguais.
+- Campos preenchidos só com espaços ainda são aceitos. Isso entra na validação do formulário da 1.3.0.
+
 ## [1.2.0] — 2026-10-15 · MINOR
 
 ### Adicionado

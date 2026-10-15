@@ -182,6 +182,19 @@ main {
     transform: translateY(-7px) rotate(-45deg);
 }
 
+/* Texto só para leitores de tela (rótulos do formulário) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* ===== BOTÕES GLOBAIS ===== */
 
 .btn-primary {
@@ -284,6 +297,7 @@ p {
 
 .footer-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 40px;
     max-width: 1280px;
@@ -346,13 +360,14 @@ p {
 
 /* ===== SCROLL REVEAL (usado via JS com IntersectionObserver) ===== */
 
-.reveal {
+/* Só esconde quando o JS está ativo (classe .js no <html>), senão o conteúdo sumiria */
+.js .reveal {
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.is-visible {
+.js .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
 }
@@ -587,9 +602,8 @@ p {
 }
 
 /* Saída: o Hero recua suavemente ao sair pela viewport (classe aplicada via JS) */
+/* opacidade e escala vêm do script.js; a classe só suaviza a transição */
 .hero-content.hero-fading {
-    opacity: 0.3;
-    transform: scale(0.97);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
@@ -728,13 +742,13 @@ p {
 .chart-curve-quantica { fill: var(--accent-primary); }
 
 /* As curvas se desenham via stroke-dashoffset quando entram em viewport (ver script.js) */
-.chart-line {
+.js .chart-line {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     transition: stroke-dashoffset 1.8s ease-out;
 }
 
-.comparativo-chart.is-visible .chart-line {
+.js .comparativo-chart.is-visible .chart-line {
     stroke-dashoffset: 0;
 }
 
@@ -1105,6 +1119,7 @@ p {
 
     .nav-toggle {
         display: flex;
+        order: 3; /* no HTML vem antes do nav (ordem do Tab); na tela fica à direita */
     }
 
     /* No celular o menu vira um painel abaixo do header, aberto pelo botão */
@@ -1151,6 +1166,17 @@ p {
     }
 }
 
+/* Telas muito estreitas: "Portal do Investidor" não cabe; o link segue no menu (Investidores) */
+@media (max-width: 400px) {
+    .actions {
+        display: none;
+    }
+
+    .nav-toggle {
+        margin-left: auto;
+    }
+}
+
 @media (max-width: 560px) {
     .mercado-grid {
         grid-template-columns: 1fr;
@@ -1160,7 +1186,7 @@ p {
 /* Quando o usuário prefere menos movimento: nenhuma animação contínua roda,
    só o fade de entrada (sem translate) permanece. */
 @media (prefers-reduced-motion: reduce) {
-    .reveal {
+    .js .reveal {
         transform: none;
     }
 
