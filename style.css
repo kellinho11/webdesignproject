@@ -965,10 +965,81 @@ p {
 }
 
 /* ===================================================================
+   MERCADO
+   =================================================================== */
+
+.mercado {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 96px clamp(24px, 5vw, 96px);
+    text-align: center;
+    scroll-margin-top: 72px;
+}
+
+.mercado h2 {
+    margin-bottom: 16px;
+}
+
+.mercado-nota {
+    color: var(--text-secondary);
+    margin-bottom: 56px;
+}
+
+.mercado-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: left;
+}
+
+.mercado-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px 24px;
+}
+
+.mercado-numero {
+    font-size: clamp(26px, 2.4vw, 36px);
+    white-space: nowrap;
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.mercado-desc {
+    flex: 1;
+    line-height: 1.6;
+}
+
+.mercado-fonte {
+    font-family: var(--fonte-codigo);
+    font-size: 12px;
+    color: var(--accent-primary);
+}
+
+.mercado-aviso {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(244, 245, 255, 0.12);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ===================================================================
    RESPONSIVO
    =================================================================== */
 
 @media (max-width: 900px) {
+    .mercado-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .comparativo-grid {
         grid-template-columns: 1fr;
     }
@@ -983,6 +1054,12 @@ p {
 
     .nav {
         display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .mercado-grid {
+        grid-template-columns: 1fr;
     }
 }
 

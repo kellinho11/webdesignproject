@@ -20,6 +20,16 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [1.1.0] — 2026-10-15 · MINOR
+
+### Adicionado
+- Seção "O mercado já está em escala" (`#mercado`), entre o Comparativo e os Casos de Uso, com quatro cartões de dados e a fonte de cada um: IQT Research (US$ 1,2B em QRNG até 2028), TBRI sobre IBM Quantum (+410.000 usuários e +3,5 bilhões de execuções por dia) e Quantinuum (99,914% de fidelidade em portas de 2 qubits).
+- Aviso de transparência: ainda não há demonstração pública de vantagem quântica prática em otimização combinatorial.
+- Layout responsivo: 4 colunas no desktop, 2 no tablet e 1 no celular.
+
+### Observação
+- É MINOR porque só acrescenta uma seção. Nenhum link, âncora ou classe existente mudou.
+
 ## [1.0.1] — 2026-10-15 · PATCH
 
 ### Corrigido
