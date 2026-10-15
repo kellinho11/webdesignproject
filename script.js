@@ -89,6 +89,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // ---------------------------------------------------------------
     const comparativoChart = document.querySelector(".comparativo-chart");
     if (comparativoChart) {
+        // Curvas calculadas, não desenhadas à mão. Eixo x: n de 0 a 60 mapeado em 30..330.
+        // Clássica: O(2^n) normalizada para ocupar a altura do gráfico; quântica: O(√n).
+        const X = (n) => 30 + (300 * n) / 60;
+        const classicaY = (n) => 190 - (178 * (Math.pow(2, n / 6) - 1)) / (Math.pow(2, 10) - 1);
+        const quanticaY = (n) => 190 - 30 * Math.sqrt(n / 60);
+        const tracarCurva = (y) => {
+            const pontos = [];
+            for (let n = 0; n <= 60; n++) {
+                pontos.push((n === 0 ? "M" : "L") + X(n).toFixed(1) + "," + y(n).toFixed(1));
+            }
+            return pontos.join(" ");
+        };
+        const curvaClassica = document.getElementById("curva-classica");
+        const curvaQuantica = document.getElementById("curva-quantica");
+        if (curvaClassica && curvaQuantica) {
+            curvaClassica.setAttribute("d", tracarCurva(classicaY));
+            curvaQuantica.setAttribute("d", tracarCurva(quanticaY));
+        }
+
         const chartObserver = new IntersectionObserver(
             (entradas) => {
                 entradas.forEach((entrada) => {

@@ -686,8 +686,8 @@ p {
 
 /* As curvas se desenham via stroke-dashoffset quando entram em viewport (ver script.js) */
 .chart-line {
-    stroke-dasharray: 500;
-    stroke-dashoffset: 500;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
     transition: stroke-dashoffset 1.8s ease-out;
 }
 

@@ -158,12 +158,13 @@
                     <line x1="30" y1="190" x2="380" y2="190" class="chart-axis"></line>
                     <text x="200" y="212" text-anchor="middle" class="chart-axis-label">Tamanho do problema (n)</text>
 
-                    <path class="chart-line chart-line-classica" d="M30,185 C120,183 180,160 230,100 C270,55 300,25 330,12"></path>
-                    <path class="chart-line chart-line-quantica" d="M30,188 C120,182 220,175 330,160"></path>
+                    <!-- as curvas (atributo d) são calculadas em script.js com as fórmulas reais -->
+                    <path class="chart-line chart-line-classica" id="curva-classica" pathLength="1" d=""></path>
+                    <path class="chart-line chart-line-quantica" id="curva-quantica" pathLength="1" d=""></path>
 
-                    <line x1="230" y1="20" x2="230" y2="185" class="chart-marker"></line>
-                    <text x="236" y="30" class="chart-marker-label">n = 50</text>
-                    <text x="236" y="46" class="chart-marker-sub">312.000× mais rápido</text>
+                    <line x1="280" y1="20" x2="280" y2="190" class="chart-marker"></line>
+                    <text x="274" y="30" text-anchor="end" class="chart-marker-label">n = 50</text>
+                    <text x="274" y="46" text-anchor="end" class="chart-marker-sub">312.000× mais rápido</text>
 
                     <text x="334" y="16" class="chart-curve-label chart-curve-classica">O(2ⁿ)</text>
                     <text x="334" y="168" class="chart-curve-label chart-curve-quantica">O(√n)</text>
