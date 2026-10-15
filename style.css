@@ -139,6 +139,49 @@ main {
     box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.08);
 }
 
+/* ===== MENU MOBILE ===== */
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--text-primary);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-toggle:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+.header.nav-open .nav-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.header.nav-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.header.nav-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
 /* ===== BOTÕES GLOBAIS ===== */
 
 .btn-primary {
@@ -561,7 +604,7 @@ p {
 .api-mockup,
 .cta-final,
 .footer {
-    scroll-margin-top: 72px;
+    scroll-margin-top: 88px;
 }
 
 .comparativo,
@@ -973,7 +1016,7 @@ p {
     margin: 0 auto;
     padding: 96px clamp(24px, 5vw, 96px);
     text-align: center;
-    scroll-margin-top: 72px;
+    scroll-margin-top: 88px;
 }
 
 .mercado h2 {
@@ -1052,7 +1095,58 @@ p {
         grid-template-columns: 1fr;
     }
 
+    .container-header {
+        gap: 12px;
+    }
+
+    .actions {
+        margin-left: auto;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    /* No celular o menu vira um painel abaixo do header, aberto pelo botão */
     .nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 16px clamp(24px, 5vw, 96px) 24px;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-glass);
+    }
+
+    .header.nav-open .nav {
+        display: block;
+    }
+
+    .nav ul {
+        flex-direction: column;
+        gap: 0;
+        font-size: 16px;
+    }
+
+    .nav a {
+        display: block;
+        padding: 14px 0;
+    }
+
+    .nav a::after {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .actions a {
+        padding: 8px 12px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .actions a[aria-label] {
         display: none;
     }
 }

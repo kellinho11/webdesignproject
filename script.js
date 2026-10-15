@@ -31,6 +31,29 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("scroll", () => {
             header.classList.toggle("header-scrolled", window.scrollY > 40);
         });
+
+        // Menu mobile: botão abre e fecha o painel de navegação
+        const botaoMenu = header.querySelector(".nav-toggle");
+        const definirMenu = (aberto) => {
+            header.classList.toggle("nav-open", aberto);
+            botaoMenu.setAttribute("aria-expanded", String(aberto));
+            botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+        };
+        if (botaoMenu) {
+            botaoMenu.addEventListener("click", () => {
+                definirMenu(!header.classList.contains("nav-open"));
+            });
+            // Fecha ao escolher um link, ao apertar Esc ou ao voltar para o layout de desktop
+            header.querySelectorAll(".nav a").forEach((link) => {
+                link.addEventListener("click", () => definirMenu(false));
+            });
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") definirMenu(false);
+            });
+            window.matchMedia("(min-width: 901px)").addEventListener("change", (e) => {
+                if (e.matches) definirMenu(false);
+            });
+        }
     }
 
     // ---------------------------------------------------------------

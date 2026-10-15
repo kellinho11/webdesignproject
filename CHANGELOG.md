@@ -20,6 +20,20 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [1.2.0] — 2026-10-15 · MINOR
+
+### Adicionado
+- Menu mobile: em telas de até 900px aparece um botão (ícone de três linhas que vira X) que abre e fecha o painel de navegação.
+- O painel fecha ao escolher um link, ao apertar Esc ou ao voltar para o layout de desktop.
+- Acessibilidade do botão: `aria-expanded`, `aria-controls` e rótulo que alterna entre "Abrir menu" e "Fechar menu".
+
+### Corrigido
+- Em telas pequenas o menu simplesmente sumia (`display: none`) e o botão "Portal do Investidor" apertava a logo. Agora o cabeçalho cabe em 390px.
+- O `scroll-margin-top` das seções passou de 72px para 88px, porque o cabeçalho tem 80px de altura.
+
+### Observação
+- É MINOR porque acrescenta uma funcionalidade nova (o menu mobile) sem mudar links, âncoras ou classes que já existiam.
+
 ## [1.1.1] — 2026-10-15 · PATCH
 
 ### Corrigido
