@@ -554,6 +554,16 @@ p {
    COMPARATIVO DE TECNOLOGIA
    =================================================================== */
 
+/* Header é sticky: evita que o destino da âncora fique escondido sob ele */
+.hero,
+.comparativo,
+.casos-de-uso,
+.api-mockup,
+.cta-final,
+.footer {
+    scroll-margin-top: 72px;
+}
+
 .comparativo,
 .casos-de-uso,
 .api-mockup,
