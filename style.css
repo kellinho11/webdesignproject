@@ -9,6 +9,8 @@
     --border-glass: rgba(244, 245, 255, 0.08);
     --glow-primary: rgba(59, 130, 246, 0.35);
     --glow-secondary: rgba(107, 70, 255, 0.30);
+    --erro: #FF8FA3;             /* Rosa claro, legível sobre o Grafite */
+    --erro-glow: rgba(255, 143, 163, 0.25);
 
     --fonte-titulo: "Sora", sans-serif;
     --fonte-corpo: "Sora", sans-serif;
@@ -1009,6 +1011,32 @@ p {
     margin-top: 8px;
 }
 
+/* Campo + mensagem de erro logo abaixo */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field.has-error input,
+.field.has-error select {
+    border-color: var(--erro);
+}
+
+.field.has-error input:focus,
+.field.has-error select:focus {
+    box-shadow: 0 0 0 3px var(--erro-glow);
+}
+
+.field__error {
+    font-size: 12px;
+    color: var(--erro);
+}
+
+.field__error:empty {
+    display: none;
+}
+
 .cta-lock {
     margin-top: 20px;
     font-size: 12px;
@@ -1018,7 +1046,7 @@ p {
 .form-success {
     color: var(--accent-primary);
     font-size: 14px;
-    margin-top: 16px;
+    margin-top: 0;
 }
 
 /* ===================================================================

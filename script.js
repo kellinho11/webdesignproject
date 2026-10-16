@@ -259,23 +259,88 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------------------------------------------------------------
-    // 8. Formulário de captação de leads — validação simples no
-    //    navegador e mensagem de sucesso (sem backend neste projeto)
+    // 8. Formulário de captação de leads — validação no navegador
+    //    (sem backend neste projeto). Cada campo mostra o próprio erro
+    //    em .field__error; o sucesso aparece em #form-success.
     // ---------------------------------------------------------------
     const leadForm = document.getElementById("lead-form");
     if (leadForm) {
+        // Com JS a validação é nossa; sem JS o "required" do navegador continua valendo
+        leadForm.noValidate = true;
+
+        // Provedores gratuitos: o formulário é para investidores, então pede e-mail corporativo
+        const dominiosGratuitos = [
+            "gmail.com", "googlemail.com", "hotmail.com", "hotmail.com.br", "outlook.com", "outlook.com.br",
+            "live.com", "msn.com", "yahoo.com", "yahoo.com.br", "icloud.com", "me.com", "aol.com",
+            "proton.me", "protonmail.com", "bol.com.br", "uol.com.br", "terra.com.br", "ig.com.br"
+        ];
+
+        // Cada regra recebe o valor e devolve a mensagem de erro ("" = válido).
+        // trim() faz um campo só com espaços contar como vazio.
+        const regras = {
+            nome: (valor) => {
+                const palavras = valor.trim().split(/\s+/).filter(Boolean);
+                if (palavras.length === 0) return "Informe seu nome completo.";
+                return palavras.length < 2 ? "Informe nome e sobrenome." : "";
+            },
+            email: (valor) => {
+                const email = valor.trim().toLowerCase();
+                if (!email) return "Informe seu e-mail.";
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return "Informe um e-mail válido, como nome@empresa.com.";
+                const dominio = email.split("@")[1];
+                return dominiosGratuitos.includes(dominio) ? "Use seu e-mail corporativo." : "";
+            },
+            fundo: (valor) => (valor.trim().length >= 2 ? "" : "Informe o fundo ou a empresa."),
+            ticket: (valor) => (valor ? "" : "Selecione uma faixa de investimento.")
+        };
+
+        const campos = Array.from(leadForm.querySelectorAll("input, select"));
+        const retorno = leadForm.querySelector(".form-feedback");
+
+        const validarCampo = (campo) => {
+            const erro = regras[campo.name] ? regras[campo.name](campo.value) : "";
+            const field = campo.closest(".field");
+            field.classList.toggle("has-error", Boolean(erro));
+            field.querySelector(".field__error").textContent = erro;
+            campo.setAttribute("aria-invalid", erro ? "true" : "false");
+            return !erro;
+        };
+
+        campos.forEach((campo) => {
+            // Ao sair do campo: só acusa erro se a pessoa já digitou algo
+            // (passar pelos campos com Tab não deve encher a tela de vermelho)
+            campo.addEventListener("blur", () => {
+                if (campo.value.trim() || campo.closest(".field").classList.contains("has-error")) validarCampo(campo);
+            });
+            // Enquanto corrige, o erro some assim que o valor fica válido
+            const evento = campo.tagName === "SELECT" ? "change" : "input";
+            campo.addEventListener(evento, () => {
+                if (campo.closest(".field").classList.contains("has-error")) validarCampo(campo);
+            });
+        });
+
         leadForm.addEventListener("submit", (evento) => {
             evento.preventDefault();
 
-            const jaTemMensagem = leadForm.querySelector(".form-success");
-            if (jaTemMensagem) jaTemMensagem.remove();
+            const mensagemAnterior = document.getElementById("form-success");
+            if (mensagemAnterior) mensagemAnterior.remove();
 
+            const validos = campos.map(validarCampo);
+            const primeiroInvalido = campos[validos.indexOf(false)];
+            if (primeiroInvalido) {
+                primeiroInvalido.focus();
+                return;
+            }
+
+            // Mensagem dentro de uma região aria-live que já existe na página,
+            // assim o leitor de tela anuncia o envio
             const mensagem = document.createElement("p");
+            mensagem.id = "form-success";
             mensagem.className = "form-success";
-            mensagem.setAttribute("role", "status"); // leitor de tela anuncia o envio
             mensagem.textContent = "Recebido! Nossa equipe de relações com investidores entrará em contato em breve.";
-            leadForm.appendChild(mensagem);
+            retorno.appendChild(mensagem);
             leadForm.reset();
+            campos.forEach((campo) => campo.removeAttribute("aria-invalid"));
         });
     }
 });

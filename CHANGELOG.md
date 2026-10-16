@@ -20,6 +20,26 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [1.3.0] — 2026-10-16 · MINOR
+
+### Adicionado
+- Validação do formulário de investidores, com a mensagem de erro logo abaixo de cada campo (`.field__error`):
+  - **Nome:** pede nome e sobrenome (pelo menos duas palavras).
+  - **E-mail:** precisa ter formato válido e ser corporativo. Provedores gratuitos (Gmail, Hotmail, Outlook, Yahoo, iCloud, UOL, BOL e outros) são recusados.
+  - **Fundo / Empresa:** pelo menos 2 caracteres.
+  - **Faixa de investimento:** precisa ser escolhida.
+- Ao enviar com erro, o foco vai para o primeiro campo inválido e os campos com problema recebem `aria-invalid`. O erro some assim que o valor é corrigido.
+- Ao sair de um campo já preenchido, ele é validado na hora. Passar pelos campos vazios com Tab não acusa erro.
+- A mensagem de sucesso (`#form-success`) aparece dentro de uma região `aria-live` que já existe na página, para que leitores de tela anunciem o envio.
+- Tokens `--erro` e `--erro-glow` no design system, para o estado de erro dos campos.
+
+### Corrigido
+- Campos preenchidos só com espaços eram aceitos. Agora contam como vazios.
+
+### Observação
+- É MINOR porque acrescenta uma funcionalidade nova sem mudar links, âncoras ou classes que já existiam. Os campos ganharam um `<div class="field">` em volta, e os ids e `name` continuam os mesmos.
+- Sem JavaScript, o formulário continua usando o `required` do próprio navegador.
+
 ## [1.2.1] — 2026-10-15 · PATCH
 
 Correções encontradas numa bateria de 87 testes isolados (14 larguras de tela, JS desligado, "reduzir movimento", toque, teclado e formulário).

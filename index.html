@@ -317,20 +317,33 @@
             <p class="cta-text">Estamos captando nossa rodada Series A. Deixe seus dados e nossa equipe de relações com investidores entrará em contato.</p>
 
             <form class="cta-form" id="lead-form">
-                <label for="lead-nome" class="sr-only">Nome completo</label>
-                <input type="text" id="lead-nome" name="nome" placeholder="Nome completo" autocomplete="name" required>
-                <label for="lead-email" class="sr-only">E-mail corporativo</label>
-                <input type="email" id="lead-email" name="email" placeholder="E-mail corporativo" autocomplete="email" required>
-                <label for="lead-fundo" class="sr-only">Fundo / Empresa</label>
-                <input type="text" id="lead-fundo" name="fundo" placeholder="Fundo / Empresa" autocomplete="organization" required>
-                <label for="lead-ticket" class="sr-only">Faixa de investimento</label>
-                <select id="lead-ticket" name="ticket" required>
-                    <option value="" disabled selected>Faixa de investimento</option>
-                    <option value="100-500k">US$ 100k – 500k</option>
-                    <option value="500k-2m">US$ 500k – 2M</option>
-                    <option value="2m+">US$ 2M+</option>
-                </select>
+                <div class="field">
+                    <label for="lead-nome" class="sr-only">Nome completo</label>
+                    <input type="text" id="lead-nome" name="nome" placeholder="Nome completo" autocomplete="name" required aria-describedby="lead-nome-erro">
+                    <p class="field__error" id="lead-nome-erro"></p>
+                </div>
+                <div class="field">
+                    <label for="lead-email" class="sr-only">E-mail corporativo</label>
+                    <input type="email" id="lead-email" name="email" placeholder="E-mail corporativo" autocomplete="email" required aria-describedby="lead-email-erro">
+                    <p class="field__error" id="lead-email-erro"></p>
+                </div>
+                <div class="field">
+                    <label for="lead-fundo" class="sr-only">Fundo / Empresa</label>
+                    <input type="text" id="lead-fundo" name="fundo" placeholder="Fundo / Empresa" autocomplete="organization" required aria-describedby="lead-fundo-erro">
+                    <p class="field__error" id="lead-fundo-erro"></p>
+                </div>
+                <div class="field">
+                    <label for="lead-ticket" class="sr-only">Faixa de investimento</label>
+                    <select id="lead-ticket" name="ticket" required aria-describedby="lead-ticket-erro">
+                        <option value="" disabled selected>Faixa de investimento</option>
+                        <option value="100-500k">US$ 100k – 500k</option>
+                        <option value="500k-2m">US$ 500k – 2M</option>
+                        <option value="2m+">US$ 2M+</option>
+                    </select>
+                    <p class="field__error" id="lead-ticket-erro"></p>
+                </div>
                 <button type="submit" class="btn-primary">Solicitar Acesso ao Data Room</button>
+                <div class="form-feedback" aria-live="polite"></div>
             </form>
             <p class="cta-lock">🔒 Seus dados são protegidos sob NDA automático</p>
         </div>
@@ -371,4 +384,4 @@
 
 <script src="script.js"></script>
 </body>
-</html>
+</html>
