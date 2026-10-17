@@ -20,6 +20,44 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.0.0] — 2026-10-17 · MAJOR
+
+Nova estrutura para o site, com as mesmas 5 seções e o mesmo conteúdo. As correções das versões anteriores foram mantidas.
+
+### Mudou (incompatível)
+- **Classes no padrão BEM** (`bloco__elemento--variação`), com nomes novos. Exemplos: `.header` → `.site-header`, `.nav` → `.site-nav`, `.hero-content` → `.hero__content`, `.comparativo` → `.compare`, `.mercado-card` → `.stat`, `.caso-card` → `.case`, `.api-benefit` → `.feature`, `.cta-form` → `.form`, `.footer` → `.site-footer`. Todas as seções seguem o padrão `.section` + `.section-head` + `.container`.
+- **Âncoras novas:** `#comparativo` → `#tecnologia`, `#api-mockup` → `#quantum-engineering`, `#cta-final` → `#investidores`. O topo da página passa a ser `#topo`.
+- Header com 72px de altura (antes 80px) e novo token `--header-h`.
+
+### Adicionado
+- Entrada do Hero em sequência (rótulo, título, subtítulo, botões e investidores), com a palavra "impossível" revelando o degradê.
+- Circuito do Hero redesenhado: 5 qubits, portas H, CNOT e Rz, medidores e painel de medição com barras que "colapsam".
+- Gráfico de complexidade com grade, pontos em n = 50 e destaque "312.000× mais rápido".
+- Comparativo com rótulo e linha de escala em cada card (Exponencial × Polinomial).
+- Ilustrações novas nos casos de uso (grafo do QAOA, molécula e curva de energia do VQE) e linhas "Clássico × SynapseQ".
+- Terminal com cores de sintaxe e barra de título.
+- Formulário em duas colunas com rótulos visíveis (antes só placeholder) e novas faixas de investimento.
+- Token `--ease` (curva de animação padrão).
+
+### Mantido de propósito
+- **As âncoras antigas continuam funcionando:** `#comparativo`, `#api-mockup`, `#cta-final`, `#hero` e `#rodape` levam à seção certa, para não quebrar links já compartilhados.
+- Conteúdo visível sem JavaScript (correção da 1.2.1). Agora isso vale também para a entrada do Hero e para o gráfico, que já vem desenhado no HTML.
+- Comportamento do menu mobile (1.2.1): Esc devolve o foco, clique fora fecha, Tab entra nos links.
+- Validação do formulário da 1.3.0, com os mesmos campos (`lead-*`).
+- Links da Facens e do GitHub no rodapé.
+
+### Corrigido
+- Menu mobile translúcido: o título do Hero aparecia por trás dos links. Agora o painel é opaco.
+- Ao abrir o menu pelo teclado, o painel ainda estava invisível no instante do Tab. Agora aparece na hora.
+- Botões "tremiam" com o cursor na borda inferior (o hover sobe o botão 2px e o cursor saía dele). A área de hover foi estendida.
+- Os rótulos "n = 50" e "n (variáveis)" do gráfico se sobrepunham.
+- O botão "Portal do Investidor" perdia o nome acessível no celular, onde o texto é escondido.
+- Sem JavaScript, o botão do menu aparecia no celular sem funcionar. Agora fica escondido, e a navegação continua pelos links do rodapé.
+
+### Observação
+- É MAJOR porque muda os nomes das classes e das âncoras principais, ou seja, o "contrato público" do site.
+- Bateria de testes: 90/90. Os seletores do `qa.py` foram atualizados para os nomes novos, e entraram testes para o Hero e o gráfico sem JS e para a âncora antiga `#cta-final`.
+
 ## [1.3.0] — 2026-10-16 · MINOR
 
 ### Adicionado
