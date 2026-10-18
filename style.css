@@ -514,6 +514,143 @@ h1, h2, h3, p, dl, dd, figure { margin: 0; }
   transition-delay: 700ms;
 }
 
+/* === Demonstração ao vivo === */
+.demo { border-top: 1px solid var(--border-glass); }
+.demo__head {
+  max-width: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px 48px;
+}
+.demo__head > div { max-width: 720px; }
+.demo__note { max-width: 360px; font-size: 14px; color: var(--text-secondary); }
+/* sem JS os botões e gráficos não funcionariam: fica só o aviso do <noscript> */
+html:not(.js) .lab { display: none; }
+.demo__nojs {
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+}
+
+.lab__tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.lab__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+  background: rgba(244, 245, 255, 0.03);
+  color: var(--text-secondary);
+  font: 500 14px var(--fonte-corpo);
+  cursor: pointer;
+  transition: background-color .25s, border-color .25s, color .25s;
+}
+.lab__tab:hover { color: var(--text-primary); border-color: rgba(59, 130, 246, 0.3); }
+.lab__tab[aria-selected="true"] { color: var(--text-primary); border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.1); }
+.lab__tab-algo { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent-primary); }
+
+.lab__panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); }
+.lab__panel[hidden] { display: none; }
+/* o painel é grande e cheio de controles: não sobe no hover como os outros cartões */
+.card-glass.lab__panel:hover { transform: none; }
+.lab__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: clamp(24px, 3vw, 36px);
+  border-right: 1px solid var(--border-glass);
+}
+.lab__desc { font-size: 14.5px; color: var(--text-secondary); text-wrap: pretty; }
+.lab__field { display: flex; flex-direction: column; gap: 10px; }
+.lab__field-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--text-secondary); }
+.lab__field-head output { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+.lab__field input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+/* --fill (0–100%) vem do script.js e pinta a parte já percorrida do trilho */
+.lab__field input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--accent-primary) var(--fill, 50%), rgba(244, 245, 255, 0.14) var(--fill, 50%)); }
+.lab__field input[type="range"]::-moz-range-track { height: 2px; background: rgba(244, 245, 255, 0.14); }
+.lab__field input[type="range"]::-moz-range-progress { height: 2px; background: var(--accent-primary); }
+.lab__field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  border: 3px solid var(--accent-primary);
+}
+.lab__field input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--text-primary); border: 3px solid var(--accent-primary); }
+.lab__seg { display: flex; gap: 3px; padding: 3px; border: 1px solid var(--border-glass); border-radius: 10px; }
+.lab__seg button {
+  flex: 1;
+  min-height: 40px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-secondary);
+  font: 500 14px var(--fonte-corpo);
+  cursor: pointer;
+}
+.lab__seg button[aria-pressed="true"] { background: rgba(59, 130, 246, 0.16); color: var(--text-primary); }
+.lab__run { width: 100%; }
+.lab__run[disabled],
+.lab__run[disabled]:hover { opacity: 0.6; cursor: progress; transform: none; box-shadow: none; }
+
+.lab__viz { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: clamp(20px, 2.6vw, 32px); }
+.lab__viz-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--text-secondary); }
+.lab__status { display: inline-flex; align-items: center; gap: 8px; color: var(--text-primary); white-space: nowrap; }
+.lab__status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: rgba(244, 245, 255, 0.3); }
+.lab__status.is-running::before { background: var(--accent-secondary); box-shadow: 0 0 10px var(--glow-secondary); }
+.lab__status.is-done::before { background: var(--accent-primary); }
+.lab__svg { display: block; width: 100%; height: auto; }
+.lab__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.lab__chip {
+  padding: 4px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--border-glass);
+  font: 500 11.5px var(--fonte-codigo);
+  color: var(--text-secondary);
+}
+.lab__chip.is-on { border-color: rgba(107, 70, 255, 0.6); background: rgba(107, 70, 255, 0.16); color: var(--text-primary); }
+.lab__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: auto;
+  background: var(--border-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.lab__metrics div { padding: 14px 14px 12px; background: rgba(11, 8, 20, 0.85); }
+.lab__metrics dt { font-size: 11.5px; color: var(--text-secondary); }
+.lab__metrics dd { margin-top: 4px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+
+/* Peças dos gráficos (o SVG é montado pelo script.js) */
+.viz__grid { stroke: var(--border-glass); stroke-width: 1; }
+.viz__axis { stroke: rgba(244, 245, 255, 0.25); stroke-width: 1; }
+.viz__bar { fill: rgba(244, 245, 255, 0.28); }
+.viz__bar--hot { fill: var(--accent-secondary); }
+.viz__text { font: 11px var(--fonte-corpo); fill: var(--text-secondary); }
+.viz__text--hot { font: 600 12px var(--fonte-corpo); fill: var(--text-primary); }
+.viz__text--blue { fill: var(--accent-primary); }
+.viz__mono { font: 10.5px var(--fonte-codigo); fill: var(--text-primary); }
+.viz__mean { stroke: rgba(244, 245, 255, 0.55); stroke-dasharray: 3 4; }
+.viz__band { fill: rgba(59, 130, 246, 0.08); }
+.viz__thresh { stroke: var(--accent-primary); stroke-dasharray: 4 4; stroke-width: 1; }
+.viz__curve { fill: none; stroke: var(--accent-secondary); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.viz__dot { fill: var(--text-primary); }
+
 /* === API === */
 .api { background: var(--bg-elevated); }
 .api .card-glass { background: rgba(11, 8, 20, 0.5); }
@@ -752,6 +889,9 @@ h1, h2, h3, p, dl, dd, figure { margin: 0; }
   .cases__grid,
   .api__grid { grid-template-columns: minmax(0, 1fr); }
   .compare__chart { order: -1; padding: 0 0 8px; }
+  .lab__panel { grid-template-columns: minmax(0, 1fr); }
+  .lab__controls { border-right: 0; border-bottom: 1px solid var(--border-glass); }
+  .lab__tab { flex: 1 1 auto; justify-content: center; padding: 0 12px; }
   .market__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .stat { padding: 20px 16px 16px; min-height: 0; }
   .stat__number { font-size: clamp(22px, 6vw, 32px); }
@@ -770,4 +910,10 @@ h1, h2, h3, p, dl, dd, figure { margin: 0; }
   .form__grid { grid-template-columns: minmax(0, 1fr); }
   .terminal__body { font-size: 12px; padding: 20px 16px; min-height: 300px; }
   .feature { padding: 22px 20px; }
+}
+
+@media (max-width: 640px) {
+  .lab__metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* as 3 abas cabem lado a lado: o nome do algoritmo vai para cima */
+  .lab__tab { flex: 1 1 0; flex-direction: column; gap: 2px; min-height: 58px; padding: 8px 6px; font-size: 13px; }
 }

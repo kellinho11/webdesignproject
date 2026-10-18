@@ -140,6 +140,332 @@
     onceInView(grover, () => grover.classList.add('is-amplified'), 0.6);
   }
 
+  /* === Demonstração ao vivo: QAOA, Grover e VQE ===
+     Simulação ilustrativa: os números saem de fórmulas simples (não de um simulador quântico),
+     mas seguem o comportamento real de cada algoritmo. Os gráficos são SVG montados aqui. */
+  const lab = $('#lab');
+  if (lab) {
+    const fmt = new Intl.NumberFormat('pt-BR');
+    const dec = (x, d) => x.toFixed(d).replace('.', ',');
+    const byId = (id) => document.getElementById(id);
+    // Área útil dos gráficos no viewBox W × 300. No celular o W acompanha a largura real,
+    // senão o SVG de 600 encolheria pela metade e os textos ficariam ilegíveis.
+    const L = 44, T = 22, B = 252;
+    let W = 600, R = W - 14;
+    const measure = () => {
+      const narrow = window.matchMedia('(max-width: 900px)').matches;
+      W = narrow ? Math.round(Math.min(600, Math.max(280, lab.clientWidth - 44))) : 600;
+      R = W - 14;
+    };
+    measure();
+
+    // gerador pseudoaleatório com semente: os mesmos controles dão sempre o mesmo resultado
+    const rng = (seed) => () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    // anima de 0 a 1 em "dur" ms; com "reduzir movimento" vai direto ao fim. Devolve a função que cancela.
+    const play = (dur, frame, done) => {
+      if (reduceMotion) { frame(1); done(); return () => {}; }
+      let start = null, raf = 0;
+      const step = (ts) => {
+        if (start === null) start = ts;
+        const t = Math.min(1, (ts - start) / dur);
+        frame(t);
+        if (t < 1) raf = requestAnimationFrame(step); else done();
+      };
+      raf = requestAnimationFrame(step);
+      return () => cancelAnimationFrame(raf);
+    };
+    const setStatus = (el, state) => {
+      el.classList.toggle('is-running', state === 'run');
+      el.classList.toggle('is-done', state === 'done');
+      el.textContent = state === 'run' ? 'Executando' : state === 'done' ? 'Medido' : 'Pronto';
+    };
+    const fillRange = (input) => {
+      const p = ((input.value - input.min) / (input.max - input.min)) * 100;
+      input.style.setProperty('--fill', `${p}%`);
+    };
+    // linhas de grade horizontais com o rótulo à esquerda
+    const gridLines = (values, label) => values.map((v) => {
+      const y = B - (B - T) * v;
+      return `<line class="viz__grid" x1="${L}" x2="${R}" y1="${y}" y2="${y}"/><text class="viz__text" x="${L - 8}" y="${y + 4}" text-anchor="end">${label(v)}</text>`;
+    }).join('');
+    const axis = () => `<line class="viz__axis" x1="${L}" x2="${R}" y1="${B}" y2="${B}"/>`;
+    const paint = (svg, s) => { svg.setAttribute('viewBox', `0 0 ${W} 300`); svg.innerHTML = s; };
+
+    /* --- QAOA: das 16 carteiras mais amostradas, a de menor risco ganha peso a cada camada --- */
+    const qaoa = (() => {
+      const nIn = byId('q-n'), pIn = byId('q-p'), svg = byId('q-viz'), status = byId('q-status');
+      const btn = $('[data-run="qaoa"]', lab);
+      const K = 16;
+      let stop = () => {}, ran = false;
+
+      const model = () => {
+        const n = +nIn.value, p = +pIn.value, r = rng(n * 131 + 7);
+        const strings = [];
+        while (strings.length < K) {
+          let s = '';
+          for (let i = 0; i < n; i++) s += r() < 0.38 ? '1' : '0';
+          if (s.includes('1') && !strings.includes(s)) strings.push(s);
+        }
+        // o índice 0 é a melhor carteira; mais camadas concentram a probabilidade nela
+        const beta = 0.22 + 0.32 * p;
+        const w = strings.map((_, rank) => Math.exp(-beta * rank));
+        const sum = w.reduce((a, b) => a + b, 0);
+        // embaralha a ordem das barras (Fisher–Yates com a mesma semente)
+        const order = strings.map((_, i) => i);
+        for (let i = order.length - 1; i > 0; i--) {
+          const j = Math.floor(r() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+        return { n, strings, final: w.map((x) => x / sum), order, ratio: 1 - 0.34 * Math.exp(-0.55 * p) };
+      };
+
+      let last = null;
+      const draw = (m, t) => {
+        last = [m, t];
+        const e = easeOut(t);
+        const probs = m.final.map((f) => (1 - e) / K + e * f); // começa uniforme e vai para a distribuição final
+        const maxP = Math.max(...m.final) * 1.12;
+        const slot = (R - L) / K, bw = slot - 8;
+        let s = gridLines([0.25, 0.5, 0.75, 1], (g) => dec(maxP * g, 2)) + axis();
+        m.order.forEach((rank, pos) => {
+          const p = probs[rank], h = Math.max(1, (B - T) * Math.min(1, p / maxP)), x = L + pos * slot + 4;
+          const hot = rank === 0 && t > 0.15;
+          s += `<rect class="viz__bar${hot ? ' viz__bar--hot' : ''}" x="${x.toFixed(1)}" y="${(B - h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}"/>`;
+          if (hot) {
+            const cx = x + bw / 2;
+            s += `<text class="viz__text--hot" x="${cx}" y="${B - h - 8}" text-anchor="middle">${Math.round(p * 100)}%</text>`;
+            s += `<text class="viz__mono" x="${Math.min(R - 60, Math.max(L + 60, cx))}" y="${B + 22}" text-anchor="middle">|${m.strings[0]}⟩</text>`;
+          }
+        });
+        s += `<text class="viz__text" x="${L}" y="${B + 40}">16 respostas mais medidas · probabilidade</text>`;
+        paint(svg, s);
+        byId('q-shots').textContent = fmt.format(Math.round(1024 * t));
+      };
+
+      const chips = (m, on) => {
+        byId('q-chips').innerHTML = Array.from({ length: m.n }, (_, i) =>
+          `<span class="lab__chip${on && m.strings[0][i] === '1' ? ' is-on' : ''}">A${String(i + 1).padStart(2, '0')}</span>`).join('');
+      };
+      const reset = (m) => {
+        byId('q-space').textContent = fmt.format(Math.pow(2, m.n));
+        byId('q-ratio').textContent = '…';
+        byId('q-pick').textContent = '…';
+        chips(m, false);
+      };
+
+      const run = () => {
+        stop(); ran = true;
+        const m = model();
+        reset(m); setStatus(status, 'run'); btn.disabled = true;
+        stop = play(2600, (t) => draw(m, t), () => {
+          const k = m.strings[0].split('').filter((c) => c === '1').length;
+          byId('q-ratio').textContent = dec(m.ratio, 2);
+          byId('q-pick').textContent = `${k} de ${m.n}`;
+          chips(m, true); setStatus(status, 'done'); btn.disabled = false;
+        });
+      };
+      const preview = () => { stop(); btn.disabled = false; const m = model(); reset(m); draw(m, 0); setStatus(status, 'idle'); };
+
+      [nIn, pIn].forEach((input) => {
+        fillRange(input);
+        input.addEventListener('input', () => { fillRange(input); byId(`${input.id}-out`).textContent = input.value; preview(); });
+      });
+      btn.addEventListener('click', run);
+      preview();
+      return { ensure: () => { if (!ran) run(); }, redraw: () => last && draw(...last) };
+    })();
+
+    /* --- Grover: a amplitude do alvo cresce a cada iteração; ótimo em ⌊π/4 · √N⌋ iterações --- */
+    const groverDemo = (() => {
+      const nIn = byId('g-n'), svg = byId('g-viz'), status = byId('g-status');
+      const btn = $('[data-run="grover"]', lab);
+      const MAX_BARS = 32;
+      let stop = () => {}, ran = false;
+
+      const params = () => {
+        const N = Math.pow(2, +nIn.value);
+        const bars = Math.min(MAX_BARS, N); // com N = 16 desenha 16 barras, não 32
+        return {
+          N, bars,
+          target: Math.floor(bars * 0.6),
+          k: Math.max(1, Math.floor((Math.PI / 4) * Math.sqrt(N))),
+          theta: Math.asin(1 / Math.sqrt(N))
+        };
+      };
+
+      let last = null;
+      const draw = (g, j) => {
+        last = [g, j];
+        const at = Math.sin((2 * j + 1) * g.theta);                       // amplitude do alvo
+        const ao = Math.cos((2 * j + 1) * g.theta) / Math.sqrt(g.N - 1);  // amplitude de cada um dos outros
+        const mean = (at + (g.N - 1) * ao) / g.N;
+        const slot = (R - L) / g.bars, bw = slot - Math.min(5, slot * 0.3);
+        let s = gridLines([0.25, 0.5, 0.75, 1], (v) => dec(v, 2)) + axis();
+        for (let i = 0; i < g.bars; i++) {
+          const hot = i === g.target;
+          const h = Math.max(1.5, (B - T) * Math.abs(hot ? at : ao)), x = L + i * slot + (slot - bw) / 2;
+          s += `<rect class="viz__bar${hot ? ' viz__bar--hot' : ''}" x="${x.toFixed(1)}" y="${(B - h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}"/>`;
+          if (hot) s += `<text class="viz__text--hot" x="${x + bw / 2}" y="${B - h - 8}" text-anchor="middle">alvo</text>`;
+        }
+        const my = B - (B - T) * Math.abs(mean);
+        s += `<line class="viz__mean" x1="${L}" x2="${R}" y1="${my.toFixed(1)}" y2="${my.toFixed(1)}"/>`;
+        const shown = g.N > g.bars ? `${g.bars} de ${fmt.format(g.N)} estados exibidos` : `${fmt.format(g.N)} estados`;
+        s += `<text class="viz__text" x="${L}" y="${B + 22}">${shown} · amplitude |α|</text>`;
+        paint(svg, s);
+        byId('g-iter').textContent = `${j} / ${g.k}`;
+        byId('g-prob').textContent = `${dec(at * at * 100, 1)}%`;
+      };
+
+      const reset = (g) => {
+        byId('g-classic').textContent = fmt.format(g.N / 2);
+        byId('g-speed').textContent = '…';
+      };
+
+      const run = () => {
+        stop(); ran = true;
+        const g = params();
+        reset(g); setStatus(status, 'run'); btn.disabled = true;
+        let last = -1;
+        stop = play(Math.min(3200, 500 + g.k * 260), (t) => {
+          const j = Math.floor(t * g.k);
+          if (j !== last) { last = j; draw(g, j); }
+        }, () => {
+          byId('g-speed').textContent = `${dec(g.N / 2 / g.k, 1)}×`;
+          setStatus(status, 'done'); btn.disabled = false;
+        });
+      };
+      const preview = () => { stop(); btn.disabled = false; const g = params(); reset(g); draw(g, 0); setStatus(status, 'idle'); };
+
+      fillRange(nIn);
+      nIn.addEventListener('input', () => {
+        fillRange(nIn);
+        const N = fmt.format(Math.pow(2, +nIn.value));
+        byId('g-n-out').textContent = N;
+        nIn.setAttribute('aria-valuetext', `${N} registros`);
+        preview();
+      });
+      btn.addEventListener('click', run);
+      preview();
+      return { ensure: () => { if (!ran) run(); }, redraw: () => last && draw(...last) };
+    })();
+
+    /* --- VQE: o erro cai a cada iteração até um piso que depende da profundidade do ansatz --- */
+    const vqe = (() => {
+      const dIn = byId('v-d'), svg = byId('v-viz'), status = byId('v-status');
+      const btn = $('[data-run="vqe"]', lab);
+      const molButtons = $$('[data-mol]', lab);
+      // e0: energia do estado fundamental (Hartree); slow/hard: moléculas maiores convergem mais devagar e param mais alto
+      const MOL = {
+        h2: { e0: -1.1373, slow: 1, hard: 1 },
+        lih: { e0: -7.8823, slow: 1.4, hard: 1.3 },
+        beh2: { e0: -15.5951, slow: 1.9, hard: 1.7 }
+      };
+      const ITERS = 60, CHEM = 0.0016; // precisão química: 1,6 mHa
+      let mol = 'h2', stop = () => {}, ran = false;
+
+      const series = () => {
+        const m = MOL[mol], d = +dIn.value, r = rng(d * 17 + mol.length * 101);
+        // com estes valores H₂ converge a partir da profundidade 2, LiH da 3 e BeH₂ só na 4
+        const floor = (0.0042 / Math.pow(d, 1.6)) * m.hard, tau = (4 + 5 / d) * m.slow;
+        const pts = [];
+        for (let i = 0; i <= ITERS; i++) pts.push(floor + 0.32 * Math.exp(-i / tau) * (0.72 + 0.28 * Math.cos(i * 0.9)) * (0.9 + 0.2 * r()));
+        return { m, pts };
+      };
+      // eixo y em escala log: 10⁰ no topo, 10⁻⁴ na base
+      const yOf = (err) => T + (Math.min(4, Math.max(0, -Math.log10(err))) / 4) * (B - T);
+      const xOf = (i) => L + (i / ITERS) * (R - L);
+      const EXP = ['⁰', '⁻¹', '⁻²', '⁻³', '⁻⁴'];
+
+      let last = null;
+      const draw = (sr, t) => {
+        last = [sr, t];
+        const upto = Math.max(1, Math.round(t * ITERS));
+        const cy = yOf(CHEM);
+        let s = `<rect class="viz__band" x="${L}" y="${cy.toFixed(1)}" width="${R - L}" height="${(B - cy).toFixed(1)}"/>`;
+        s += gridLines([1, 0.75, 0.5, 0.25, 0], (v) => `10${EXP[Math.round((1 - v) * 4)]}`);
+        s += `<line class="viz__thresh" x1="${L}" x2="${R}" y1="${cy.toFixed(1)}" y2="${cy.toFixed(1)}"/>`;
+        s += `<text class="viz__text viz__text--blue" x="${R - 4}" y="${(cy - 7).toFixed(1)}" text-anchor="end">precisão química · 1,6 mHa</text>`;
+        s += axis();
+        let d = '';
+        for (let i = 0; i <= upto; i++) d += `${i ? 'L' : 'M'}${xOf(i).toFixed(1)} ${yOf(sr.pts[i]).toFixed(1)}`;
+        s += `<path class="viz__curve" d="${d}"/>`;
+        s += `<circle class="viz__dot" cx="${xOf(upto).toFixed(1)}" cy="${yOf(sr.pts[upto]).toFixed(1)}" r="4"/>`;
+        s += `<text class="viz__text" x="${L}" y="${B + 22}">iterações (0–${ITERS}) · erro em Hartree</text>`;
+        paint(svg, s);
+        const err = sr.pts[upto];
+        byId('v-e').textContent = `${dec(sr.m.e0 + err, 4)} Ha`;
+        byId('v-err').textContent = `${dec(err * 1000, 2)} mHa`;
+        byId('v-it').textContent = String(upto);
+      };
+
+      const run = () => {
+        stop(); ran = true;
+        const sr = series();
+        setStatus(status, 'run'); btn.disabled = true; byId('v-ok').textContent = '…';
+        stop = play(2800, (t) => draw(sr, t), () => {
+          byId('v-ok').textContent = sr.pts[ITERS] < CHEM ? 'Convergiu' : 'Aumente o ansatz';
+          setStatus(status, 'done'); btn.disabled = false;
+        });
+      };
+      const preview = () => { stop(); btn.disabled = false; draw(series(), 0); byId('v-ok').textContent = '…'; setStatus(status, 'idle'); };
+
+      molButtons.forEach((b) => b.addEventListener('click', () => {
+        mol = b.dataset.mol;
+        molButtons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        preview();
+      }));
+      fillRange(dIn);
+      dIn.addEventListener('input', () => { fillRange(dIn); byId('v-d-out').textContent = dIn.value; preview(); });
+      btn.addEventListener('click', run);
+      preview();
+      return { ensure: () => { if (!ran) run(); }, redraw: () => last && draw(...last) };
+    })();
+
+    /* --- Abas: setas ←/→, Home e End trocam de aba (padrão WAI-ARIA); cada aba roda sozinha na 1ª vez --- */
+    const runners = { qaoa, grover: groverDemo, vqe };
+    const tabs = $$('[role="tab"]', lab);
+    const panels = $$('[role="tabpanel"]', lab);
+    const select = (id, focus) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach((p) => { p.hidden = p.dataset.panel !== id; });
+      runners[id].ensure();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t.dataset.tab));
+      t.addEventListener('keydown', (e) => {
+        const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (next === undefined) return;
+        e.preventDefault();
+        select(tabs[(next + tabs.length) % tabs.length].dataset.tab, true);
+      });
+    });
+
+    // ao mudar a largura (girar o celular, redimensionar a janela) os gráficos são refeitos na nova medida
+    let resizeTimer = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const before = W;
+        measure();
+        if (W !== before) Object.values(runners).forEach((r) => r.redraw());
+      }, 150);
+    });
+
+    // a primeira simulação roda sozinha quando o laboratório entra na tela
+    onceInView(lab, qaoa.ensure, 0.35);
+  }
+
   /* === API: digitação no terminal (uma vez, ao entrar na tela) === */
   const code = $('#terminal-code');
   if (code) {

@@ -47,6 +47,7 @@
       <a href="#tecnologia">Tecnologia</a>
       <a href="#quantum-engineering">Quantum Engineering</a>
       <a href="#casos-de-uso">Casos de Uso</a>
+      <a href="#demo">Demo</a>
       <a href="#investidores">Investidores</a>
     </nav>
 
@@ -313,6 +314,110 @@
     </div>
   </section>
 
+  <!-- ============ DEMONSTRAÇÃO AO VIVO ============ -->
+  <section class="section demo" id="demo" aria-labelledby="demo-title">
+    <div class="container">
+      <header class="section-head demo__head">
+        <div>
+          <p class="section-label reveal">DEMONSTRAÇÃO AO VIVO</p>
+          <h2 id="demo-title" class="section-title reveal" style="--rd:80ms">Rode. Meça. Veja convergir.</h2>
+        </div>
+        <p class="demo__note reveal" style="--rd:160ms">Simulação ilustrativa, calculada no seu navegador. Não roda em hardware quântico.</p>
+      </header>
+
+      <!-- a demonstração depende de JS; sem ele o CSS esconde o laboratório e fica só este aviso -->
+      <noscript><p class="demo__nojs">Ative o JavaScript para rodar as simulações de QAOA, Grover e VQE.</p></noscript>
+
+      <div class="lab reveal" id="lab" style="--rd:200ms">
+        <div class="lab__tabs" role="tablist" aria-label="Algoritmos">
+          <button class="lab__tab" role="tab" type="button" id="tab-qaoa" data-tab="qaoa" aria-selected="true" aria-controls="panel-qaoa"><span class="lab__tab-algo">QAOA</span> Portfólio</button>
+          <button class="lab__tab" role="tab" type="button" id="tab-grover" data-tab="grover" aria-selected="false" aria-controls="panel-grover" tabindex="-1"><span class="lab__tab-algo">Grover</span> Busca</button>
+          <button class="lab__tab" role="tab" type="button" id="tab-vqe" data-tab="vqe" aria-selected="false" aria-controls="panel-vqe" tabindex="-1"><span class="lab__tab-algo">VQE</span> Molécula</button>
+        </div>
+
+        <!-- QAOA -->
+        <div class="card-glass lab__panel" role="tabpanel" id="panel-qaoa" data-panel="qaoa" aria-labelledby="tab-qaoa">
+          <div class="lab__controls">
+            <p class="lab__desc">Escolha a carteira de menor risco. O circuito é medido 1.024 vezes (os <em>shots</em>) e a resposta mais frequente vence. Mais camadas, mais precisão.</p>
+            <label class="lab__field">
+              <span class="lab__field-head"><span>Ativos no universo</span><output id="q-n-out">12</output></span>
+              <input type="range" id="q-n" min="6" max="16" step="1" value="12">
+            </label>
+            <label class="lab__field">
+              <span class="lab__field-head"><span>Camadas do circuito (p)</span><output id="q-p-out">3</output></span>
+              <input type="range" id="q-p" min="1" max="6" step="1" value="3">
+            </label>
+            <button type="button" class="btn-primary lab__run" data-run="qaoa">Executar QAOA</button>
+          </div>
+          <div class="lab__viz">
+            <div class="lab__viz-head"><span>Distribuição das respostas medidas</span><span id="q-status" class="lab__status" aria-live="polite">Pronto</span></div>
+            <svg class="lab__svg" id="q-viz" viewBox="0 0 600 300" preserveAspectRatio="xMidYMin meet" aria-hidden="true"></svg>
+            <div class="lab__chips" id="q-chips" role="group" aria-label="Ativos da carteira escolhida"></div>
+            <dl class="lab__metrics">
+              <div><dt>Espaço de busca</dt><dd id="q-space">4.096</dd></div>
+              <div><dt>Shots medidos</dt><dd id="q-shots">0</dd></div>
+              <div><dt>Approx. ratio</dt><dd id="q-ratio">…</dd></div>
+              <div><dt>Carteira</dt><dd id="q-pick">…</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- Grover -->
+        <div class="card-glass lab__panel" role="tabpanel" id="panel-grover" data-panel="grover" aria-labelledby="tab-grover" hidden>
+          <div class="lab__controls">
+            <p class="lab__desc">Ache 1 registro entre N. A cada rodada a barra violeta cresce, sem olhar item por item.</p>
+            <label class="lab__field">
+              <span class="lab__field-head"><span>Registros na base (N)</span><output id="g-n-out">256</output></span>
+              <!-- o valor é o expoente (N = 2^valor); aria-valuetext anuncia o N de verdade -->
+              <input type="range" id="g-n" min="4" max="12" step="1" value="8" aria-valuetext="256 registros">
+            </label>
+            <button type="button" class="btn-primary lab__run" data-run="grover">Executar Grover</button>
+          </div>
+          <div class="lab__viz">
+            <div class="lab__viz-head"><span>Amplitude de cada estado · média tracejada</span><span id="g-status" class="lab__status" aria-live="polite">Pronto</span></div>
+            <svg class="lab__svg" id="g-viz" viewBox="0 0 600 300" preserveAspectRatio="xMidYMin meet" aria-hidden="true"></svg>
+            <dl class="lab__metrics">
+              <div><dt>Iterações quânticas</dt><dd id="g-iter">0</dd></div>
+              <div><dt>Clássico (média)</dt><dd id="g-classic">128</dd></div>
+              <div><dt>Chance de acerto</dt><dd id="g-prob">…</dd></div>
+              <div><dt>Redução de consultas</dt><dd id="g-speed">…</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- VQE -->
+        <div class="card-glass lab__panel" role="tabpanel" id="panel-vqe" data-panel="vqe" aria-labelledby="tab-vqe" hidden>
+          <div class="lab__controls">
+            <p class="lab__desc">Ache a energia mínima da molécula, até o erro cair abaixo da precisão química (1,6 mHa, margem pequena o bastante para prever reações com confiança).</p>
+            <div class="lab__field">
+              <span class="lab__field-head"><span id="v-mol-label">Molécula</span></span>
+              <div class="lab__seg" role="group" aria-labelledby="v-mol-label">
+                <button type="button" aria-pressed="true" data-mol="h2">H₂</button>
+                <button type="button" aria-pressed="false" data-mol="lih">LiH</button>
+                <button type="button" aria-pressed="false" data-mol="beh2">BeH₂</button>
+              </div>
+            </div>
+            <label class="lab__field">
+              <span class="lab__field-head"><span>Profundidade do ansatz</span><output id="v-d-out">2</output></span>
+              <input type="range" id="v-d" min="1" max="4" step="1" value="2">
+            </label>
+            <button type="button" class="btn-primary lab__run" data-run="vqe">Executar VQE</button>
+          </div>
+          <div class="lab__viz">
+            <div class="lab__viz-head"><span>Erro de energia por iteração · escala log</span><span id="v-status" class="lab__status" aria-live="polite">Pronto</span></div>
+            <svg class="lab__svg" id="v-viz" viewBox="0 0 600 300" preserveAspectRatio="xMidYMin meet" aria-hidden="true"></svg>
+            <dl class="lab__metrics">
+              <div><dt>Energia estimada</dt><dd id="v-e">…</dd></div>
+              <div><dt>Erro</dt><dd id="v-err">…</dd></div>
+              <div><dt>Iterações</dt><dd id="v-it">0</dd></div>
+              <div><dt>Status</dt><dd id="v-ok">…</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ API ============ -->
   <section class="section api" id="quantum-engineering" aria-labelledby="api-title">
     <!-- id antigo (até a v1.3.0) mantido como apelido para links já compartilhados -->
@@ -430,6 +535,7 @@
         <a href="#tecnologia">Tecnologia</a>
         <a href="#quantum-engineering">Quantum Engineering</a>
         <a href="#casos-de-uso">Casos de Uso</a>
+        <a href="#demo">Demo</a>
         <a href="#investidores">Investidores</a>
       </nav>
       <nav class="footer__nav" aria-label="Projeto">

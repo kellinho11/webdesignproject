@@ -20,6 +20,33 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.1.0] — 2026-10-18 · MINOR
+
+### Adicionado
+- Seção **Demonstração ao vivo** (`#demo`), "Rode. Meça. Veja convergir.", entre Casos de Uso e Quantum Engineering. Um laboratório com três abas, uma para cada algoritmo dos casos de uso, com controles, botão "Executar" e gráfico animado:
+  - **QAOA · Portfólio:** ativos no universo (6 a 16) e camadas do circuito (1 a 6). O gráfico mostra a distribuição das 1.024 medições até uma carteira se destacar, com os ativos escolhidos marcados.
+  - **Grover · Busca:** tamanho da base (16 a 4.096 registros). A barra do registro certo cresce a cada iteração, com a média tracejada, até o ponto ótimo de ⌊π/4 · √N⌋ iterações.
+  - **VQE · Molécula:** H₂, LiH ou BeH₂ e profundidade do ansatz (1 a 4). O erro de energia cai a cada iteração, em escala log, até passar (ou não) da precisão química de 1,6 mHa.
+- Cada painel mostra quatro números ao lado do gráfico (espaço de busca, chance de acerto, energia estimada etc.). A primeira simulação roda sozinha quando a seção entra na tela, e cada aba roda na primeira vez em que é aberta.
+- Link "Demo" no menu e no rodapé.
+- Aviso de que a simulação é ilustrativa e roda no navegador, não em hardware quântico.
+
+### Acessibilidade
+- Abas no padrão WAI-ARIA: setas ←/→, Home e End trocam de aba; só a aba ativa entra no Tab.
+- Todos os controles deslizantes têm rótulo. O de registros anuncia o valor real ("256 registros"), não o expoente.
+- O estado de cada simulação ("Executando", "Medido") é anunciado por leitores de tela. A escolha da molécula usa botões com `aria-pressed`.
+- Com "reduzir movimento", as simulações vão direto ao resultado, sem animação.
+
+### Mantido de propósito
+- Sem JavaScript o laboratório não funcionaria; no lugar dele aparece um aviso pedindo para ativar o JS. O resto da página continua visível (correção da 1.2.1).
+- Nenhuma âncora, classe ou id existente mudou.
+
+### Observação
+- É MINOR porque só acrescenta uma seção e um link no menu, sem quebrar nada.
+- No celular, o gráfico é desenhado na largura real da tela para o texto continuar legível, e as três abas ficam lado a lado.
+- Com LiH e BeH₂ a convergência foi calibrada para depender da profundidade: H₂ chega à precisão química a partir da profundidade 2, LiH a partir da 3 e BeH₂ só na 4.
+- Bateria de testes: 103/103, com 13 testes novos para a demonstração (abas e teclado, cada algoritmo, botão travado durante a execução, sem JS, "reduzir movimento" e legibilidade no celular).
+
 ## [2.0.0] — 2026-10-17 · MAJOR
 
 Nova estrutura para o site, com as mesmas 5 seções e o mesmo conteúdo. As correções das versões anteriores foram mantidas.
