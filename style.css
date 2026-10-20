@@ -162,6 +162,8 @@ h1, h2, h3, p, dl, dd, figure { margin: 0; }
 .logo__orbits { transform-origin: 0 0; }
 
 .site-nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
+/* com 6 links, logo acima do menu mobile o header fica justo: menos espaço entre os links */
+@media (min-width: 1081px) and (max-width: 1180px) { .site-nav { gap: 18px; } }
 .site-nav a {
   position: relative;
   white-space: nowrap;
@@ -711,6 +713,114 @@ html:not(.js) .lab { display: none; }
 .feature__title { font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
 .feature__text { margin-top: 8px; font-size: 14px; color: var(--text-secondary); }
 
+/* === Roadmap ===
+   5 etapas numa grade de 3 linhas: cards de cima, linha do tempo, cards de baixo.
+   Cada etapa usa a mesma grade (subgrid), então todos os pontos caem na mesma altura. */
+.roadmap__track {
+  --rm-step: .4s;             /* tempo da linha entre um ponto e o próximo */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: auto 56px auto;
+  column-gap: 16px;
+}
+/* linha do tempo: do centro da 1ª coluna ao centro da última; acesa até a etapa atual (--rm-now) */
+.roadmap__track::before {
+  content: "";
+  grid-row: 2;
+  grid-column: 1 / -1;
+  align-self: center;
+  height: 2px;
+  margin-inline: calc((100% - 64px) / 10);
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary) var(--rm-now, 50%), rgba(244, 245, 255, 0.22) var(--rm-now, 50%));
+  clip-path: inset(0);        /* estado final explícito: de inset(...) para "none" a transição não interpola */
+}
+.roadmap__item {
+  display: grid;
+  grid-row: 1 / span 3;
+  grid-template-rows: subgrid;
+  justify-items: center;
+}
+/* coluna fixa: no posicionamento automático o grid desviaria da linha (fileira 2) e jogaria as etapas para baixo dela */
+.roadmap__item:nth-child(1) { grid-column: 1; }
+.roadmap__item:nth-child(2) { grid-column: 2; }
+.roadmap__item:nth-child(3) { grid-column: 3; }
+.roadmap__item:nth-child(4) { grid-column: 4; }
+.roadmap__item:nth-child(5) { grid-column: 5; }
+.roadmap__dot {
+  grid-row: 2;
+  grid-column: 1;
+  align-self: center;
+  position: relative;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1.5px solid rgba(244, 245, 255, 0.35);
+  transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), opacity .4s;
+}
+.roadmap__item--done .roadmap__dot { background: var(--accent-primary); border-color: var(--accent-primary); box-shadow: 0 0 14px var(--glow-primary); }
+.roadmap__item--now .roadmap__dot { background: var(--accent-secondary); border-color: var(--accent-secondary); box-shadow: 0 0 0 5px rgba(107, 70, 255, 0.18), 0 0 16px var(--glow-secondary); }
+
+.roadmap__card {
+  grid-column: 1;
+  width: 100%;
+  padding: 20px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.roadmap__item--up .roadmap__card { grid-row: 1; align-self: end; }
+.roadmap__item--down .roadmap__card { grid-row: 3; align-self: start; }
+/* haste ligando o card ao ponto */
+.roadmap__card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 21px;
+  background: var(--border-glass);
+}
+.roadmap__item--up .roadmap__card::after { top: 100%; }
+.roadmap__item--down .roadmap__card::after { bottom: 100%; }
+.roadmap__item--planned .roadmap__card { opacity: 0.6; }
+.roadmap__item--planned .roadmap__card:hover { box-shadow: none; border-color: var(--border-glass); }
+.roadmap__date { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: var(--accent-primary); }
+.roadmap__desc { font-size: 14.5px; line-height: 1.5; text-wrap: pretty; }
+.roadmap__badge {
+  align-self: flex-start;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.roadmap__badge--done { background: var(--accent-primary); color: var(--bg-primary); }
+.roadmap__badge--done svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.roadmap__badge--now { border: 1px solid var(--accent-primary); }
+.roadmap__badge--now .live-dot { font-size: 8px; }
+.roadmap__badge--planned { border: 1px solid var(--border-glass); color: var(--text-secondary); }
+
+/* Entrada em sequência (só com JS): a linha cresce e cada ponto acende quando ela chega.
+   O JS liga .is-playing ao entrar na tela e .is-settled no fim, para o hover não herdar os atrasos. */
+/* a linha é revelada com clip-path, não scaleX: escalar espremeria o degradê e o cinza apareceria antes da etapa atual */
+.js .roadmap__track:not(.is-playing)::before { clip-path: inset(0 100% 0 0); }
+.js .roadmap__track:not(.is-playing) .roadmap__dot { transform: scale(.4); opacity: .3; }
+.js .roadmap__track:not(.is-playing) .roadmap__card { opacity: 0; }
+.js .roadmap__track:not(.is-playing) .roadmap__item--up .roadmap__card { transform: translateY(12px); }
+.js .roadmap__track:not(.is-playing) .roadmap__item--down .roadmap__card { transform: translateY(-12px); }
+.roadmap__track.is-playing:not(.is-settled)::before { transition: clip-path calc(4 * var(--rm-step)) linear; }
+.roadmap__track.is-playing:not(.is-settled) .roadmap__dot { transition-delay: calc(var(--i) * var(--rm-step)); }
+.roadmap__track.is-playing:not(.is-settled) .roadmap__card { transition-delay: calc(var(--i) * var(--rm-step) + 80ms); }
+
 /* === CTA Final === */
 .cta { overflow: hidden; }
 .cta__glow {
@@ -850,6 +960,9 @@ html:not(.js) .lab { display: none; }
   .js .chart__curve { stroke-dashoffset: 0; }
   .js .chart__late { opacity: 1; }
   .btn-primary:hover, .card-glass:hover, .card-glass.reveal.is-visible:hover { transform: none; }
+  /* roadmap: sem a linha crescendo nem cards deslizando, só o fade */
+  .js .roadmap__track::before { clip-path: none !important; }
+  .js .roadmap__item::before, .js .roadmap__dot, .js .roadmap__card { transform: none !important; }
 }
 
 /* === Responsivo === */
@@ -882,6 +995,41 @@ html:not(.js) .lab { display: none; }
   .site-nav a::after { display: none; }
   /* ao abrir, visibility muda na hora: quem aperta Tab logo em seguida já cai nos links */
   .nav-open .site-nav { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .3s var(--ease), visibility 0s; }
+
+  /* Roadmap na vertical: abaixo de ~1080px os 5 cards lado a lado ficariam estreitos demais
+     para o selo "Em andamento". Cada etapa desenha o trecho da linha até o próximo ponto. */
+  .roadmap__track { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: 20px; }
+  .roadmap__track::before { display: none; }
+  .roadmap__item,
+  .roadmap__item:nth-child(n) {
+    grid-row: auto;
+    grid-column: auto;
+    grid-template-rows: auto;
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 16px;
+    justify-items: stretch;
+    align-items: start;
+  }
+  .roadmap__item::before {
+    content: "";
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: center;
+    align-self: stretch;
+    width: 2px;
+    /* do centro deste ponto (24px + 7px) até o centro do próximo, atravessando o vão de 20px */
+    margin: 31px 0 -51px;
+    background: rgba(244, 245, 255, 0.22);
+    transform-origin: top;
+  }
+  .roadmap__item--done::before { background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary)); }
+  .roadmap__item:last-child::before { display: none; }
+  .roadmap__dot { grid-row: 1; grid-column: 1; justify-self: center; align-self: start; margin-top: 24px; }
+  .roadmap__item--up .roadmap__card,
+  .roadmap__item--down .roadmap__card { grid-row: 1; grid-column: 2; align-self: start; }
+  .roadmap__card::after { display: none; }
+  .js .roadmap__track:not(.is-playing) .roadmap__item::before { transform: scaleY(0); }
+  .roadmap__track.is-playing:not(.is-settled) .roadmap__item::before { transition: transform var(--rm-step) linear calc(var(--i) * var(--rm-step)); }
 }
 
 @media (max-width: 900px) {

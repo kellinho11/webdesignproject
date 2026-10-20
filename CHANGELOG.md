@@ -20,6 +20,30 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.2.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- Seção **Roadmap** (`#roadmap`), "De protótipo a produção.", entre Quantum Engineering e Investidores. Uma linha do tempo com 5 etapas, de Q1 2026 a 2028, cada uma com data, descrição e selo de status (Concluído, Em andamento ou Planejado).
+- A linha fica acesa até a etapa atual. As etapas planejadas aparecem esmaecidas.
+- Ao entrar na tela, a linha cresce da esquerda para a direita e cada ponto acende quando ela chega. Os cards aparecem junto com os pontos, alternando entre cima e baixo da linha.
+- No celular e em telas de até 1080px, a linha do tempo fica na vertical, com os cards empilhados.
+- Link "Roadmap" no menu e no rodapé.
+
+### Acessibilidade
+- As etapas formam uma lista ordenada (`<ol>`), e a etapa atual é marcada com `aria-current="step"`.
+- Com "reduzir movimento", não há deslocamento nem escala: os cards só aparecem com fade.
+- Sem JavaScript, o roadmap já aparece completo, com a linha desenhada.
+
+### Mantido de propósito
+- A animação é feita só com CSS (transições em sequência). O JS apenas avisa quando a seção entra na tela, sem bibliotecas externas.
+- A linha é desenhada pelo próprio CSS do grid e cai sempre na altura dos pontos. Nenhum cálculo de posição em JS, nem ao redimensionar a janela.
+- Nenhuma âncora, classe ou id existente mudou.
+
+### Observação
+- É MINOR porque só acrescenta uma seção e um link no menu, sem quebrar nada.
+- Entre 1081 e 1180px, o espaço entre os links do menu diminui um pouco para os 6 links caberem ao lado do botão "Portal do Investidor".
+- Bateria de testes: 110/110, com 7 testes novos para o roadmap (pontos alinhados à linha, entrada completa, linha vertical no celular, sem JS, "reduzir movimento" e a âncora `#roadmap`).
+
 ## [2.1.0] — 2026-10-18 · MINOR
 
 ### Adicionado

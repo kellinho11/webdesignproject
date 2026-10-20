@@ -519,6 +519,14 @@
     else onceInView(code.closest('.terminal'), type, 0.4);
   }
 
+  /* === Roadmap: a linha cresce e as etapas acendem quando a seção entra na tela === */
+  const roadmap = $('#roadmap-track');
+  onceInView(roadmap, () => {
+    roadmap.classList.add('is-playing');
+    // terminada a entrada, os atrasos escalonados saem e o hover dos cards responde na hora
+    setTimeout(() => roadmap.classList.add('is-settled'), 2600);
+  }, 0.3);
+
   /* === CTA: validação do formulário ===
      Sem backend neste projeto. Cada campo mostra o próprio erro em .field__error;
      o sucesso aparece em #form-success, dentro de uma região aria-live. */
