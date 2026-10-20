@@ -821,6 +821,130 @@
     setTimeout(() => roadmap.classList.add('is-settled'), 2600);
   }, 0.3);
 
+  /* === Qubits: fios entre seções, esferas de Bloch, registrador fixo e fundo de interferência ===
+     Tudo decorativo (aria-hidden). As esferas só animam enquanto estão na tela. */
+  const PI = Math.PI;
+  $$('.qwire').forEach((w) => onceInView(w, () => w.classList.add('is-on'), 0.5));
+
+  const spheres = $$('[data-bloch]').map((svg) => ({
+    svg, section: svg.closest('section'), visible: false,
+    vec: $('[data-vec]', svg), tip: $('[data-tip]', svg), proj: $('[data-proj]', svg), state: $('[data-state]', svg),
+  }));
+  // quanto da seção já passou pela tela (0 = entrando por baixo, 1 = saindo por cima)
+  const progress = (el) => {
+    const r = el.getBoundingClientRect(), vh = window.innerHeight;
+    return Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+  };
+  const piFmt = (v) => `${v.toFixed(2).replace('.', ',')}π`;
+  // θ segue a rolagem da seção; φ precessa devagar com o tempo (parado com "reduzir movimento")
+  const drawBloch = (s, time) => {
+    const p = progress(s.section);
+    const theta = PI * (0.12 + 0.62 * p);
+    const phi = (reduceMotion ? 0.6 : time * 0.00025) + p * 2.4 * PI;
+    const x = 100 * Math.sin(theta) * Math.cos(phi);
+    const yEq = 28 * Math.sin(theta) * Math.sin(phi);
+    const y = -100 * Math.cos(theta) + yEq;
+    s.vec.setAttribute('x2', x.toFixed(1)); s.vec.setAttribute('y2', y.toFixed(1));
+    s.tip.setAttribute('cx', x.toFixed(1)); s.tip.setAttribute('cy', y.toFixed(1));
+    s.proj.setAttribute('x1', x.toFixed(1)); s.proj.setAttribute('y1', y.toFixed(1));
+    s.proj.setAttribute('x2', x.toFixed(1)); s.proj.setAttribute('y2', yEq.toFixed(1));
+    s.state.textContent = `θ = ${piFmt(theta / PI)} · φ = ${piFmt((((phi / PI) % 2) + 2) % 2)}`;
+  };
+  let blochRaf = 0;
+  const blochLoop = (t) => {
+    spheres.forEach((s) => { if (s.visible) drawBloch(s, t); });
+    blochRaf = spheres.some((s) => s.visible) ? requestAnimationFrame(blochLoop) : 0;
+  };
+  const bio = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { const s = spheres.find((x) => x.svg === e.target); if (s) s.visible = e.isIntersecting; });
+    // o laço só roda com alguma esfera visível: fora da tela não gasta nenhum quadro
+    if (!reduceMotion && !blochRaf && spheres.some((s) => s.visible)) blochRaf = requestAnimationFrame(blochLoop);
+  });
+  spheres.forEach((s) => { bio.observe(s.svg); drawBloch(s, 0); });
+
+  // registrador: 5 qubits que mudam com a rolagem da página e "medem" (0/1) no fim
+  const qreg = $('#qreg');
+  const qrows = qreg ? $$('.qreg__row', qreg).map((row) => ({ v: $('[data-v]', row), t: $('[data-t]', row), k: $('[data-k]', row) })) : [];
+  const qgate = $('#qreg-gate');
+  // mesma condição do CSS (min-width: 1360px) que mostra o registrador
+  const qregWide = window.matchMedia('(min-width: 1360px)');
+  const gateFor = { simples: '|0⟩', tecnologia: 'H', mercado: 'CNOT', 'casos-de-uso': 'Rz(θ)', demo: 'U(β,γ)', 'quantum-engineering': 'SWAP', roadmap: 'T', investidores: 'MEDIR' };
+  const qsections = $$('main > section[id]');
+  const ket = (theta, phi) => {
+    if (theta < PI / 7) return '|0⟩';
+    if (theta > PI - PI / 7) return '|1⟩';
+    if (Math.abs(theta - PI / 2) < PI / 7) {
+      const c = Math.cos(phi), sn = Math.sin(phi);
+      if (c > 0.8) return '|+⟩';
+      if (c < -0.8) return '|−⟩';
+      if (sn > 0.8) return '|i⟩';
+      if (sn < -0.8) return '|−i⟩';
+    }
+    return '|ψ⟩';
+  };
+  const drawReg = () => {
+    if (!qreg || !qregWide.matches) return; // escondido em tela estreita: nada a calcular
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? window.scrollY / max : 0;
+    qreg.classList.toggle('is-on', window.scrollY > hero.offsetHeight * 0.6);
+    const measuring = p > 0.94;
+    qrows.forEach((r, i) => {
+      let theta = (PI / 2) * (1 - Math.cos(2 * PI * p * (1 + i * 0.4) + i * 0.7));
+      let phi = 2 * PI * p * (2 + i) + i;
+      if (measuring) { theta = i % 3 === 1 ? PI : 0; phi = 0; }
+      const x = 11 * Math.sin(theta) * Math.cos(phi), y = -11 * Math.cos(theta) + 3.2 * Math.sin(theta) * Math.sin(phi);
+      r.v.setAttribute('x2', x.toFixed(2)); r.v.setAttribute('y2', y.toFixed(2));
+      r.t.setAttribute('cx', x.toFixed(2)); r.t.setAttribute('cy', y.toFixed(2));
+      r.k.textContent = ket(theta, phi);
+    });
+    const mid = window.innerHeight / 2;
+    const current = qsections.find((sec) => { const b = sec.getBoundingClientRect(); return b.top < mid && b.bottom > mid; });
+    qgate.textContent = (current && gateFor[current.id]) || '…';
+  };
+
+  const interf = $('.bg-interference');
+  const drawInterf = () => { if (interf && !reduceMotion) interf.style.setProperty('--sp', progress(interf.parentElement).toFixed(3)); };
+
+  let qTicking = false;
+  window.addEventListener('scroll', () => {
+    if (qTicking) return;
+    qTicking = true;
+    requestAnimationFrame(() => {
+      drawReg(); drawInterf();
+      if (reduceMotion) spheres.forEach((s) => { if (s.visible) drawBloch(s, 0); });
+      qTicking = false;
+    });
+  }, { passive: true });
+  window.addEventListener('resize', drawReg);
+  drawReg(); drawInterf();
+
+  /* === Glossário ===
+     A explicação abre no hover e no foco (só CSS). Aqui: ela não sai da tela perto das bordas,
+     Esc fecha (WCAG 1.4.13) e, no toque, tocar fora fecha. */
+  const terms = $$('.term');
+  const placeTip = (t) => {
+    const tip = $('.term__def', t);
+    tip.style.setProperty('--tip-x', '0px');
+    const r = tip.getBoundingClientRect(), pad = 12;
+    const shift = r.left < pad ? pad - r.left : r.right > window.innerWidth - pad ? window.innerWidth - pad - r.right : 0;
+    tip.style.setProperty('--tip-x', `${Math.round(shift)}px`);
+  };
+  terms.forEach((t) => {
+    t.addEventListener('pointerenter', () => { t.classList.remove('is-dismissed'); placeTip(t); });
+    t.addEventListener('focus', () => { t.classList.remove('is-dismissed'); placeTip(t); });
+    // fechado com Esc, só reabre num novo hover ou foco (e não ao tirar o mouse com o termo ainda focado)
+    t.addEventListener('pointerleave', () => { if (t !== document.activeElement) t.classList.remove('is-dismissed'); });
+    t.addEventListener('blur', () => t.classList.remove('is-dismissed'));
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    terms.forEach((t) => { if (t.matches(':hover') || t === document.activeElement) t.classList.add('is-dismissed'); });
+  });
+  document.addEventListener('touchstart', (e) => {
+    const a = document.activeElement;
+    if (a && a.classList.contains('term') && !e.target.closest('.term')) a.blur();
+  }, { passive: true });
+
   /* === CTA: validação do formulário ===
      Sem backend neste projeto. Cada campo mostra o próprio erro em .field__error;
      o sucesso aparece em #form-success, dentro de uma região aria-live. */

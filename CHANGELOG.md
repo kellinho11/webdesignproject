@@ -20,6 +20,36 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.5.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- **Fios de qubit** no topo de cada seção, da Jornada aos Investidores. Cada fio mostra uma porta quântica e o nome da operação (|0⟩ preparação, H Hadamard, CNOT, Rz, U(β, γ), SWAP, T e medição). Ao entrar na tela, a linha cresce e a porta acende, como um circuito percorrido ao longo da página.
+- **Esferas de Bloch** decorativas atrás do Mercado e dos Investidores. O vetor do estado gira com a rolagem da seção e mostra os ângulos θ e φ.
+- **Registrador de qubits** fixo na lateral direita, em telas a partir de 1360px. Ele mostra 5 qubits que mudam de estado com a rolagem e a porta da seção atual; no fim da página, os qubits são "medidos" e ficam só em |0⟩ e |1⟩.
+- **Glossário**: 15 termos técnicos (qubit, superposição, medição, shots, interferência, Quantum Annealing, QAOA, VQE, Grover, QPU…) ficam sublinhados e mostram uma explicação curta no hover, no foco pelo teclado ou ao tocar.
+- Fundo de ondas de interferência atrás do Comparativo, que se desloca de leve com a rolagem.
+
+### Acessibilidade
+- A explicação de cada termo é um elemento de verdade (`role="tooltip"`), ligado ao termo por `aria-describedby`. Leitores de tela leem a explicação quando o termo recebe foco.
+- Esc fecha a explicação aberta (WCAG 1.4.13); tocar fora fecha no celular.
+- Perto das bordas da tela, a caixa da explicação é empurrada para dentro e nunca sai da tela, mesmo em 320px.
+- Fios, esferas e registrador são decorativos (`aria-hidden`).
+- Sem JavaScript ou com "reduzir movimento", os fios já aparecem completos e o glossário continua funcionando só com CSS. Com "reduzir movimento", as esferas não precessam e o fundo de ondas fica parado.
+
+### Desempenho
+- As esferas de Bloch só animam enquanto estão na tela: o laço de animação para quando as duas saem de vista.
+- O registrador e o fundo de ondas se atualizam no máximo uma vez por quadro durante a rolagem. Em telas estreitas, onde o registrador fica escondido, ele não calcula nada.
+
+### Observação
+- É MINOR porque só acrescenta elementos; nenhuma âncora, classe ou id existente mudou.
+- No texto da Demonstração sobre VQE, a explicação de "precisão química" saiu da frase e foi para o glossário.
+- Bateria de testes: 143/143, com 8 testes novos:
+  - fios acesos nas 8 seções;
+  - a esfera girando;
+  - o registrador e a medição no fim da página;
+  - o glossário: hover, Esc, ligação ao termo, caixas dentro da tela em 320px e a versão sem JS;
+  - a página sem erros JS.
+
 ## [2.4.0] — 2026-10-20 · MINOR
 
 ### Adicionado

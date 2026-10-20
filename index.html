@@ -148,6 +148,7 @@
 
   <!-- ============ JORNADA · EM 4 PASSOS ============ -->
   <section class="section journey" id="simples" aria-labelledby="jr-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">|0⟩</span><span class="qwire__name">Preparação · estado inicial</span><span class="qwire__line"></span></div></div>
     <div class="container">
       <header class="section-head">
         <p class="section-label reveal">EM 4 PASSOS</p>
@@ -201,18 +202,18 @@
 
           <div class="jr__panel">
             <div class="jr__chapter" role="tabpanel" id="jr-ch-0" aria-labelledby="jr-tab-0" data-chapter="0">
-              <p class="jr__kicker">Passo 1 · Qubit</p>
+              <p class="jr__kicker">Passo 1 · <span class="term" tabindex="0" aria-describedby="def-qubit">Qubit<span class="term__def" id="def-qubit" role="tooltip">A unidade de informação de um computador quântico. Pode estar em 0, em 1 ou numa combinação dos dois.</span></span></p>
               <h3 class="jr__title">Moeda parada: bit. Girando: qubit.</h3>
               <p class="jr__text">A IA na nuvem pensa em bits: 0 ou 1. Gire a moeda.</p>
               <div class="jr__actions"><button type="button" class="btn-primary jr__act is-hint" data-act="spin">Girar a moeda</button></div>
               <div class="jr__reveal" id="jr-r0" hidden>
-                <p>Girando, ela é 0 e 1 ao mesmo tempo: superposição. 50 qubits = <strong>1 quatrilhão</strong> de combinações de uma vez.</p>
+                <p>Girando, ela é 0 e 1 ao mesmo tempo: <span class="term" tabindex="0" aria-describedby="def-superposicao">superposição<span class="term__def" id="def-superposicao" role="tooltip">Estado em que o qubit guarda 0 e 1 ao mesmo tempo, cada um com um peso, até ser medido.</span></span>. 50 qubits = <strong>1 quatrilhão</strong> de combinações de uma vez.</p>
                 <button type="button" class="jr__next" data-goto="1">Próximo: e quando a moeda cai? <span aria-hidden="true">→</span></button>
               </div>
             </div>
 
             <div class="jr__chapter" role="tabpanel" id="jr-ch-1" aria-labelledby="jr-tab-1" data-chapter="1" hidden>
-              <p class="jr__kicker">Passo 2 · Medição</p>
+              <p class="jr__kicker">Passo 2 · <span class="term" tabindex="0" aria-describedby="def-medicao">Medição<span class="term__def" id="def-medicao" role="tooltip">Ler o valor de um qubit. A superposição se desfaz e sobra um único resultado: 0 ou 1.</span></span></p>
               <h3 class="jr__title">Olhou, caiu.</h3>
               <p class="jr__text">Cada leitura dá uma resposta só.</p>
               <div class="jr__actions">
@@ -221,13 +222,13 @@
               </div>
               <p class="jr__tip" id="jr-m-tip" hidden>Um resultado parece sorte. Meça mais.</p>
               <div class="jr__reveal" id="jr-r1" hidden>
-                <p>Repetindo milhares de vezes (os <em>shots</em>), o padrão aparece. Essa é a resposta.</p>
+                <p>Repetindo milhares de vezes (os <span class="term" tabindex="0" aria-describedby="def-shots"><em>shots</em><span class="term__def" id="def-shots" role="tooltip">Repetições do mesmo cálculo. Cada uma dá uma resposta; a frequência revela a probabilidade.</span></span>), o padrão aparece. Essa é a resposta.</p>
                 <button type="button" class="jr__next" data-goto="2">Próximo: fazer a certa ganhar <span aria-hidden="true">→</span></button>
               </div>
             </div>
 
             <div class="jr__chapter" role="tabpanel" id="jr-ch-2" aria-labelledby="jr-tab-2" data-chapter="2" hidden>
-              <p class="jr__kicker">Passo 3 · Interferência</p>
+              <p class="jr__kicker">Passo 3 · <span class="term" tabindex="0" aria-describedby="def-interferencia">Interferência<span class="term__def" id="def-interferencia" role="tooltip">Ondas que se somam ou se cancelam. Algoritmos quânticos usam isso para reforçar a resposta certa.</span></span></p>
               <h3 class="jr__title">As erradas se anulam.</h3>
               <p class="jr__text">Arraste a onda 2, como num fone com cancelamento de ruído.</p>
               <label class="lab__field jr__slider">
@@ -267,6 +268,8 @@
 
   <!-- ============ COMPARATIVO ============ -->
   <section class="section compare" id="tecnologia" aria-labelledby="compare-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">H</span><span class="qwire__name">Hadamard · superposição</span><span class="qwire__line"></span></div></div>
+    <div class="bg-interference" aria-hidden="true"></div>
     <!-- id antigo (até a v1.3.0) mantido como apelido para links já compartilhados -->
     <div class="container" id="comparativo">
       <header class="section-head">
@@ -288,7 +291,7 @@
               <p class="cmp__ro-time" id="cmp-tc">30 segundos</p>
             </div>
             <div class="cmp__ro cmp__ro--q">
-              <p class="cmp__ro-label">SynapseQ · Quantum Annealing</p>
+              <p class="cmp__ro-label">SynapseQ · <span class="term" tabindex="0" aria-describedby="def-annealing">Quantum Annealing<span class="term__def" id="def-annealing" role="tooltip">Técnica quântica que encontra a melhor solução deixando o sistema se acomodar no estado de menor energia, como uma bola rolando até o fundo do vale.</span></span></p>
               <p class="cmp__ro-time" id="cmp-tq">98 milissegundos</p>
             </div>
           </div>
@@ -329,6 +332,21 @@
 
   <!-- ============ MERCADO · PALPITES ============ -->
   <section class="section market" id="mercado" aria-labelledby="market-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">CX</span><span class="qwire__name">CNOT · emaranhamento</span><span class="qwire__line"></span></div></div>
+    <svg class="bloch bloch--market" data-bloch viewBox="-130 -130 260 260" aria-hidden="true">
+      <circle class="bloch__sphere" r="100"/>
+      <ellipse class="bloch__eq" rx="100" ry="28"/>
+      <ellipse class="bloch__mer" rx="28" ry="100"/>
+      <line class="bloch__axis" x1="0" y1="-114" x2="0" y2="114"/>
+      <line class="bloch__axis" x1="-114" y1="0" x2="114" y2="0"/>
+      <text class="bloch__lbl" x="0" y="-120" text-anchor="middle">|0⟩</text>
+      <text class="bloch__lbl" x="0" y="128" text-anchor="middle">|1⟩</text>
+      <text class="bloch__lbl" x="118" y="4">|+⟩</text>
+      <line class="bloch__proj" data-proj x1="0" y1="0" x2="0" y2="0"/>
+      <line class="bloch__vec" data-vec x1="0" y1="0" x2="0" y2="-100"/>
+      <circle class="bloch__tip" data-tip cx="0" cy="-100" r="5"/>
+      <text class="bloch__state" data-state x="-124" y="-104">θ = 0,12π · φ = 0,00π</text>
+    </svg>
     <div class="container">
       <header class="section-head">
         <p class="section-label reveal">POR QUE AGORA</p>
@@ -373,7 +391,7 @@
         </article>
         <article class="card-glass quiz reveal" style="--rd:240ms" data-answer="0" aria-labelledby="quiz-q4">
           <p class="quiz__n">04 · Precisão</p>
-          <p class="quiz__q" id="quiz-q4">Acerto das melhores operações entre 2 qubits (fidelidade de porta):</p>
+          <p class="quiz__q" id="quiz-q4">Acerto das melhores operações entre 2 qubits (<span class="term" tabindex="0" aria-describedby="def-fidelidade">fidelidade de porta<span class="term__def" id="def-fidelidade" role="tooltip">Com que frequência uma operação entre qubits dá o resultado correto.</span></span>):</p>
           <div class="quiz__opts" role="group" aria-labelledby="quiz-q4"><button type="button" data-opt="0">99,914%</button><button type="button" data-opt="1">99%</button><button type="button" data-opt="2">90%</button></div>
           <div class="quiz__answer" hidden>
             <p class="quiz__verdict"></p>
@@ -386,13 +404,14 @@
 
       <p class="sr-only" id="quiz-status" aria-live="polite"></p>
       <p class="quiz__score" id="quiz-score" aria-live="polite"></p>
-      <p class="market__honesty reveal">Ainda não há demonstração pública de vantagem quântica prática em otimização combinatorial. É exatamente essa fronteira que a SynapseQ busca romper primeiro.</p>
+      <p class="market__honesty reveal">Ainda não há demonstração pública de <span class="term" tabindex="0" aria-describedby="def-vantagem">vantagem quântica<span class="term__def" id="def-vantagem" role="tooltip">Quando um computador quântico resolve um problema útil melhor ou mais rápido que qualquer computador clássico.</span></span> prática em <span class="term" tabindex="0" aria-describedby="def-combinatorial">otimização combinatorial<span class="term__def" id="def-combinatorial" role="tooltip">Problemas de escolher a melhor combinação entre muitas possíveis: rotas, escalas, carteiras.</span></span>. É exatamente essa fronteira que a SynapseQ busca romper primeiro.</p>
       <a class="next-hint reveal" href="#casos-de-uso"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Onde isso entra no seu negócio?</span><span class="next-hint__teaser">Escolha um desafio e veja como resolvemos</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
   <!-- ============ CASOS DE USO · ESCOLHA ============ -->
   <section class="section cases" id="casos-de-uso" aria-labelledby="cases-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">Rz</span><span class="qwire__name">Rz(θ) · rotação de fase</span><span class="qwire__line"></span></div></div>
     <div class="container">
       <header class="section-head">
         <p class="section-label reveal">CASOS DE USO</p>
@@ -428,7 +447,7 @@
             <p class="pick__caption">Cada ponto é um ativo; as linhas, como eles se movem juntos.</p>
           </div>
           <div class="pick__content">
-            <p class="case__algo">QAOA · Otimização de portfólio</p>
+            <p class="case__algo"><span class="term" tabindex="0" aria-describedby="def-qaoa">QAOA<span class="term__def" id="def-qaoa" role="tooltip">Algoritmo quântico para otimização: procura a melhor combinação ajustando o circuito em camadas.</span></span> · Otimização de portfólio</p>
             <h3 class="pick__title">Menos risco, em tempo real.</h3>
             <p class="plain"><span class="plain__tag">Para ter ideia</span>Com só 100 ativos, existem mais carteiras possíveis do que grãos de areia na Terra.</p>
             <dl class="case__complexity">
@@ -459,7 +478,7 @@
             <p class="pick__caption">A energia da molécula cai até o valor real (E₀).</p>
           </div>
           <div class="pick__content">
-            <p class="case__algo">VQE · Descoberta de fármacos</p>
+            <p class="case__algo"><span class="term" tabindex="0" aria-describedby="def-vqe">VQE<span class="term__def" id="def-vqe" role="tooltip">Algoritmo híbrido que calcula a energia de moléculas: o quântico mede, o clássico ajusta, repetidamente.</span></span> · Descoberta de fármacos</p>
             <h3 class="pick__title">Anos de laboratório em minutos de simulação.</h3>
             <p class="plain"><span class="plain__tag">Para ter ideia</span>Simular com exatidão uma molécula de cafeína exigiria quase tantos bits quanto átomos existem na Terra.</p>
             <dl class="case__complexity">
@@ -476,7 +495,7 @@
             <p class="pick__caption">60 registros; a amplificação faz o certo se destacar.</p>
           </div>
           <div class="pick__content">
-            <p class="case__algo">Grover · Busca em dados</p>
+            <p class="case__algo"><span class="term" tabindex="0" aria-describedby="def-grover">Grover<span class="term__def" id="def-grover" role="tooltip">Algoritmo de busca quântica: encontra um item em N possibilidades com cerca de √N tentativas.</span></span> · Busca em dados</p>
             <h3 class="pick__title">Sem varrer a base inteira.</h3>
             <p class="plain"><span class="plain__tag">Para ter ideia</span>Achar 1 nome numa lista de 1 milhão: até 1 milhão de checagens no clássico, cerca de mil com Grover.</p>
             <dl class="case__complexity">
@@ -493,6 +512,7 @@
 
   <!-- ============ DEMONSTRAÇÃO AO VIVO ============ -->
   <section class="section demo" id="demo" aria-labelledby="demo-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">U</span><span class="qwire__name">U(β, γ) · camada variacional</span><span class="qwire__line"></span></div></div>
     <div class="container">
       <header class="section-head demo__head">
         <div>
@@ -515,7 +535,7 @@
         <!-- QAOA -->
         <div class="card-glass lab__panel" role="tabpanel" id="panel-qaoa" data-panel="qaoa" aria-labelledby="tab-qaoa">
           <div class="lab__controls">
-            <p class="lab__desc">Escolha a carteira de menor risco. O circuito é medido 1.024 vezes (os <em>shots</em>) e a resposta mais frequente vence. Mais camadas, mais precisão.</p>
+            <p class="lab__desc">Escolha a carteira de menor risco. O circuito é medido 1.024 vezes (os <span class="term" tabindex="0" aria-describedby="def-shots-demo"><em>shots</em><span class="term__def" id="def-shots-demo" role="tooltip">Repetições do cálculo. Cada uma dá uma resposta; a mais frequente é a escolhida.</span></span>) e a resposta mais frequente vence. Mais camadas, mais precisão.</p>
             <label class="lab__field">
               <span class="lab__field-head"><span>Ativos no universo</span><output id="q-n-out">12</output></span>
               <input type="range" id="q-n" min="6" max="16" step="1" value="12">
@@ -565,7 +585,7 @@
         <!-- VQE -->
         <div class="card-glass lab__panel" role="tabpanel" id="panel-vqe" data-panel="vqe" aria-labelledby="tab-vqe" hidden>
           <div class="lab__controls">
-            <p class="lab__desc">Ache a energia mínima da molécula, até o erro cair abaixo da precisão química (1,6 mHa, margem pequena o bastante para prever reações com confiança).</p>
+            <p class="lab__desc">Ache a energia mínima da molécula, até o erro cair abaixo da <span class="term" tabindex="0" aria-describedby="def-precisao">precisão química<span class="term__def" id="def-precisao" role="tooltip">Margem de erro (1,6 mHa) pequena o bastante para prever reações químicas com confiança.</span></span> (1,6 mHa).</p>
             <div class="lab__field">
               <span class="lab__field-head"><span id="v-mol-label">Molécula</span></span>
               <div class="lab__seg" role="group" aria-labelledby="v-mol-label">
@@ -598,6 +618,7 @@
 
   <!-- ============ API ============ -->
   <section class="section api" id="quantum-engineering" aria-labelledby="api-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">SW</span><span class="qwire__name">SWAP · roteamento no hardware</span><span class="qwire__line"></span></div></div>
     <!-- id antigo (até a v1.3.0) mantido como apelido para links já compartilhados -->
     <div class="container" id="api-mockup">
       <header class="section-head">
@@ -619,7 +640,7 @@
             <p class="feature__index">01</p>
             <div>
               <h3 class="feature__title">Latência quase-zero</h3>
-              <p class="feature__text">Inferência híbrida: o modelo clássico prepara o problema enquanto o QPU executa apenas o núcleo combinatorial.</p>
+              <p class="feature__text">Inferência híbrida: o modelo clássico prepara o problema enquanto o <span class="term" tabindex="0" aria-describedby="def-qpu">QPU<span class="term__def" id="def-qpu" role="tooltip">Quantum Processing Unit: o chip quântico, equivalente quântico da CPU.</span></span> executa apenas o núcleo combinatorial.</p>
             </div>
           </article>
           <article class="card-glass feature reveal" style="--rd:160ms">
@@ -644,6 +665,7 @@
 
   <!-- ============ ROADMAP ============ -->
   <section class="section roadmap" id="roadmap" aria-labelledby="roadmap-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">T</span><span class="qwire__name">T · fase π/4</span><span class="qwire__line"></span></div></div>
     <div class="container">
       <header class="section-head">
         <p class="section-label reveal">ONDE ESTAMOS</p>
@@ -699,6 +721,21 @@
 
   <!-- ============ CTA FINAL ============ -->
   <section class="section cta" id="investidores" aria-labelledby="cta-title">
+    <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">M</span><span class="qwire__name">Medição · colapso</span><span class="qwire__line"></span></div></div>
+    <svg class="bloch bloch--cta" data-bloch viewBox="-130 -130 260 260" aria-hidden="true">
+      <circle class="bloch__sphere" r="100"/>
+      <ellipse class="bloch__eq" rx="100" ry="28"/>
+      <ellipse class="bloch__mer" rx="28" ry="100"/>
+      <line class="bloch__axis" x1="0" y1="-114" x2="0" y2="114"/>
+      <line class="bloch__axis" x1="-114" y1="0" x2="114" y2="0"/>
+      <text class="bloch__lbl" x="0" y="-120" text-anchor="middle">|0⟩</text>
+      <text class="bloch__lbl" x="0" y="128" text-anchor="middle">|1⟩</text>
+      <text class="bloch__lbl" x="118" y="4">|+⟩</text>
+      <line class="bloch__proj" data-proj x1="0" y1="0" x2="0" y2="0"/>
+      <line class="bloch__vec" data-vec x1="0" y1="0" x2="0" y2="-100"/>
+      <circle class="bloch__tip" data-tip cx="0" cy="-100" r="5"/>
+      <text class="bloch__state" data-state x="-124" y="-104">θ = 0,12π · φ = 0,00π</text>
+    </svg>
     <div class="cta__glow" aria-hidden="true"></div>
     <!-- id antigo (até a v1.3.0) mantido como apelido para links já compartilhados -->
     <div class="container" id="cta-final">
@@ -745,6 +782,17 @@
     </div>
   </section>
 </main>
+
+<!-- ============ REGISTRADOR DE QUBITS (fixo, decorativo, só em telas largas) ============ -->
+<aside class="qreg" id="qreg" aria-hidden="true">
+  <p class="qreg__title">q[0:4]</p>
+  <div class="qreg__row"><svg viewBox="-14 -14 28 28" width="26" height="26"><circle r="11"/><ellipse rx="11" ry="3.2"/><line data-v x1="0" y1="0" x2="0" y2="-11"/><circle class="qreg__tip" data-t cx="0" cy="-11" r="2"/></svg><span data-k>|0⟩</span></div>
+  <div class="qreg__row"><svg viewBox="-14 -14 28 28" width="26" height="26"><circle r="11"/><ellipse rx="11" ry="3.2"/><line data-v x1="0" y1="0" x2="0" y2="-11"/><circle class="qreg__tip" data-t cx="0" cy="-11" r="2"/></svg><span data-k>|0⟩</span></div>
+  <div class="qreg__row"><svg viewBox="-14 -14 28 28" width="26" height="26"><circle r="11"/><ellipse rx="11" ry="3.2"/><line data-v x1="0" y1="0" x2="0" y2="-11"/><circle class="qreg__tip" data-t cx="0" cy="-11" r="2"/></svg><span data-k>|0⟩</span></div>
+  <div class="qreg__row"><svg viewBox="-14 -14 28 28" width="26" height="26"><circle r="11"/><ellipse rx="11" ry="3.2"/><line data-v x1="0" y1="0" x2="0" y2="-11"/><circle class="qreg__tip" data-t cx="0" cy="-11" r="2"/></svg><span data-k>|0⟩</span></div>
+  <div class="qreg__row"><svg viewBox="-14 -14 28 28" width="26" height="26"><circle r="11"/><ellipse rx="11" ry="3.2"/><line data-v x1="0" y1="0" x2="0" y2="-11"/><circle class="qreg__tip" data-t cx="0" cy="-11" r="2"/></svg><span data-k>|0⟩</span></div>
+  <p class="qreg__gate" id="qreg-gate">…</p>
+</aside>
 
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer" id="rodape">
