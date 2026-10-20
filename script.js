@@ -6,6 +6,18 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // --fill (0–100%) pinta no CSS a parte já percorrida do trilho do controle deslizante
+  const fillRange = (input) => {
+    const p = ((input.value - input.min) / (input.max - input.min)) * 100;
+    input.style.setProperty('--fill', `${p}%`);
+  };
+  // abas no padrão WAI-ARIA: ←/→ andam (dando a volta), Home e End vão às pontas. Devolve o índice da aba ou null.
+  const tabKey = (e, i, n) => {
+    const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: n - 1 }[e.key];
+    if (next === undefined) return null;
+    e.preventDefault();
+    return (next + n) % n;
+  };
 
   /* === Header e menu mobile === */
   const header = $('.site-header');
@@ -102,6 +114,191 @@
   setHeaderState();
   heroExit();
 
+  /* === Jornada: 4 passos (Gire, Meça, Interfira, Compare) ===
+     Cada passo se completa com uma ação (girar, medir, arrastar, escolher) e então mostra a explicação.
+     A cena da esquerda é decorativa; o resultado de cada ação é anunciado em #jr-status. */
+  const jr = $('#jr');
+  if (jr) {
+    const byId = (id) => document.getElementById(id);
+    const fmt = new Intl.NumberFormat('pt-BR');
+    const pct = (v) => `${(v * 100).toFixed(1).replace('.', ',')}%`;
+    const pop = (el) => {
+      if (!reduceMotion && el.animate) el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.16,1,.3,1)' });
+    };
+    const unhint = (el) => el.classList.remove('is-hint');
+    const status = byId('jr-status');
+    const say = (text) => { status.textContent = text; };
+
+    const steps = $$('.jr__step', jr);
+    const scenes = $$('[data-scene]', jr);
+    const chapters = $$('[data-chapter]', jr);
+    const bar = byId('jr-bar');
+    const done = new Set();
+    const go = (i, focus) => {
+      steps.forEach((s, k) => {
+        s.setAttribute('aria-selected', String(k === i));
+        s.tabIndex = k === i ? 0 : -1;
+        if (k === i && focus) s.focus();
+      });
+      scenes.forEach((s, k) => { s.hidden = k !== i; });
+      chapters.forEach((c, k) => { c.hidden = k !== i; });
+      pop(chapters[i]); pop(scenes[i]);
+    };
+    const complete = (i) => {
+      if (done.has(i)) return;
+      done.add(i);
+      steps[i].classList.add('is-done');
+      const r = byId(`jr-r${i}`);
+      r.hidden = false; pop(r);
+      bar.style.width = `${(done.size / steps.length) * 100}%`;
+    };
+    steps.forEach((s, i) => {
+      s.addEventListener('click', () => go(i));
+      s.addEventListener('keydown', (e) => {
+        const next = tabKey(e, i, steps.length);
+        if (next !== null) go(next, true);
+      });
+    });
+    // "Próximo: ..." leva o foco junto, senão quem usa teclado fica preso no capítulo que sumiu
+    $$('[data-goto]', jr).forEach((b) => b.addEventListener('click', () => go(+b.dataset.goto, true)));
+
+    // 1 · Girar: parada é bit (0); girando é qubit (0 e 1)
+    const coin = byId('jr-coin'), coinRead = byId('jr-coin-read'), spinBtn = $('[data-act="spin"]', jr);
+    spinBtn.addEventListener('click', () => {
+      const on = !coin.classList.contains('is-spinning');
+      coin.classList.toggle('is-spinning', on);
+      coinRead.innerHTML = on ? 'qubit = <b>0</b> e <b>1</b> ao mesmo tempo · |ψ⟩ = 0,71|0⟩ + 0,71|1⟩' : 'bit = <b>0</b>';
+      spinBtn.textContent = on ? 'Parar a moeda' : 'Girar a moeda';
+      say(on ? 'A moeda está girando: é 0 e 1 ao mesmo tempo.' : 'Moeda parada: bit igual a 0.');
+      unhint(spinBtn);
+      if (on) complete(0);
+    });
+
+    // 2 · Medir: uma leitura parece sorte; mil mostram o padrão de ~50%
+    const mcoin = byId('jr-mcoin'), mread = byId('jr-m-read'), tip = byId('jr-m-tip');
+    const b1 = $('[data-act="m1"]', jr), b1000 = $('[data-act="m1000"]', jr);
+    const counts = [0, 0];
+    const drawHist = () => {
+      const total = counts[0] + counts[1], max = Math.max(1, ...counts);
+      counts.forEach((c, k) => {
+        byId(`jr-c${k}`).textContent = fmt.format(c);
+        byId(`jr-b${k}`).style.height = `${(c / max) * 92}%`;
+      });
+      mread.textContent = total
+        ? `${fmt.format(total)} ${total === 1 ? 'medição' : 'medições'} · 0: ${pct(counts[0] / total)} · 1: ${pct(counts[1] / total)}`
+        : '0 medições';
+    };
+    const lock = (on) => { b1.disabled = on; b1000.disabled = on; };
+    const land = (side) => { mcoin.classList.remove('is-spinning'); mcoin.classList.toggle('show-1', side === 1); };
+    b1.addEventListener('click', () => {
+      lock(true);
+      mcoin.classList.remove('show-1');
+      mcoin.classList.add('is-spinning');
+      setTimeout(() => {
+        const r = Math.random() < 0.5 ? 0 : 1;
+        land(r);
+        counts[r]++; drawHist(); lock(false);
+        say(`Deu ${r}. ${mread.textContent}.`);
+        if (counts[0] + counts[1] >= 3) complete(1); else tip.hidden = false;
+      }, reduceMotion ? 0 : 650);
+    });
+    b1000.addEventListener('click', () => {
+      lock(true); unhint(b1000); tip.hidden = true;
+      const base = counts.slice(), add0 = Math.round(500 + (Math.random() - 0.5) * 50);
+      mcoin.classList.remove('show-1'); mcoin.classList.add('is-spinning');
+      const fill = (t) => {
+        counts[0] = base[0] + Math.round(add0 * t);
+        counts[1] = base[1] + Math.round((1000 - add0) * t);
+        drawHist();
+      };
+      const finish = () => { land(add0 < 500 ? 1 : 0); lock(false); say(`${mread.textContent}.`); complete(1); };
+      if (reduceMotion) { fill(1); finish(); return; }
+      let start = null;
+      const step = (ts) => {
+        if (start === null) start = ts;
+        const t = Math.min(1, (ts - start) / 1400);
+        fill(t);
+        if (t < 1) requestAnimationFrame(step); else finish();
+      };
+      requestAnimationFrame(step);
+    });
+
+    // 3 · Interferência: soma de duas senoides; amplitude da soma = |2·cos(φ/2)|
+    const wa = byId('jr-wa'), wb = byId('jr-wb'), ws = byId('jr-ws'), phase = byId('jr-phase');
+    const wread = byId('jr-w-read'), wmsg = byId('jr-w-msg'), wout = byId('jr-phase-out');
+    const wave = (y0, f) => {
+      let d = '';
+      for (let x = 0; x <= 340; x += 4) d += `${x ? 'L' : 'M'}${70 + x} ${(y0 - f((x / 340) * 4 * Math.PI)).toFixed(1)}`;
+      return d;
+    };
+    let lastMsg = '';
+    const drawWaves = () => {
+      const deg = +phase.value, ph = (deg * Math.PI) / 180;
+      wa.setAttribute('d', wave(50, (a) => 20 * Math.sin(a)));
+      wb.setAttribute('d', wave(115, (a) => 20 * Math.sin(a + ph)));
+      ws.setAttribute('d', wave(190, (a) => 20 * (Math.sin(a) + Math.sin(a + ph))));
+      const amp = Math.abs(2 * Math.cos(ph / 2));
+      ws.classList.toggle('is-flat', amp < 0.2);
+      wout.textContent = `${deg}°`;
+      wread.textContent = `Soma: ${Math.round(amp * 100)}% da força de uma onda`;
+      // só troca o texto quando a faixa muda: o aria-live anunciaria cada grau arrastado
+      const msg = deg < 30 ? 'Alinhadas, se somam: a resposta certa fica mais forte.'
+        : deg > 150 ? 'Opostas, se anulam: as erradas somem.' : 'Continue arrastando…';
+      if (msg !== lastMsg) wmsg.textContent = lastMsg = msg;
+    };
+    fillRange(phase); drawWaves();
+    phase.addEventListener('input', () => {
+      fillRange(phase); drawWaves();
+      if (+phase.value >= 150) complete(2);
+    });
+
+    // 4 · Rotas: 120 pontos representam as 2.520 rotas; o clássico testa uma a uma, o quântico filtra por interferência
+    const routes = byId('jr-routes'), rread = byId('jr-r-read');
+    const N = 120, BEST = 87, TOTAL = 2520;
+    const dots = Array.from({ length: N }, () => routes.appendChild(document.createElement('span')));
+    const paintDots = (cls) => dots.forEach((d, k) => { d.className = `jr__dot ${cls(k)}`.trim(); });
+    paintDots(() => '');
+    const modes = $$('.jr__mode', jr);
+    let timers = [];
+    const reset = (mode) => {
+      timers.forEach(clearTimeout); timers = [];
+      paintDots(() => '');
+      modes.forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.mode === mode)); unhint(b); });
+    };
+    const finishRoutes = (text, cls) => { paintDots(cls); rread.textContent = text; say(text); complete(3); };
+    const runClassic = () => {
+      reset('classic');
+      const end = () => finishRoutes(`Melhor rota encontrada após testar as ${fmt.format(TOTAL)}, uma a uma`, (k) => (k === BEST ? 'is-best' : 'is-tested'));
+      if (reduceMotion) { end(); return; }
+      say('Testando as rotas uma a uma…');
+      let i = 0;
+      const tick = () => {
+        if (i > 0) dots[i - 1].className = 'jr__dot is-tested';
+        if (i >= N) { end(); return; }
+        dots[i].className = 'jr__dot is-current';
+        rread.textContent = `Testando rota ${fmt.format(Math.ceil(((i + 1) / N) * TOTAL))} de ${fmt.format(TOTAL)}…`;
+        i++;
+        timers.push(setTimeout(tick, 30));
+      };
+      tick();
+    };
+    const runQuantum = () => {
+      reset('quantum');
+      const end = () => finishRoutes('Interferência destacou a melhor rota em ~50 passos', (k) => (k === BEST ? 'is-best' : 'is-gone'));
+      if (reduceMotion) { end(); return; }
+      paintDots(() => 'is-super');
+      rread.textContent = `Todas as ${fmt.format(TOTAL)} rotas em superposição`;
+      say(rread.textContent);
+      timers.push(setTimeout(() => {
+        paintDots((k) => (k !== BEST && k % 2 ? 'is-super is-fade' : 'is-super'));
+        rread.textContent = 'Interferência: rotas longas se cancelam…';
+      }, 800));
+      timers.push(setTimeout(() => paintDots((k) => (k !== BEST ? 'is-super is-fade' : 'is-super')), 1500));
+      timers.push(setTimeout(end, 2200));
+    };
+    modes.forEach((b) => b.addEventListener('click', () => (b.dataset.mode === 'classic' ? runClassic() : runQuantum())));
+  }
+
   /* === Comparativo: gráfico de complexidade ===
      Curvas calculadas, não desenhadas à mão. Eixo x: n de 0 a 60 mapeado em 40..380.
      Clássica: O(2^n) normalizada para a altura do gráfico; quântica: O(√n).
@@ -184,10 +381,6 @@
       el.classList.toggle('is-running', state === 'run');
       el.classList.toggle('is-done', state === 'done');
       el.textContent = state === 'run' ? 'Executando' : state === 'done' ? 'Medido' : 'Pronto';
-    };
-    const fillRange = (input) => {
-      const p = ((input.value - input.min) / (input.max - input.min)) * 100;
-      input.style.setProperty('--fill', `${p}%`);
     };
     // linhas de grade horizontais com o rótulo à esquerda
     const gridLines = (values, label) => values.map((v) => {
@@ -444,10 +637,8 @@
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t.dataset.tab));
       t.addEventListener('keydown', (e) => {
-        const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-        if (next === undefined) return;
-        e.preventDefault();
-        select(tabs[(next + tabs.length) % tabs.length].dataset.tab, true);
+        const next = tabKey(e, i, tabs.length);
+        if (next !== null) select(tabs[next].dataset.tab, true);
       });
     });
 

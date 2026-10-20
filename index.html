@@ -143,6 +143,126 @@
         <p class="hero__backers hero-in hero-in--fade" style="--d:750ms">Backed by <span>Quantum Capital</span> · <span>Nebula Ventures</span> · <span>Vertex Partners</span></p>
       </div>
     </div>
+    <a class="hero__cue hero-in hero-in--fade" style="--d:1000ms" href="#simples"><span class="hero__cue-coin" aria-hidden="true"></span>Comece aqui: gire um qubit <span aria-hidden="true">↓</span></a>
+  </section>
+
+  <!-- ============ JORNADA · EM 4 PASSOS ============ -->
+  <section class="section journey" id="simples" aria-labelledby="jr-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-label reveal">EM 4 PASSOS</p>
+        <h2 id="jr-title" class="section-title reveal" style="--rd:80ms">Entenda o quântico em um minuto.</h2>
+      </header>
+
+      <!-- sem JS os passos viram texto corrido: o CSS mostra os 4 capítulos e esconde os botões -->
+      <div class="jr reveal" id="jr" style="--rd:160ms">
+        <div class="jr__steps" role="tablist" aria-label="Passos">
+          <button class="jr__step" role="tab" type="button" id="jr-tab-0" aria-controls="jr-ch-0" aria-selected="true"><span class="jr__step-n">01</span><span class="jr__step-t">Gire</span></button>
+          <button class="jr__step" role="tab" type="button" id="jr-tab-1" aria-controls="jr-ch-1" aria-selected="false" tabindex="-1"><span class="jr__step-n">02</span><span class="jr__step-t">Meça</span></button>
+          <button class="jr__step" role="tab" type="button" id="jr-tab-2" aria-controls="jr-ch-2" aria-selected="false" tabindex="-1"><span class="jr__step-n">03</span><span class="jr__step-t">Interfira</span></button>
+          <button class="jr__step" role="tab" type="button" id="jr-tab-3" aria-controls="jr-ch-3" aria-selected="false" tabindex="-1"><span class="jr__step-n">04</span><span class="jr__step-t">Compare</span></button>
+          <span class="jr__progress" aria-hidden="true"><span id="jr-bar"></span></span>
+        </div>
+
+        <div class="card-glass jr__body">
+          <!-- a cena é só ilustração; o resultado de cada passo é anunciado em #jr-status -->
+          <div class="jr__stage" aria-hidden="true">
+            <div class="jr__scene" data-scene="0">
+              <div class="coin3d" id="jr-coin"><span class="coin3d__face coin3d__face--front">0</span><span class="coin3d__face coin3d__face--back">1</span></div>
+              <p class="jr__readout" id="jr-coin-read">bit = <b>0</b></p>
+            </div>
+            <div class="jr__scene" data-scene="1" hidden>
+              <div class="jr__measure">
+                <div class="coin3d coin3d--sm" id="jr-mcoin"><span class="coin3d__face coin3d__face--front">0</span><span class="coin3d__face coin3d__face--back">1</span></div>
+                <div class="jr__hist">
+                  <div class="jr__hcol"><span class="jr__hval" id="jr-c0">0</span><span class="jr__hbar"><span id="jr-b0"></span></span><span class="jr__hlbl">0</span></div>
+                  <div class="jr__hcol"><span class="jr__hval" id="jr-c1">0</span><span class="jr__hbar"><span id="jr-b1"></span></span><span class="jr__hlbl">1</span></div>
+                </div>
+              </div>
+              <p class="jr__readout" id="jr-m-read">0 medições</p>
+            </div>
+            <div class="jr__scene" data-scene="2" hidden>
+              <svg class="jr__waves" viewBox="0 0 420 240">
+                <text class="jr__wlbl" x="0" y="54">onda 1</text>
+                <text class="jr__wlbl" x="0" y="119">onda 2</text>
+                <text class="jr__wlbl jr__wlbl--sum" x="0" y="194">soma</text>
+                <line class="jr__wbase" x1="70" y1="190" x2="410" y2="190"/>
+                <path class="jr__w jr__w--a" id="jr-wa" d=""/>
+                <path class="jr__w jr__w--b" id="jr-wb" d=""/>
+                <path class="jr__w jr__w--s" id="jr-ws" d=""/>
+              </svg>
+              <p class="jr__readout" id="jr-w-read">Soma: 200% da força de uma onda</p>
+            </div>
+            <div class="jr__scene" data-scene="3" hidden>
+              <div class="jr__routes" id="jr-routes"></div>
+              <p class="jr__readout" id="jr-r-read">2.520 rotas possíveis · escolha um jeito de resolver</p>
+            </div>
+          </div>
+
+          <div class="jr__panel">
+            <div class="jr__chapter" role="tabpanel" id="jr-ch-0" aria-labelledby="jr-tab-0" data-chapter="0">
+              <p class="jr__kicker">Passo 1 · Qubit</p>
+              <h3 class="jr__title">Moeda parada: bit. Girando: qubit.</h3>
+              <p class="jr__text">A IA na nuvem pensa em bits: 0 ou 1. Gire a moeda.</p>
+              <div class="jr__actions"><button type="button" class="btn-primary jr__act is-hint" data-act="spin">Girar a moeda</button></div>
+              <div class="jr__reveal" id="jr-r0" hidden>
+                <p>Girando, ela é 0 e 1 ao mesmo tempo: superposição. 50 qubits = <strong>1 quatrilhão</strong> de combinações de uma vez.</p>
+                <button type="button" class="jr__next" data-goto="1">Próximo: e quando a moeda cai? <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+
+            <div class="jr__chapter" role="tabpanel" id="jr-ch-1" aria-labelledby="jr-tab-1" data-chapter="1" hidden>
+              <p class="jr__kicker">Passo 2 · Medição</p>
+              <h3 class="jr__title">Olhou, caiu.</h3>
+              <p class="jr__text">Cada leitura dá uma resposta só.</p>
+              <div class="jr__actions">
+                <button type="button" class="btn-secondary jr__act" data-act="m1">Medir 1 vez</button>
+                <button type="button" class="btn-primary jr__act is-hint" data-act="m1000">Medir 1.000 vezes</button>
+              </div>
+              <p class="jr__tip" id="jr-m-tip" hidden>Um resultado parece sorte. Meça mais.</p>
+              <div class="jr__reveal" id="jr-r1" hidden>
+                <p>Repetindo milhares de vezes (os <em>shots</em>), o padrão aparece. Essa é a resposta.</p>
+                <button type="button" class="jr__next" data-goto="2">Próximo: fazer a certa ganhar <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+
+            <div class="jr__chapter" role="tabpanel" id="jr-ch-2" aria-labelledby="jr-tab-2" data-chapter="2" hidden>
+              <p class="jr__kicker">Passo 3 · Interferência</p>
+              <h3 class="jr__title">As erradas se anulam.</h3>
+              <p class="jr__text">Arraste a onda 2, como num fone com cancelamento de ruído.</p>
+              <label class="lab__field jr__slider">
+                <span class="lab__field-head"><span>Deslocamento da onda 2</span><output id="jr-phase-out">0°</output></span>
+                <input type="range" id="jr-phase" min="0" max="180" step="1" value="0">
+              </label>
+              <p class="jr__live" id="jr-w-msg" aria-live="polite">Alinhadas, se somam: a resposta certa fica mais forte.</p>
+              <div class="jr__reveal" id="jr-r2" hidden>
+                <p>O algoritmo faz as erradas se anularem. Na medição, a certa é a que mais aparece.</p>
+                <button type="button" class="jr__next" data-goto="3">Próximo: IA × quântico no mesmo problema <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+
+            <div class="jr__chapter" role="tabpanel" id="jr-ch-3" aria-labelledby="jr-tab-3" data-chapter="3" hidden>
+              <p class="jr__kicker">Passo 4 · IA na nuvem × Quântico na nuvem</p>
+              <h3 class="jr__title">Mesmo problema, dois jeitos.</h3>
+              <p class="jr__text">Rota mais curta entre 8 cidades: 2.520 caminhos.</p>
+              <div class="jr__actions">
+                <button type="button" class="btn-secondary jr__act jr__mode is-hint" data-mode="classic" aria-pressed="false">Jeito clássico</button>
+                <button type="button" class="btn-secondary jr__act jr__mode" data-mode="quantum" aria-pressed="false">Jeito quântico</button>
+              </div>
+              <div class="jr__reveal" id="jr-r3" hidden>
+                <div class="jr__sum">
+                  <div><p class="jr__sum-h">IA na nuvem</p><p>Testa um caminho por vez. Ótima para prever e reconhecer.</p></div>
+                  <div class="jr__sum-q"><p class="jr__sum-h">Quântico na nuvem</p><p>Explora todos de uma vez. Ótimo para escolher a melhor combinação.</p></div>
+                </div>
+                <p class="jr__sum-join">SynapseQ: a IA prepara, o quântico escolhe, a IA entrega.</p>
+              </div>
+            </div>
+            <p class="sr-only" id="jr-status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+      <a class="next-hint reveal" href="#tecnologia"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Quanto tempo isso economiza?</span><span class="next-hint__teaser">Compare a busca clássica com a quântica, passo a passo</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
+    </div>
   </section>
 
   <!-- ============ COMPARATIVO ============ -->
@@ -196,6 +316,7 @@
           <dl class="compare-card__spec"><dt>Escala</dt><dd>Polinomial</dd></dl>
         </article>
       </div>
+      <a class="next-hint reveal" href="#mercado"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Isso já é real ou ficção?</span><span class="next-hint__teaser">Os números do mercado quântico hoje, com as fontes</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -232,6 +353,7 @@
       </div>
 
       <p class="market__honesty reveal">Ainda não há demonstração pública de vantagem quântica prática em otimização combinatorial. É exatamente essa fronteira que a SynapseQ busca romper primeiro.</p>
+      <a class="next-hint reveal" href="#casos-de-uso"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Onde isso entra no seu negócio?</span><span class="next-hint__teaser">Três problemas que a computação clássica não resolve a tempo</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -312,6 +434,7 @@
           </dl>
         </article>
       </div>
+      <a class="next-hint reveal" href="#demo"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Rode o algoritmo você mesmo</span><span class="next-hint__teaser">Mude os parâmetros e veja a medição convergir ao vivo</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -416,6 +539,7 @@
           </div>
         </div>
       </div>
+      <a class="next-hint reveal" href="#quantum-engineering"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Como sua empresa usaria isso?</span><span class="next-hint__teaser">Veja uma requisição real à API, linha a linha</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -461,6 +585,7 @@
           </article>
         </div>
       </div>
+      <a class="next-hint reveal" href="#roadmap"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Onde a SynapseQ está hoje</span><span class="next-hint__teaser">Do protótipo validado aos primeiros clientes</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -515,6 +640,7 @@
           </article>
         </li>
       </ol>
+      <a class="next-hint reveal" href="#investidores"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Faça parte da próxima etapa</span><span class="next-hint__teaser">Acesso ao data room da rodada Series A</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
     </div>
   </section>
 
@@ -587,6 +713,7 @@
 
     <div class="footer__links">
       <nav class="footer__nav" aria-label="Seções">
+        <a href="#simples">Jornada</a>
         <a href="#tecnologia">Tecnologia</a>
         <a href="#quantum-engineering">Quantum Engineering</a>
         <a href="#casos-de-uso">Casos de Uso</a>

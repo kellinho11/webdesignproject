@@ -20,6 +20,37 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.3.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- Seção **Jornada** (`#simples`), "Entenda o quântico em um minuto.", logo depois do Hero. São 4 passos em abas, e cada um se completa com uma ação:
+  - **Gire**: uma moeda 3D mostra a diferença entre bit (parada) e qubit (girando, 0 e 1 ao mesmo tempo).
+  - **Meça**: medir 1 vez dá um resultado só; medir 1.000 vezes monta o histograma de ~50% para cada lado.
+  - **Interfira**: arrastar a onda 2 mostra a soma das ondas crescendo ou se anulando.
+  - **Compare**: 120 pontos representam as 2.520 rotas entre 8 cidades. O jeito clássico testa uma a uma; o quântico filtra todas de uma vez e destaca a melhor.
+- Cada passo completo ganha um ✓ na aba, enche a barra de progresso e mostra a explicação com um botão para o passo seguinte.
+- Link "Comece aqui: gire um qubit" no pé do Hero, levando à Jornada.
+- Dicas **"A seguir"** no fim de cada seção, da Jornada ao Roadmap, cada uma levando à seção seguinte.
+- Link "Jornada" no rodapé.
+
+### Acessibilidade
+- As abas seguem o padrão WAI-ARIA: `aria-controls` ligando aba e painel, setas ←/→ (com volta), Home e End. O botão "Próximo" leva o foco junto para a aba nova.
+- A cena da esquerda é decorativa (`aria-hidden`). O resultado de cada ação (moeda girando, contagem das medições, rota encontrada) é anunciado numa região `aria-live`.
+- A mensagem das ondas só muda quando a faixa muda (alinhadas, no meio, opostas), para o leitor de tela não anunciar cada grau arrastado.
+- O controle deslizante tem rótulo visível ("Deslocamento da onda 2").
+- Sem JavaScript, os 4 passos aparecem como texto corrido, com as explicações, sem abas nem botões que não funcionariam.
+- Com "reduzir movimento", as medições e as rotas mostram o resultado na hora, e a moeda e as dicas não pulsam.
+
+### Mantido de propósito
+- O link "Jornada" fica só no rodapé. Com 7 links, o menu do topo não cabe ao lado do botão "Portal do Investidor" em nenhuma largura de desktop. A Jornada já é a primeira seção depois do Hero e tem o link "Comece aqui".
+- Os textos das dicas que apontam para Comparativo, Mercado e Casos de Uso descrevem o conteúdo atual dessas seções. Eles mudam quando as seções ganharem slider, palpites e escolha (2.4.0).
+- As funções de preencher o controle deslizante e de navegar pelas abas com o teclado, antes só da Demonstração, agora são compartilhadas entre a Demonstração e a Jornada.
+- Nenhuma âncora, classe ou id existente mudou.
+
+### Observação
+- É MINOR porque só acrescenta uma seção, dicas e links, sem quebrar nada.
+- Bateria de testes: 130/130, com 13 testes novos (os 4 passos completos com mouse, as 120 rotas do jeito clássico, abas no teclado, sem JS, "reduzir movimento", abas a 320px, a ordem das dicas, o atalho do Hero em 4 tamanhos de tela e a âncora `#simples`).
+
 ## [2.2.1] — 2026-10-20 · PATCH
 
 ### Corrigido
