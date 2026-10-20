@@ -20,6 +20,20 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.6.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- **Tipografia de destaque**: em cada título, uma palavra-chave aparece em Instrument Serif itálica com o degradê azul-violeta da marca. Por exemplo: "na velocidade do *impossível*", "Entenda o quântico em *um minuto*", "O mercado quântico já é *real*", "De protótipo a *produção*". São 14 no total (Hero, títulos de seção e títulos dos passos da Jornada).
+- Token `--fonte-destaque` ("Instrument Serif", com Georgia de reserva) e a fonte no link do Google Fonts, só no corte itálico usado.
+
+### Alterado
+- Títulos de seção maiores e mais justos: de `clamp(30px, 4vw, 52px)` para `clamp(34px, 4.8vw, 66px)`, com entrelinha 1,04.
+- Títulos dos passos da Jornada, dos Casos de Uso e das perguntas do Mercado acompanham a nova escala.
+
+### Observação
+- É MINOR porque só muda a aparência dos títulos; o texto, as âncoras e as classes continuam os mesmos. A palavra-chave fica num `<span class="kw">` dentro do próprio título, então leitores de tela leem a frase inteira normalmente.
+- Bateria de testes: 144/144, com 1 teste novo: as 14 palavras-chave ficam só em títulos, usam a fonte certa, não saem da tela em 390px e não deixam espaços estranhos no texto do título.
+
 ## [2.5.0] — 2026-10-20 · MINOR
 
 ### Adicionado
