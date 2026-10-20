@@ -20,6 +20,34 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [3.3.0] — 2026-10-20 · MINOR
+
+Desempenho das funções principais: as interações aparecem na tela até 7 vezes mais rápido.
+
+### Alterado
+- **Luz sem filtro de desfoque**:
+  - As manchas de luz (três no Hero, uma nos Investidores) usavam `filter: blur(70–90px)` sobre áreas de até 1240×900px. O navegador refazia esse desfoque cada vez que algo perto mudava. Elas viraram degradês radiais com mais paradas e queda mais longa: a mesma luz, sem custo para repintar.
+  - As manchas do CTA e do rodapé, que eram formas SVG desfocadas, viraram degradês nas mesmas posições.
+- **O circuito do Hero perdeu o `blur(1px)`**: é uma camada animada da largura da tela, e o desfoque era refeito a cada pulso das portas.
+
+### Desempenho
+Medido com a Event Timing API (a base da métrica INP), no Chromium sem GPU. Os números são o tempo até a resposta aparecer na tela:
+
+| Interação | 3.2.0 | 3.3.0 |
+|---|---|---|
+| Enviar o formulário (com erros) | 392ms | 56ms |
+| Trocar o passo da Jornada | 120ms | 40ms |
+| Medir 1.000 vezes | 104ms | 40ms |
+| Palpite no quiz, escolha nos Casos de Uso, abas e controles da Demo | 40–56ms | 32–56ms |
+
+O JavaScript dessas funções já levava de 0 a 3ms. O tempo estava todo na pintura, por causa dos filtros.
+
+### Observação
+- É MINOR porque a aparência e as funções ficam iguais; só o custo de desenhar muda.
+- Bateria de testes: 127/127, com 2 testes novos:
+  - nenhuma mancha de luz visível com `filter`;
+  - o envio do formulário e a troca de passo aparecem em menos de 150ms.
+
 ## [3.2.0] — 2026-10-20 · MINOR
 
 Visual: o vidro vira o material das superfícies de uso, e os halos de neon dão lugar a indicadores nítidos.

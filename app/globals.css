@@ -2589,3 +2589,36 @@ html:not(.js) .lab__tabs, html:not(.js) .lab__panel { display: none; }
   .glass-orbs { display: none; }
   .site-header .header__inner::before, .card-glass.lab__panel, .lab__tab, .terminal, .qreg, .cta .form.sentence, .nav-open .site-nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
+
+/* ==========================================================
+   3.3 · Desempenho: luz sem filtro de desfoque
+   As manchas de luz usavam filter: blur(70–90px) sobre áreas de até 1240×900px. O navegador
+   refaz esse desfoque toda vez que algo perto muda (um clique no formulário levava ~390ms para
+   aparecer na tela, sem GPU). Um degradê radial já tem borda suave: com mais paradas e queda mais
+   longa, a luz fica igual e não custa nada para repintar.
+   ========================================================== */
+.hero__glow, .hero__glow--text, .hero__glow--core, .cta__glow { filter: none; }
+.hero__glow--ambient { background: radial-gradient(circle, rgba(59, 130, 246, 0.13) 0%, rgba(107, 70, 255, 0.07) 38%, rgba(107, 70, 255, 0.025) 56%, transparent 74%); }
+.hero__glow--text { background: radial-gradient(ellipse at 45% 50%, rgba(107, 70, 255, 0.16) 0%, rgba(59, 130, 246, 0.07) 36%, rgba(59, 130, 246, 0.025) 56%, transparent 76%); }
+.hero__glow--core {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(107, 70, 255, 0.34) 0%, rgba(107, 70, 255, 0.16) 28%, rgba(107, 70, 255, 0.06) 48%, transparent 70%),
+    radial-gradient(ellipse at 62% 46%, rgba(59, 130, 246, 0.24) 0%, rgba(59, 130, 246, 0.08) 32%, transparent 56%);
+}
+.cta__glow {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(107, 70, 255, 0.32) 0%, rgba(107, 70, 255, 0.14) 30%, rgba(107, 70, 255, 0.05) 50%, transparent 70%),
+    radial-gradient(ellipse at 36% 58%, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.07) 30%, transparent 52%),
+    radial-gradient(ellipse at 66% 40%, rgba(59, 130, 246, 0.13) 0%, transparent 46%);
+}
+/* manchas do CTA e do rodapé: as formas SVG desfocadas viram degradês nas mesmas posições */
+.blobs svg, .blobs svg.blob { display: none; }
+.blobs {
+  background:
+    radial-gradient(ellipse 30% 42% at 46% 48%, rgba(107, 70, 255, 0.12), transparent 70%),
+    radial-gradient(ellipse 24% 34% at 38% 50%, rgba(59, 130, 246, 0.1), transparent 70%),
+    radial-gradient(ellipse 20% 30% at 68% 58%, rgba(107, 70, 255, 0.08), transparent 70%);
+}
+.blobs--footer { background: radial-gradient(ellipse 30% 42% at 46% 48%, rgba(107, 70, 255, 0.09), transparent 70%); }
+/* o circuito do Hero é uma camada animada da largura da tela: um blur(1px) nela era refeito a cada pulso */
+.hero__circuit { filter: none; }
