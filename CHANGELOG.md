@@ -20,6 +20,46 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [3.0.0] — 2026-10-20 · MAJOR
+
+O site passa a ser feito com **Next.js + React** e chega à versão final do redesenho (a "v5"): a página inteira é reorganizada, com uma intro interativa e seções recompostas.
+
+### Adicionado
+- **Intro interativa**: ao abrir o site, um processador quântico (criostato gelado com o chip no fundo) aparece por cima da página. É só tocar nele para "iniciar o processamento" e entrar no site, ou clicar em "Pular". Com "reduzir movimento" ou sem JavaScript, a intro não aparece.
+- **Jornada em uma frase**: "Em 4 passos: Gire, Meça, Interfira e Compare." Os passos são as próprias palavras da frase, e um numeral grande em itálico marca o passo atual.
+- **Comparativo em tela cheia**: o gráfico ocupa a seção, os tempos do clássico e do quântico flutuam junto das curvas, e uma legenda explica as duas.
+- **Mercado como conversa**: uma pergunta por vez, com as opções dentro da frase ("vai valer US$ 12 milhões, US$ 120 milhões ou US$ 1,2 bilhão?"), a resposta com escala visual e "Próxima" para seguir.
+- **Casos de Uso com escalas visuais**, **Demonstração** com as abas ao lado do título, **Roadmap** com um fio que liga as etapas e **Investidores** com o formulário em forma de frase ("Meu nome é ___, falo por ___ e quero investir ___").
+- **Seções conectadas**: as dicas "A seguir" viram uma porta quântica entre uma seção e a próxima, e o terminal da API envia a requisição ao clicar em "Enviar".
+
+### Alterado
+- **Estrutura**:
+  - `index.html`, `style.css` e `script.js` deram lugar a um app Next.js (App Router), gerado como site estático (`output: 'export'`, pasta `out/`).
+  - Uma seção por componente, em `components/sections/`.
+  - A **Demonstração ao vivo** é React de verdade (`components/demo/`), com estado próprio em cada aba e a simulação em `sim.js`.
+  - Os demais comportamentos (intro, interlúdios, qubits, campo de pontos, formulário) ficam em `lib/legacy.js`, ligados por `components/LegacyBehaviors.jsx`.
+- **Fontes** (Sora, JetBrains Mono e Instrument Serif) servidas pelo próprio site via `next/font`, sem chamada ao Google Fonts.
+- **Mídia** em `public/`. O `vercel.json` declara o framework Next.js.
+
+### Corrigido em relação ao redesenho de referência
+- **Sem JavaScript**, nada fica invisível: entradas, Hero, circuito e gráfico do Comparativo já vêm visíveis e desenhados. A Demonstração mostra um aviso no lugar dos controles, e a intro some.
+- **Menu mobile**:
+  - fecha com Esc, devolvendo o foco ao botão, e também com um clique fora;
+  - volta fechado ao passar para o desktop;
+  - com o menu aberto, Tab vai para os links (o botão vem depois do menu no HTML).
+- **Campo de pontos**: só anima com o Hero ou os Investidores na tela. Parado no meio do conteúdo, não gasta nenhum quadro.
+- **Rodapé**: voltam os links do projeto (GitHub e Facens) e os de Jornada, Mercado, Demo e Roadmap.
+- **Âncoras antigas** (`#comparativo`, `#cta-final`, `#rodape`) mantidas como apelidos, para links já compartilhados.
+- **Esferas de Bloch**: os rótulos não saem mais cortados na borda da tela.
+
+### Observação
+- É MAJOR porque muda a estrutura do site, o modo de construir (Next.js + React) e a composição das seções.
+- Para rodar localmente: `npm install`, depois `npm run dev` (desenvolvimento, com webpack) ou `npm run build` (site estático em `out/`).
+- Bateria de testes: 112/112, contra o build servido por HTTP:
+  - os testes genéricos (larguras de tela, sem JS, teclado, toque, "reduzir movimento", acessibilidade, formulário);
+  - 24 testes novos das seções desta versão: intro, Jornada, Comparativo, quiz, Casos de Uso, Demonstração, Roadmap, qubits, interlúdios, campo de pontos e versão sem JS.
+- No modo de desenvolvimento, onde o React monta cada componente duas vezes, a página fica idêntica ao build: nenhum elemento duplicado e nenhum erro.
+
 ## [2.9.1] — 2026-10-20 · PATCH
 
 ### Corrigido
