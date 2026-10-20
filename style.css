@@ -162,8 +162,12 @@ h1, h2, h3, p, dl, dd, figure { margin: 0; }
 .logo__orbits { transform-origin: 0 0; }
 
 .site-nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
-/* com 6 links, logo acima do menu mobile o header fica justo: menos espaço entre os links */
-@media (min-width: 1081px) and (max-width: 1180px) { .site-nav { gap: 18px; } }
+/* com 6 links, logo acima do menu mobile o header fica justo: menos espaço entre os links
+   e entre logo, menu e botão, senão o botão passa da margem do container */
+@media (min-width: 1081px) and (max-width: 1180px) {
+  .header__inner { gap: 16px; }
+  .site-nav { gap: 16px; }
+}
 .site-nav a {
   position: relative;
   white-space: nowrap;

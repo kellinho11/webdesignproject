@@ -20,6 +20,16 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.2.1] — 2026-10-20 · PATCH
+
+### Corrigido
+- Header entre 1081 e ~1120px: o botão "Portal do Investidor" passava até 14px da margem direita do conteúdo e ficava colado na borda da janela. Nessa faixa, o espaço entre logo, menu e botão também diminui (de 24 para 16px), e o espaço entre os links vai de 18 para 16px.
+
+### Observação
+- É PATCH porque só ajusta espaçamento, sem mudar âncoras, classes nem conteúdo.
+- O teste da 2.2.0 só conferia se a página rolava para o lado, e o botão ainda cabia na janela. O teste novo confere se ele fica dentro do container em 7 larguras, de 1081 a 1920px.
+- Bateria de testes: 117/117.
+
 ## [2.2.0] — 2026-10-20 · MINOR
 
 ### Adicionado
