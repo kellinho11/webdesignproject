@@ -102,14 +102,28 @@
 
           <g class="gate gate--h" style="--d:2250ms"><rect x="586" y="46" width="28" height="28"/><text x="600" y="64">H</text></g>
 
-          <g class="gate gate--meter" style="--d:2400ms">
-            <rect x="646" y="46" width="28" height="28"/><path d="M652 68 a8 8 0 0 1 16 0 M660 68 L667 54"/>
-            <rect x="646" y="106" width="28" height="28"/><path d="M652 128 a8 8 0 0 1 16 0 M660 128 L667 114"/>
-            <rect x="646" y="166" width="28" height="28"/><path d="M652 188 a8 8 0 0 1 16 0 M660 188 L667 174"/>
-            <rect x="646" y="226" width="28" height="28"/><path d="M652 248 a8 8 0 0 1 16 0 M660 248 L667 234"/>
-            <rect x="646" y="286" width="28" height="28"/><path d="M652 308 a8 8 0 0 1 16 0 M660 308 L667 294"/>
+          <!-- medidores: cada um "respira" num ritmo próprio -->
+          <g class="gate--meter">
+            <g class="mq" style="--bd:3.6s;--bo:-0.4s"><rect x="646" y="46" width="28" height="28"/><path d="M652 68 a8 8 0 0 1 16 0 M660 68 L667 54"/></g>
+            <g class="mq" style="--bd:4.4s;--bo:-2.1s"><rect x="646" y="106" width="28" height="28"/><path d="M652 128 a8 8 0 0 1 16 0 M660 128 L667 114"/></g>
+            <g class="mq" style="--bd:3.1s;--bo:-1.2s"><rect x="646" y="166" width="28" height="28"/><path d="M652 188 a8 8 0 0 1 16 0 M660 188 L667 174"/></g>
+            <g class="mq" style="--bd:5.2s;--bo:-3.3s"><rect x="646" y="226" width="28" height="28"/><path d="M652 248 a8 8 0 0 1 16 0 M660 248 L667 234"/></g>
+            <g class="mq" style="--bd:4s;--bo:-0.9s"><rect x="646" y="286" width="28" height="28"/><path d="M652 308 a8 8 0 0 1 16 0 M660 308 L667 294"/></g>
           </g>
 
+        </svg>
+      </div>
+    </div>
+    <div class="hero__glow hero__glow--ambient" aria-hidden="true"></div>
+    <!-- o painel de medição fica numa camada própria, sem o desfoque e a transparência do circuito -->
+    <div class="hero__circuit hero__circuit--meter" aria-hidden="true">
+      <div class="hero__circuit-inner">
+        <svg viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="meter-glow"><stop offset="0" stop-color="#6B46FF" stop-opacity=".55"/><stop offset=".55" stop-color="#3B82F6" stop-opacity=".18"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient>
+            <filter id="meter-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+          </defs>
+          <ellipse class="measure__glow" cx="802" cy="185" rx="130" ry="175" fill="url(#meter-glow)" filter="url(#meter-blur)"/>
           <g class="measure">
             <rect class="measure__panel" x="720" y="40" width="165" height="280"/>
             <text class="measure__title" x="734" y="64">MEDIÇÃO · q0 q1</text>
@@ -127,6 +141,7 @@
       </div>
     </div>
     <div class="hero__veil" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--text" aria-hidden="true"></div>
 
     <div class="container hero__content">
       <div class="hero__parallax">
@@ -137,8 +152,8 @@
         </h1>
         <p class="hero__subtitle hero-in" style="--d:450ms">SynapseQ combina modelos de linguagem de última geração com processamento quântico para resolver problemas que a computação clássica ainda não alcançou.</p>
         <div class="hero__actions">
-          <a href="#investidores" class="btn-primary hero-in hero-in--scale" style="--d:560ms">Agendar Demonstração</a>
-          <a href="#quantum-engineering" class="btn-secondary hero-in" style="--d:620ms">Ler Whitepaper Técnico</a>
+          <a href="#investidores" class="btn-primary btn-glow hero-in hero-in--scale" style="--d:560ms">Agendar Demonstração</a>
+          <a href="#quantum-engineering" class="btn-secondary btn-glow hero-in" style="--d:620ms">Ler Whitepaper Técnico</a>
         </div>
         <p class="hero__backers hero-in hero-in--fade" style="--d:750ms">Backed by <span>Quantum Capital</span> · <span>Nebula Ventures</span> · <span>Vertex Partners</span></p>
       </div>
@@ -840,7 +855,7 @@
               <p class="field__error" id="lead-ticket-erro"></p>
             </div>
           </div>
-          <button type="submit" class="btn-primary form__submit">Solicitar Acesso ao Data Room</button>
+          <button type="submit" class="btn-primary btn-glow form__submit">Solicitar Acesso ao Data Room</button>
           <div class="form-feedback" aria-live="polite"></div>
         </form>
 

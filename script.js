@@ -95,6 +95,37 @@
     });
   }
 
+  /* === Hero: pulsos de luz nos fios e pausa fora da tela ===
+     Cada fio ganha 2 pulsos com duração e atraso próprios (determinísticos, não aleatórios),
+     para não andarem em fila. Com o Hero fora da tela, as animações dele ficam pausadas. */
+  const wires = $('.hero__circuit:not(.hero__circuit--meter) .wires');
+  if (wires) {
+    const NSW = 'http://www.w3.org/2000/svg';
+    const pulses = document.createElementNS(NSW, 'g');
+    $$('line', wires).forEach((ln, i) => {
+      for (let k = 0; k < 2; k++) {
+        const p = ln.cloneNode();
+        const dur = 6 + ((i * 7 + k * 5) % 6) * 0.9;
+        p.setAttribute('class', 'wire-pulse');
+        p.setAttribute('pathLength', '100');
+        p.style.setProperty('--pd', `${dur.toFixed(1)}s`);
+        p.style.setProperty('--po', `${(-(i * 1.7 + k * dur * 0.5) % dur).toFixed(2)}s`);
+        pulses.appendChild(p);
+      }
+    });
+    wires.after(pulses);
+  }
+  new IntersectionObserver(([e]) => hero.classList.toggle('is-offscreen', !e.isIntersecting)).observe(hero);
+
+  /* === Botões principais: o brilho segue o cursor === */
+  if (canHover) {
+    $$('.btn-glow').forEach((b) => b.addEventListener('pointermove', (e) => {
+      const r = b.getBoundingClientRect();
+      b.style.setProperty('--gx', `${e.clientX - r.left}px`);
+      b.style.setProperty('--gy', `${e.clientY - r.top}px`);
+    }));
+  }
+
   /* === Hero: transição de saída ===
      Ao rolar, o conteúdo esmaece; com "reduzir movimento" só a opacidade muda, sem escala. */
   const heroExit = () => {

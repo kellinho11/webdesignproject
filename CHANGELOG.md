@@ -20,6 +20,39 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.8.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- **Profundidade no Hero**:
+  - O painel "Medição" ganhou uma camada própria, nítida e opaca por cima do circuito desfocado, com contorno violeta e um brilho que "respira". A barra vencedora (|10⟩) também brilha.
+  - Pulsos de luz correm pelos 5 fios do circuito, dois por fio, cada um no seu ritmo.
+  - Os 5 medidores piscam devagar, cada um num ritmo diferente.
+  - Duas manchas de luz: uma ampla no fundo e uma atrás do título, que se move devagar.
+  - O título ganhou branco puro e um halo violeta suave.
+- **Brilho nos botões principais** (os dois do Hero e o "Solicitar Acesso ao Data Room"): um ponto de luz segue o cursor sobre o botão.
+- **Resposta ao clique** em todos os botões primários e secundários: o botão "afunda" para 97% enquanto é pressionado.
+- **Grão de filme** por cima da página, bem sutil (7%), em telas a partir de 901px.
+
+### Desempenho
+- Com o Hero fora da tela, as animações dele (portas, medidores, pulsos, barras e brilhos) ficam pausadas.
+- O grão fica fora do celular: um `mix-blend-mode` em tela cheia pesa em GPU fraca.
+- O brilho que segue o cursor só existe com mouse; no toque não há hover.
+
+### Acessibilidade
+- Com "reduzir movimento", não há pulsos, medidores piscando nem manchas se movendo.
+- O grão e as manchas não pegam cliques (`pointer-events: none`).
+- No celular, o painel de medição fica a 40% para não competir com o texto do Hero.
+- O texto "Backed by…" continua com 60% de opacidade, e não 46% como no modelo de referência: com 46%, o contraste ficaria abaixo de 4,5:1.
+
+### Observação
+- É MINOR porque só acrescenta camadas visuais. Âncoras e classes existentes continuam iguais (`.gate--meter` passou a agrupar os 5 medidores `.mq`).
+- Bateria de testes: 154/154, com 5 testes novos:
+  - a camada do painel e os 10 pulsos;
+  - a pausa com o Hero fora da tela;
+  - o brilho seguindo o cursor sem o grão bloquear o clique;
+  - a página sem erros JS;
+  - o grão só em telas largas e "reduzir movimento".
+
 ## [2.7.0] — 2026-10-20 · MINOR
 
 ### Adicionado
