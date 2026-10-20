@@ -133,6 +133,8 @@
     const p = Math.min(1, Math.max(0, -r.top / (r.height * 0.8)));
     heroContent.style.opacity = (1 - 0.7 * p).toFixed(3);
     heroContent.style.transform = reduceMotion ? '' : `scale(${(1 - 0.03 * p).toFixed(4)})`;
+    // parallax em 3 planos: o CSS multiplica --sy por fatores diferentes em cada camada do Hero
+    if (!reduceMotion && r.bottom > 0) hero.style.setProperty('--sy', Math.max(0, -r.top).toFixed(1));
   };
 
   let ticking = false;
@@ -1121,6 +1123,126 @@
   }, { passive: true });
   window.addEventListener('resize', drawReg);
   drawReg(); drawInterf();
+
+  /* === Campo de pontos (canvas fixo, plano 1 do parallax) ===
+     Estrelas esparsas pela página toda e "dunas" de pontos atrás do Hero e dos Investidores.
+     Os pontos andam a 35% da velocidade da rolagem. Só cintilam (laço de animação) enquanto
+     o Hero ou os Investidores estão na tela; no resto da página o canvas só redesenha quando
+     a página rola, e parado não gasta nenhum quadro. */
+  const field = $('#starfield');
+  const fctx = field && field.getContext && field.getContext('2d');
+  if (fctx) {
+    const K = reduceMotion ? 1 : 0.35;
+    const cta = $('#investidores');
+    const COLORS = ['#E6E9FF', '#8DB4FF', '#A592FF'];
+    let W = 0, H = 0, parts = [], ranges = [], fac = 1;
+    // mesma semente = mesmo céu a cada visita
+    const seeded = (seed) => () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const gauss = (r) => Math.sqrt(-2 * Math.log(r() || 1e-6)) * Math.cos(2 * Math.PI * r());
+
+    const layout = () => {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = window.innerWidth; H = window.innerHeight;
+      field.width = Math.round(W * dpr); field.height = Math.round(H * dpr);
+      fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const maxS = Math.max(0, document.documentElement.scrollHeight - H);
+      const L = H + K * maxS; // altura do "céu" inteiro, na velocidade do plano 1
+      const r = seeded(7);
+      const out = [];
+      const nStars = Math.min(2400, Math.round((W * L) / 6500));
+      for (let i = 0; i < nStars; i++) {
+        const q = r();
+        out.push({ x: r() * W, y: r() * L, s: q < 0.06 ? 1.6 : 1, a: 0.12 + r() * 0.42, c: q < 0.78 ? 0 : q < 0.9 ? 1 : 2, w: 0.0006 + r() * 0.0016, p: r() * 6.28, z: 0 });
+      }
+      // contornos: faixas onduladas de pontos, mais densas na crista e espalhadas para baixo
+      const zone = (el, fracs, ampF, seed) => {
+        const b = el.getBoundingClientRect(), top = b.top + window.scrollY, h = b.height;
+        const s0 = Math.min(maxS, Math.max(0, top + h / 2 - H / 2));
+        const lTop = top - s0 + K * s0;
+        const zr = seeded(seed);
+        fracs.forEach((f, ci) => {
+          const amp = h * ampF * (0.7 + zr() * 0.6), f1 = 1.2 + zr() * 1.6, f2 = 3 + zr() * 3, p1 = zr() * 6.28, p2 = zr() * 6.28;
+          const tilt = (zr() - 0.5) * h * 0.18, spread = h * (0.05 + zr() * 0.04), cx = 0.25 + zr() * 0.6;
+          const n = Math.round(W * (0.75 - ci * 0.08));
+          for (let i = 0; i < n; i++) {
+            const u = zr();
+            const env = Math.exp(-Math.pow((u - cx) / 0.42, 2));
+            if (zr() > 0.2 + 0.8 * env) continue;
+            const base = lTop + h * f + amp * Math.sin(u * f1 * Math.PI + p1) + amp * 0.3 * Math.sin(u * f2 * Math.PI + p2) + tilt * (u - 0.5);
+            const d = zr() < 0.78 ? -Math.log(zr() || 1e-6) * spread * 0.55 : -Math.abs(gauss(zr)) * spread * 0.12;
+            const near = Math.exp(-Math.abs(d) / (spread * 0.3));
+            const q = zr();
+            out.push({ x: u * W, y: base + d, s: near > 0.7 && q < 0.12 ? 1.5 : 1, a: (0.16 + 0.62 * near) * (0.55 + 0.45 * env), c: q < 0.62 ? 0 : q < 0.84 ? 1 : 2, w: 0.0008 + zr() * 0.0012, p: zr() * 6.28, z: 1 });
+          }
+        });
+      };
+      zone(hero, [0.5, 0.64, 0.78, 0.92], 0.07, 11);
+      if (cta) zone(cta, [0.22, 0.48, 0.74, 0.9], 0.06, 29);
+      // agrupados por cor: troca o fillStyle só 3 vezes por quadro
+      out.sort((a, b) => a.c - b.c);
+      ranges = [0, 1, 2].map((c) => [out.findIndex((pt) => pt.c === c), out.length - out.slice().reverse().findIndex((pt) => pt.c === c)]);
+      parts = out;
+    };
+
+    const draw = (t) => {
+      const off = K * window.scrollY;
+      const hb = hero.getBoundingClientRect(), cb = cta ? cta.getBoundingClientRect() : null;
+      // nas seções de conteúdo o céu fica a 42%, para não competir com o texto
+      const target = hb.bottom > H * 0.45 || (cb && cb.top < H * 0.6) ? 1 : 0.42;
+      fac = reduceMotion ? target : fac + (target - fac) * 0.06;
+      fctx.clearRect(0, 0, W, H);
+      ranges.forEach(([a, b], c) => {
+        if (a < 0) return;
+        fctx.fillStyle = COLORS[c];
+        for (let i = a; i < b; i++) {
+          const pt = parts[i], y = pt.y - off;
+          if (y < -2 || y > H + 2) continue;
+          let al = pt.a * (pt.z ? 0.55 + 0.45 * fac : fac), x = pt.x;
+          if (!reduceMotion) { al *= 0.72 + 0.28 * Math.sin(t * pt.w + pt.p); if (pt.z) x += Math.sin(t * 0.00035 + pt.p) * 1.4; }
+          fctx.globalAlpha = al;
+          fctx.fillRect(x, y, pt.s, pt.s);
+        }
+      });
+      fctx.globalAlpha = 1;
+      // plano 3: a mancha dos Investidores sobe mais rápido que o conteúdo
+      if (!reduceMotion && cb && cb.bottom > -200 && cb.top < H + 200) cta.style.setProperty('--cy', ((cb.top + cb.height / 2 - H / 2) * 0.18).toFixed(1));
+    };
+
+    // laço de cintilação: só com o Hero ou os Investidores visíveis, no máximo ~30 quadros por segundo
+    const lively = new Set();
+    let fRaf = 0, fLast = 0;
+    const fLoop = (t) => {
+      if (t - fLast > 33) { draw(t); fLast = t; }
+      fRaf = lively.size ? requestAnimationFrame(fLoop) : 0;
+    };
+    if (!reduceMotion) {
+      const fio = new IntersectionObserver((es) => {
+        es.forEach((e) => (e.isIntersecting ? lively.add(e.target) : lively.delete(e.target)));
+        if (lively.size && !fRaf) fRaf = requestAnimationFrame(fLoop);
+      });
+      fio.observe(hero);
+      if (cta) fio.observe(cta);
+    }
+    // fora das zonas animadas, desenha só quando a página rola
+    let fTick = false;
+    window.addEventListener('scroll', () => {
+      if (fRaf || fTick) return;
+      fTick = true;
+      requestAnimationFrame((t) => { draw(t); fTick = false; });
+    }, { passive: true });
+
+    let relayoutTimer = 0;
+    const relayout = () => { clearTimeout(relayoutTimer); relayoutTimer = setTimeout(() => { layout(); draw(performance.now()); }, 160); };
+    window.addEventListener('resize', relayout);
+    // a página muda de altura (respostas que abrem, fontes que carregam): o céu é refeito
+    if (window.ResizeObserver) new ResizeObserver(relayout).observe(document.body);
+    layout(); draw(0);
+  }
 
   /* === Glossário ===
      A explicação abre no hover e no foco (só CSS). Aqui: ela não sai da tela perto das bordas,

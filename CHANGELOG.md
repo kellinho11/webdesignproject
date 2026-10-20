@@ -20,6 +20,42 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.9.0] — 2026-10-20 · MINOR
+
+Esta é a versão-alvo do roteiro: o site chega à forma visual e funcional planejada.
+
+### Adicionado
+- **Campo de pontos**: um céu de pontos finos em canvas atrás da página inteira, em três tons (branco, azul e violeta). Atrás do Hero e dos Investidores, os pontos formam "dunas" onduladas, mais densas e brilhantes. Nas seções de conteúdo, o céu cai para 42% de intensidade, para não competir com o texto.
+- **Parallax em 3 planos** no Hero:
+  - plano 1: os pontos andam a 35% da velocidade da rolagem;
+  - plano 2: o conteúdo;
+  - plano 3: as manchas de luz sobem mais rápido que o texto, enquanto o circuito e o painel de medição ficam para trás.
+- **Brilhos saturados**: uma mancha violeta-azul forte no centro do Hero e uma maior atrás do cartão dos Investidores, que "respiram" devagar. A dos Investidores também sobe mais rápido que o conteúdo.
+- **Rótulos técnicos em fonte mono** (JetBrains Mono, maiúsculas espaçadas, com um traço antes) em todas as seções e interlúdios. Os títulos ficam em branco puro.
+
+### Desempenho
+- No modelo de referência, o canvas redesenhava a cada quadro, sem parar. Aqui:
+  - os pontos só cintilam enquanto o Hero ou os Investidores estão na tela, a no máximo ~30 quadros por segundo;
+  - no resto da página o canvas só é redesenhado quando a página rola, e parado não gasta nenhum quadro.
+- Os pontos são agrupados por cor: o canvas troca de cor só 3 vezes por quadro.
+- O céu é refeito quando a página muda de altura (respostas que abrem, fontes que carregam) ou de largura.
+- Medido no Chromium sem GPU: a mesma taxa de quadros da 2.8.0, tanto no Hero quanto no meio da página.
+
+### Acessibilidade
+- Com "reduzir movimento": os pontos acompanham a rolagem na mesma velocidade do conteúdo, não cintilam e não há parallax nem manchas se movendo.
+- O canvas é decorativo (`aria-hidden`) e não pega cliques.
+
+### Observação
+- É MINOR porque só acrescenta camadas visuais e muda a aparência dos rótulos. Âncoras, ids e classes continuam iguais.
+- Bateria de testes: 160/160, com 6 testes novos:
+  - o canvas desenhado;
+  - cintilando no Hero e parado no meio da página;
+  - os fatores do parallax;
+  - os rótulos mono;
+  - a página sem erros JS;
+  - "reduzir movimento".
+- O teste do glossário passou a esperar a entrada da seção terminar antes do hover, e a dar mais folga à transição.
+
 ## [2.8.0] — 2026-10-20 · MINOR
 
 ### Adicionado
