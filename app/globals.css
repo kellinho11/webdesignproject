@@ -2465,3 +2465,127 @@ html:not(.js) .lab__tabs, html:not(.js) .lab__panel { display: none; }
   /* Hero fora da tela: as animações dele param (classe posta pelo script) */
   .hero.is-offscreen :is(.gate, .mq, .wire-pulse, .bar, .measure__glow, .live-dot) { animation-play-state: paused; }
 }
+
+/* ==========================================================
+   3.2 · Material de vidro + indicadores nítidos
+   O vidro é o material das superfícies que se usam (header, painel da Demo, abas, terminal,
+   registrador, formulário), e não um efeito espalhado. Três pesos: quanto maior a superfície,
+   mais espesso o vidro (mais desfoque e sombra). Nunca vidro sobre vidro. A luz vem de cima:
+   borda superior mais clara e reflexo que acompanha o ponteiro (--sx/--sy/--sheen, de GlassSheen).
+   Os halos de neon em texto saem: estado ativo e acerto passam a ser marcados por sublinhado,
+   peso e cor sólida, como um indicador de instrumento.
+   ========================================================== */
+:root {
+  --ice: #C9D8FF;                                   /* acento frio: bordas acesas e indicadores */
+  --glass-tint-thin: rgba(28, 22, 48, 0.36);        /* chips e abas */
+  --glass-tint: rgba(24, 19, 42, 0.46);             /* painéis */
+  --glass-tint-thick: rgba(16, 12, 30, 0.72);       /* header e menu, por cima de tudo */
+  --glass-edge: rgba(244, 245, 255, 0.10);
+  --glass-edge-top: rgba(244, 245, 255, 0.24);
+  --glass-blur-thin: 10px;
+  --glass-blur: 18px;
+  --glass-blur-thick: 24px;
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  /* brilhos mais contidos em todo o site (os halos usam estes tokens) */
+  --glow-primary: rgba(59, 130, 246, 0.18);
+  --glow-secondary: rgba(107, 70, 255, 0.16);
+}
+
+/* Receita do material: tinta + desfoque do fundo + borda com luz no topo + reflexo do ponteiro */
+.site-header .header__inner::before,
+.card-glass.lab__panel,
+.lab__tab,
+.terminal,
+.qreg,
+.cta .form.sentence {
+  background:
+    radial-gradient(420px circle at var(--sx, 30%) var(--sy, -20%), rgba(255, 255, 255, var(--sheen, 0.05)), transparent 60%),
+    linear-gradient(170deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 40%),
+    var(--glass-tint);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  border: 1px solid var(--glass-edge);
+  border-top-color: var(--glass-edge-top);
+  box-shadow: var(--glass-inner), 0 24px 60px -24px rgba(3, 2, 10, 0.8);
+}
+
+/* Header: a barra vira uma cápsula de vidro espesso. O vidro mora num ::before, irmão do menu:
+   um backdrop-filter no pai faria o menu (filho) desenhar o fundo "fantasma" através dele. */
+.site-header, .site-header.is-scrolled { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; padding-top: 10px; }
+.site-header .header__inner { position: relative; z-index: 0; height: calc(var(--header-h) - 20px); padding: 0 10px 0 20px; border-radius: 16px; }
+.site-header .header__inner::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  --glass-tint: var(--glass-tint-thick);
+  -webkit-backdrop-filter: blur(var(--glass-blur-thick)) saturate(160%);
+  backdrop-filter: blur(var(--glass-blur-thick)) saturate(160%);
+}
+/* dentro do header o botão não vira outro vidro (vidro sobre vidro apaga a leitura): só contorno */
+.site-header .btn-secondary { background: rgba(255, 255, 255, 0.04); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+/* texto sobre vidro: um pouco mais de contraste e peso */
+.site-nav a { color: rgba(244, 245, 255, 0.72); }
+
+/* Demo: painel (peso médio), abas (fino); a aba ativa ganha tinta azul e borda acesa */
+/* superfície grande: tinta mais densa permite menos desfoque (o desfoque é o que pesa por pixel) */
+.card-glass.lab__panel { --glass-tint: rgba(22, 17, 38, 0.58); -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%); border-radius: 20px; }
+.lab__tab { --glass-tint: var(--glass-tint-thin); -webkit-backdrop-filter: blur(var(--glass-blur-thin)); backdrop-filter: blur(var(--glass-blur-thin)); border-radius: 12px; box-shadow: var(--glass-inner); }
+.lab__tab[aria-selected="true"] { --glass-tint: rgba(59, 130, 246, 0.14); border-color: rgba(96, 150, 255, 0.42); border-top-color: var(--ice); }
+.lab__metrics { background: rgba(255, 255, 255, 0.05); border-color: var(--glass-edge); border-radius: 14px; }
+.lab__metrics div { background: rgba(14, 11, 26, 0.6); }
+
+/* Terminal: vidro escuro; registrador: vidro fino; formulário: o cartão sobre as manchas do CTA */
+.terminal { --glass-tint: rgba(10, 8, 20, 0.6); border-radius: 18px; }
+.terminal__bar { background: rgba(255, 255, 255, 0.03); border-bottom-color: var(--glass-edge); }
+.qreg { -webkit-backdrop-filter: blur(var(--glass-blur-thin)); backdrop-filter: blur(var(--glass-blur-thin)); border-radius: 16px; }
+.cta .form.sentence { --glass-tint: rgba(20, 14, 44, 0.44); -webkit-backdrop-filter: blur(10px) saturate(150%); backdrop-filter: blur(10px) saturate(150%); --glass-edge-top: rgba(220, 215, 255, 0.34); padding: clamp(28px, 4vw, 48px) clamp(20px, 4vw, 56px); border-radius: 28px; }
+
+/* Portas dos circuitos: vidro "falso" (sem desfoque, são dezenas na página) */
+.qwire__gate, .next-hint--glyph .next-hint__gate {
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02)), rgba(21, 17, 31, 0.78);
+  border-color: rgba(244, 245, 255, 0.2); border-radius: 7px; box-shadow: var(--glass-inner);
+}
+
+/* Manchas de luz paradas atrás do vidro da Demo e da API */
+.glass-orbs { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.glass-orbs i { position: absolute; left: var(--x); top: var(--y); width: var(--d); height: var(--d); border-radius: 50%; background: radial-gradient(circle, var(--c) 0%, transparent 68%); opacity: .5; }
+.section.lab > .container, .section.api > .container { position: relative; z-index: 1; }
+
+/* Menu mobile: vidro espesso que "se materializa" (desfoque e escala juntos) ao abrir */
+@media (max-width: 1080px) {
+  .site-nav {
+    top: calc(var(--header-h) - 4px); left: 12px; right: 12px; border-radius: 18px;
+    /* bem mais opaco que os painéis: fica sobre o título gigante do Hero e precisa ser lido */
+    background: linear-gradient(170deg, rgba(255, 255, 255, 0.06), transparent 50%), rgba(14, 11, 26, 0.84);
+    border: 1px solid var(--glass-edge); border-top-color: var(--glass-edge-top);
+    -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px);
+    transform: scale(0.98) translateY(-6px); transform-origin: top right;
+    transition: opacity 200ms var(--ease-out), transform 280ms var(--ease-drawer), backdrop-filter 280ms var(--ease-out), -webkit-backdrop-filter 280ms var(--ease-out), visibility 200ms;
+  }
+  .nav-open .site-nav { -webkit-backdrop-filter: blur(var(--glass-blur-thick)) saturate(160%); backdrop-filter: blur(var(--glass-blur-thick)) saturate(160%); transform: none; }
+}
+@media (max-width: 640px) {
+  :root { --glass-blur: 12px; --glass-blur-thick: 16px; }
+  .site-header { padding-top: 8px; }
+  .site-header .header__inner { width: auto; margin: 0 10px; padding: 0 6px 0 14px; }
+}
+
+/* Indicadores nítidos no lugar de halos de neon em texto */
+.hero__title { text-shadow: none; }
+.jr__step[aria-selected="true"] { text-shadow: none; text-decoration: underline 2px var(--ice); text-underline-offset: .18em; }
+.jr__step { transition: color var(--dur-ui) var(--ease-out), transform var(--dur-press) var(--ease-out); }
+.quiz__opt:hover:not(:disabled) { text-shadow: none; color: var(--ice); }
+.quiz__opt.is-correct { text-shadow: none; color: #FFFFFF; border-bottom-color: var(--ice); }
+.quiz__next:hover { text-shadow: none; color: var(--ice); }
+.pick__choice[aria-selected="true"] .pick__algo { text-shadow: none; }
+.cmp2__float--q .cmp2__ftime { text-shadow: none; color: var(--ice); }
+/* manchas borradas do rodapé e do CTA pela metade: atmosfera, não neblina */
+.blob--a { opacity: .12; } .blob--b { opacity: .1; } .blob--c { opacity: .08; } .blobs--footer .blob--a { opacity: .09; }
+
+/* Quando o vidro não serve: sem suporte, "reduzir transparência" ou "mais contraste" → sólido */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root { --glass-tint-thin: rgba(21, 17, 31, 0.94); --glass-tint: rgba(21, 17, 31, 0.94); --glass-tint-thick: rgba(15, 12, 24, 0.97); }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root { --glass-tint-thin: rgba(21, 17, 31, 0.97); --glass-tint: rgba(21, 17, 31, 0.97); --glass-tint-thick: rgba(15, 12, 24, 0.98); --glass-edge: rgba(244, 245, 255, 0.35); --glass-edge-top: rgba(244, 245, 255, 0.35); }
+  .glass-orbs { display: none; }
+  .site-header .header__inner::before, .card-glass.lab__panel, .lab__tab, .terminal, .qreg, .cta .form.sentence, .nav-open .site-nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

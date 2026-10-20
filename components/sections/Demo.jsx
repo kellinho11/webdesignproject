@@ -1,11 +1,13 @@
 // Seção: Demo
 import Lab from '../demo/Lab.jsx';
+import GlassOrbs from '../glass/GlassOrbs.jsx';
 
 export default function Demo() {
   return (
     <>
   <section className="section lab" id="demo" aria-labelledby="lab-title">
     <div className="leak" style={{ '--lx': '66%' }} aria-hidden="true"></div>
+    <GlassOrbs preset="demo" />
     <div className="qwire" aria-hidden="true"><div className="container qwire__inner"><span className="qwire__ket">|q⟩</span><span className="qwire__line"></span><span className="qwire__gate">U</span><span className="qwire__name">U(β, γ) · camada variacional</span><span className="qwire__line"></span></div></div>
     <div className="bg-lattice" aria-hidden="true"></div>
     <div className="container">

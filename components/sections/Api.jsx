@@ -1,9 +1,11 @@
 // Seção: Api
+import GlassOrbs from '../glass/GlassOrbs.jsx';
 
 export default function Api() {
   return (
     <>
   <section className="section api" id="quantum-engineering" aria-labelledby="api-title">
+    <GlassOrbs preset="api" />
     <div className="leak" style={{ '--lx': '32%' }} aria-hidden="true"></div>
     <div className="qwire" aria-hidden="true"><div className="container qwire__inner"><span className="qwire__ket">|q⟩</span><span className="qwire__line"></span><span className="qwire__gate">SW</span><span className="qwire__name">SWAP · roteamento no hardware</span><span className="qwire__line"></span></div></div>
     <div className="container">

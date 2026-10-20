@@ -1,4 +1,5 @@
 import LegacyBehaviors from '@/components/LegacyBehaviors';
+import GlassSheen from '@/components/glass/GlassSheen';
 import Intro from '@/components/sections/Intro';
 import Starfield from '@/components/sections/Starfield';
 import SiteHeader from '@/components/sections/SiteHeader';
@@ -40,6 +41,7 @@ export default function Home() {
       <QubitRegister />
       <SiteFooter />
       <LegacyBehaviors />
+      <GlassSheen />
     </>
   );
 }

@@ -20,6 +20,53 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [3.2.0] — 2026-10-20 · MINOR
+
+Visual: o vidro vira o material das superfícies de uso, e os halos de neon dão lugar a indicadores nítidos.
+
+### Adicionado
+- **Material de vidro (glassmorphism)** em três pesos. Quanto maior a superfície, mais espesso o vidro:
+  - **espesso**: a cápsula do header, que flutua sobre a página, e o menu mobile;
+  - **médio**: o painel da Demonstração, o terminal da API e o cartão do formulário de investidores;
+  - **fino**: as abas da Demo e o registrador de qubits.
+
+  Cada superfície tem tinta translúcida, desfoque do que está atrás, borda mais clara no topo (a luz "vem de cima") e um **reflexo que acompanha o ponteiro**, mais forte perto da borda de cima, como num vidro de verdade.
+- **Manchas de luz paradas** atrás do vidro da Demo e da API: sem algo colorido por trás, o desfoque não aparece.
+- **O menu mobile se materializa** ao abrir: o desfoque e a escala chegam juntos, em vez de o painel só aparecer.
+- **Tom "gelo"** (`--ice`) como acento frio dos indicadores.
+
+### Alterado
+- **Sem halos de neon em texto**:
+  - o passo ativo da Jornada ganha um sublinhado gelo;
+  - a opção do quiz em hover e a resposta certa ficam em cor sólida;
+  - o tempo do quântico no Comparativo fica em gelo, sem brilho;
+  - o título do Hero perde o halo violeta.
+- **Brilhos mais contidos** em todo o site (os tokens `--glow-*` caíram pela metade), e as manchas borradas do rodapé e do CTA ficaram com metade da opacidade.
+- **Texto sobre vidro** com um pouco mais de contraste, como os links do menu.
+
+### Acessibilidade
+- **Nunca vidro sobre vidro**: o botão "Portal do Investidor" dentro do header não vira outro vidro, só ganha contorno.
+- Com "reduzir transparência" ou "mais contraste", o vidro fica sólido e sem desfoque, e as manchas de luz somem. Em navegador sem suporte a `backdrop-filter`, a tinta fica quase opaca.
+- O menu mobile continua bem mais opaco que os painéis, para ser lido sobre o título do Hero.
+
+### Desempenho
+- Superfícies grandes usam tinta mais densa e menos desfoque (14px no painel da Demo, 10px no formulário), e no celular o desfoque é menor.
+- O campo de pontos não cintila mais atrás do formulário de vidro dos Investidores: lá ele só redesenha na rolagem, e o navegador não refaz o desfoque a cada quadro.
+- Medido no Chromium sem GPU, o pior caso:
+  - Investidores: o mesmo da 3.1.0 (~15 qps);
+  - Hero: igual;
+  - Demo: de 60 para ~45 qps, o custo do desfoque numa área grande sem placa de vídeo.
+
+### Observação
+- É MINOR porque só muda a aparência; conteúdo, âncoras e classes continuam iguais.
+- Bateria de testes: 125/125, com 6 testes novos:
+  - vidro nas 6 superfícies;
+  - nada de vidro sobre vidro no header;
+  - o reflexo acompanhando o ponteiro;
+  - nenhum halo de neon em texto;
+  - a página sem erros JS;
+  - "reduzir transparência" sólido.
+
 ## [3.1.0] — 2026-10-20 · MINOR
 
 Sistema de movimento: o site passa a responder como uma ferramenta, não como um vídeo de fundo.
