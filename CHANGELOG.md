@@ -20,6 +20,19 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.9.1] — 2026-10-20 · PATCH
+
+### Corrigido
+- Os textos das esferas de Bloch decorativas saíam cortados na borda da tela:
+  - o "θ = … · φ = …" da esfera dos Investidores, à esquerda, em todas as larguras até 1440px;
+  - o rótulo |+⟩ da esfera do Mercado, à direita, a partir de 1280px.
+
+  As esferas agora param numa margem que mantém os textos inteiros. No celular, onde elas ficam pequenas e meio fora da tela de propósito, os rótulos saem.
+
+### Observação
+- É PATCH porque só corrige a posição de um elemento decorativo.
+- Bateria de testes: 161/161, com 1 teste novo: nenhum texto das esferas sai da tela, de 390 a 1920px. Ele falha no código da 2.9.0 e passa no da 2.9.1.
+
 ## [2.9.0] — 2026-10-20 · MINOR
 
 Esta é a versão-alvo do roteiro: o site chega à forma visual e funcional planejada.

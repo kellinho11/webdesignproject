@@ -736,8 +736,10 @@ html:not(.js) .jr__reveal[hidden] { display: flex; }
 
 /* Esfera de Bloch: o vetor do estado gira com a rolagem da seção */
 .bloch { position: absolute; z-index: 0; pointer-events: none; overflow: visible; }
-.bloch--market { right: max(-60px, calc(50% - 760px)); top: 40px; width: min(440px, 46vw); opacity: 0.32; }
-.bloch--cta { left: max(-80px, calc(50% - 780px)); top: 50%; width: min(480px, 50vw); transform: translateY(-50%); opacity: 0.22; }
+/* a esfera pode passar da borda da seção, os textos dela não: |+⟩ passa ~10 unidades do viewBox à
+   direita (por isso a margem de 24px no Mercado) e θ/φ começa na borda esquerda (margem 0 nos Investidores) */
+.bloch--market { right: max(24px, calc(50% - 760px)); top: 40px; width: min(440px, 46vw); opacity: 0.32; }
+.bloch--cta { left: max(0px, calc(50% - 780px)); top: 50%; width: min(480px, 50vw); transform: translateY(-50%); opacity: 0.22; }
 .bloch__sphere { fill: none; stroke: rgba(244, 245, 255, 0.35); stroke-width: 1; }
 .bloch__eq, .bloch__mer { fill: none; stroke: rgba(244, 245, 255, 0.22); stroke-width: 1; stroke-dasharray: 3 4; }
 .bloch__axis { stroke: rgba(244, 245, 255, 0.2); stroke-width: 1; }
@@ -1722,6 +1724,8 @@ html:not(.js) .lab { display: none; }
   .qwire__name { display: none; }
   .bloch--market { width: 260px; right: -70px; top: 10px; opacity: 0.2; }
   .bloch--cta { width: 300px; left: -120px; opacity: 0.14; }
+  /* aqui as esferas ficam meio fora da tela: sem os rótulos, que sairiam cortados */
+  .bloch__lbl, .bloch__state { display: none; }
 
   .interlude__inner, .interlude__inner--rev { grid-template-columns: minmax(0, 1fr); }
   .interlude__inner--rev .interlude__media { order: 2; }
