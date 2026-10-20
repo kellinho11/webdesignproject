@@ -569,44 +569,28 @@ html:not(.js) .jr__chapter[hidden],
 html:not(.js) .jr__reveal[hidden] { display: flex; }
 
 /* === Comparativo === */
-.compare__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: stretch;
-}
-.compare-card { display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; }
-.compare-card--classic,
-.js .compare-card--classic.is-visible { opacity: 0.7; }
-.compare-card--classic:hover { box-shadow: none; border-color: var(--border-glass); }
-.compare-card__kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); }
-.compare-card__title { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
-.compare-card__text { color: var(--text-secondary); font-size: 15px; }
-.compare-card__spec {
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid var(--border-glass);
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-}
-.compare-card__spec dt { color: var(--text-secondary); }
-.compare-card--quantum { border-color: rgba(107, 70, 255, 0.35); box-shadow: 0 0 48px rgba(107, 70, 255, 0.12); }
-.compare-card--quantum .compare-card__spec dd { color: var(--accent-primary); }
-.badge {
-  align-self: flex-start;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(107, 70, 255, 0.45);
-  background: rgba(107, 70, 255, 0.12);
-  font-size: 12px;
-  font-weight: 500;
-}
+.cmp { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; align-items: stretch; }
+.cmp__control { display: flex; flex-direction: column; gap: 22px; padding: clamp(24px, 3vw, 36px); }
+/* painel com controle deslizante: não sobe no hover como os outros cartões */
+.card-glass.cmp__control:hover,
+.card-glass.reveal.is-visible.cmp__control:hover { transform: none; }
+.cmp__field { position: relative; padding-bottom: 22px; }
+.cmp__drag { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); font-size: 12px; color: var(--accent-primary); transition: opacity .4s; }
+.cmp__drag.is-gone { opacity: 0; }
+.cmp__readouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cmp__ro { padding: 16px; border: 1px solid var(--border-glass); border-radius: 10px; }
+.cmp__ro--q { border-color: rgba(107, 70, 255, 0.4); background: rgba(107, 70, 255, 0.07); }
+.cmp__ro-label { font-size: 12.5px; line-height: 1.4; color: var(--text-secondary); }
+.cmp__ro-time { margin-top: 8px; overflow-wrap: anywhere; font-size: clamp(18px, 1.6vw, 24px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.cmp__ro--classic .cmp__ro-time { color: rgba(244, 245, 255, 0.8); }
+.cmp__verdict { min-height: 66px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border-glass); font-size: 15px; text-wrap: pretty; }
+.cmp__verdict strong { color: var(--accent-primary); }
+html:not(.js) .cmp__field { display: none; }
 
 .compare__chart {
   display: flex;
   align-items: center;
-  padding: 16px 4px;
+  padding: 8px 4px;
 }
 .chart { width: 100%; height: auto; overflow: visible; }
 .chart__grid line { stroke: rgba(244, 245, 255, 0.25); stroke-width: 1; }
@@ -628,9 +612,11 @@ html:not(.js) .jr__reveal[hidden] { display: flex; }
 .js .chart__late { opacity: 0; transition: opacity .8s var(--ease) 1.3s; }
 .js .chart.is-drawn .chart__late { opacity: 1; }
 .chart__marker { stroke: rgba(244, 245, 255, 0.4); stroke-dasharray: 2 4; }
+.chart__nlbl { fill: var(--text-primary); }
 .chart__dot--exp { fill: rgba(244, 245, 255, 0.7); }
 .chart__dot--sqrt { fill: var(--accent-primary); }
-.chart__label { font: 600 13px var(--fonte-corpo); }
+/* contorno da cor do fundo: o rótulo continua legível quando a curva ou o marcador passa por baixo */
+.chart__label { font: 600 13px var(--fonte-corpo); paint-order: stroke; stroke: var(--bg-primary); stroke-width: 4px; stroke-linejoin: round; }
 .chart__label--exp { fill: rgba(244, 245, 255, 0.7); }
 .chart__label--sqrt { fill: var(--accent-primary); }
 .chart__big { font: 600 26px var(--fonte-titulo); fill: var(--text-primary); letter-spacing: -0.02em; }
@@ -640,12 +626,6 @@ html:not(.js) .jr__reveal[hidden] { display: flex; }
 .market { background: var(--bg-elevated); }
 .market .card-glass { background: rgba(11, 8, 20, 0.5); }
 .market__note { margin-top: 20px; font-size: 13px; color: var(--text-secondary); }
-.market__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
-}
-.stat { display: flex; flex-direction: column; gap: 14px; padding: 28px 24px 22px; min-height: 260px; }
 .stat__number {
   font-family: var(--fonte-titulo);
   font-weight: 600;
@@ -658,14 +638,39 @@ html:not(.js) .jr__reveal[hidden] { display: flex; }
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
-.stat__desc { font-size: 14px; line-height: 1.55; color: var(--text-primary); }
-.stat__source {
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-glass);
-  font-size: 11px;
-  color: var(--text-secondary);
+.stat__plain { font-size: 13px; line-height: 1.5; color: var(--accent-primary); }
+.stat__source { margin-top: 4px; font-size: 11px; color: var(--text-secondary); }
+
+.quiz__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.quiz { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+.quiz__n { font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); }
+.quiz__q { font-size: 17px; font-weight: 500; line-height: 1.4; letter-spacing: -0.01em; text-wrap: pretty; }
+.quiz__opts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.quiz__opts button {
+  min-height: 46px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-glass);
+  border-radius: 10px;
+  background: rgba(244, 245, 255, 0.03);
+  color: var(--text-primary);
+  font: 500 14px var(--fonte-corpo);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s, opacity .2s, transform .15s var(--ease);
 }
+.quiz__opts button:hover:not([aria-disabled="true"]) { border-color: rgba(59, 130, 246, 0.5); background: rgba(59, 130, 246, 0.08); }
+.quiz__opts button:active:not([aria-disabled="true"]) { transform: scale(0.97); }
+/* respondido: os botões continuam focáveis (o foco não some), só deixam de responder */
+.quiz__opts button[aria-disabled="true"] { cursor: default; opacity: 0.45; }
+.quiz__opts button.is-correct { opacity: 1; border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.18); }
+.quiz__opts button.is-wrong { opacity: 1; border-color: rgba(255, 143, 163, 0.6); background: rgba(255, 143, 163, 0.08); text-decoration: line-through; }
+.quiz__answer { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid var(--border-glass); }
+.quiz__answer[hidden] { display: none; }
+.quiz__verdict { font-size: 13px; font-weight: 600; color: var(--accent-primary); }
+.quiz__verdict:empty { display: none; }
+.quiz__score { margin-top: 28px; font-size: 18px; font-weight: 500; text-align: center; }
+.quiz__score:empty { display: none; }
+html:not(.js) .quiz__opts { display: none; }
+html:not(.js) .quiz__answer[hidden] { display: flex; }
 .market__honesty {
   max-width: 640px;
   margin: clamp(48px, 6vw, 72px) auto 0;
@@ -677,28 +682,68 @@ html:not(.js) .jr__reveal[hidden] { display: flex; }
 }
 
 /* === Casos de Uso === */
-.cases__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.case { display: flex; flex-direction: column; padding: 24px 24px 28px; }
-.case__visual {
-  height: 160px;
-  margin-bottom: 26px;
-  border-radius: 10px;
+.pick__choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.pick__choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px 18px;
   border: 1px solid var(--border-glass);
-  background: rgba(11, 8, 20, 0.6);
-  display: grid;
-  place-items: center;
-  padding: 10px;
+  border-radius: 12px;
+  background: rgba(244, 245, 255, 0.02);
+  color: var(--text-secondary);
+  font: 500 15px/1.35 var(--fonte-corpo);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .25s, background-color .25s, color .25s, opacity .6s var(--ease), transform .6s var(--ease);
+  transition-delay: 0ms, 0ms, 0ms, var(--rd, 0ms), var(--rd, 0ms);
 }
-.case__visual svg { width: 100%; height: 100%; }
+.pick__choice:hover { color: var(--text-primary); border-color: rgba(59, 130, 246, 0.35); }
+.pick__choice[aria-selected="true"] { color: var(--text-primary); border-color: rgba(107, 70, 255, 0.6); background: rgba(107, 70, 255, 0.1); }
+.pick__algo { font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-primary); }
+.pick__panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+.pick__panel[hidden] { display: none; }
+.card-glass.pick__panel:hover,
+.card-glass.reveal.is-visible.pick__panel:hover { transform: none; }
+.pick__visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  border-right: 1px solid var(--border-glass);
+  border-radius: 14px 0 0 14px;
+  background: rgba(11, 8, 20, 0.4);
+}
+.pick__visual svg { width: 100%; max-width: 380px; height: auto; }
+.pick__visual .grover { max-width: 320px; }
+.pick__caption { font-size: 12.5px; color: var(--text-secondary); text-align: center; }
+.pick__content { display: flex; flex-direction: column; gap: 16px; padding: clamp(24px, 3vw, 40px); }
+.pick__title { font-size: clamp(20px, 2vw, 26px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; text-wrap: balance; }
+.pick__demo { align-self: flex-start; }
+/* sem JS as escolhas somem e os 3 painéis aparecem empilhados */
+html:not(.js) .pick__choices { display: none; }
+html:not(.js) .pick__panel[hidden] { display: grid; margin-top: 16px; }
+/* a grade do Grover é montada pelo JS: sem ele o quadro ficaria vazio */
+html:not(.js) .pick__visual:has(.grover:empty) { display: none; }
+html:not(.js) .pick__panel:has(.grover:empty) { grid-template-columns: minmax(0, 1fr); }
+
+/* caixa "Para ter ideia": a comparação em linguagem do dia a dia */
+.plain {
+  padding: 12px 14px;
+  border: 1px solid rgba(59, 130, 246, 0.16);
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.07);
+  font-size: 14px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.plain__tag { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); }
+
 .case__algo { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; color: var(--accent-primary); }
-.case__title { margin-top: 8px; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
-.case__text { margin-top: 12px; font-size: 15px; color: var(--text-secondary); }
-.case__complexity {
-  margin-top: auto;
-  padding-top: 22px;
-  display: grid;
-  gap: 10px;
-}
+.case__complexity { display: grid; gap: 10px; }
 .case__complexity div {
   display: grid;
   grid-template-columns: 76px 1fr;
@@ -1278,17 +1323,16 @@ html:not(.js) .lab { display: none; }
 }
 
 @media (max-width: 900px) {
-  .compare__grid,
-  .cases__grid,
+  .cmp,
+  .quiz__grid,
+  .pick__choices,
+  .pick__panel,
   .api__grid { grid-template-columns: minmax(0, 1fr); }
+  .pick__visual { padding: 28px 20px; border-right: 0; border-bottom: 1px solid var(--border-glass); border-radius: 14px 14px 0 0; }
   .compare__chart { order: -1; padding: 0 0 8px; }
   .lab__panel { grid-template-columns: minmax(0, 1fr); }
   .lab__controls { border-right: 0; border-bottom: 1px solid var(--border-glass); }
   .lab__tab { flex: 1 1 auto; justify-content: center; padding: 0 12px; }
-  .market__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .stat { padding: 20px 16px 16px; min-height: 0; }
-  .stat__number { font-size: clamp(22px, 6vw, 32px); }
-  .stat__desc { font-size: 13px; }
 
   .jr__body { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .jr__stage { padding: 28px 20px; border-right: 0; border-bottom: 1px solid var(--border-glass); border-radius: 14px 14px 0 0; }
@@ -1311,7 +1355,9 @@ html:not(.js) .lab { display: none; }
   .form__grid { grid-template-columns: minmax(0, 1fr); }
   .terminal__body { font-size: 12px; padding: 20px 16px; min-height: 300px; }
   .feature { padding: 22px 20px; }
-  .jr__sum { grid-template-columns: minmax(0, 1fr); }
+  .jr__sum,
+  .quiz__opts,
+  .cmp__readouts { grid-template-columns: minmax(0, 1fr); }
   .hero__cue { bottom: 16px; font-size: 12px; }
 }
 

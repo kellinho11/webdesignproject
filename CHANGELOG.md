@@ -20,6 +20,39 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.4.0] — 2026-10-20 · MINOR
+
+### Adicionado
+- **Comparativo** (`#tecnologia`), agora "Quanto maior o problema, maior a vantagem.":
+  - Um controle deslizante muda o tamanho do problema, de 10 a 60 variáveis.
+  - O tempo da IA clássica e o da SynapseQ aparecem em unidades do dia a dia (milissegundos, dias, mil anos).
+  - O marcador do gráfico acompanha o controle e mostra quantas vezes o quântico é mais rápido.
+  - Com problemas pequenos, a página admite que o clássico vence.
+- **Mercado** (`#mercado`), agora "O mercado quântico já é real.": os 4 números viram palpites. Cada card tem 3 opções; depois do palpite, a resposta certa fica destacada, junto com o número, uma explicação simples e a fonte. No fim aparece o placar.
+- **Casos de Uso** (`#casos-de-uso`), agora "Qual desafio é o seu?":
+  - Três escolhas (carteira de investimentos, molécula para remédio, busca em milhões de registros) abrem um painel com a ilustração, um "Para ter ideia" e a comparação clássico × SynapseQ.
+  - O botão "Testar na demo" leva à Demonstração já na aba do algoritmo certo.
+- As dicas "A seguir" que apontam para essas três seções passam a descrever as interações novas.
+
+### Acessibilidade
+- O veredito do Comparativo é anunciado só quando o controle para, e não a cada passo arrastado.
+- Os palpites usam `aria-disabled` em vez de `disabled`: depois de responder, o foco continua no botão clicado. O resultado de cada palpite é anunciado para leitores de tela.
+- As escolhas dos Casos de Uso são abas no padrão das outras (setas ←/→, Home e End).
+- O rótulo do gráfico ganhou contorno da cor do fundo e continua legível quando o marcador passa por baixo dele.
+- Sem JavaScript:
+  - o Comparativo mostra os valores de 30 variáveis, já escritos no HTML;
+  - o Mercado mostra as 4 respostas, sem opções;
+  - os Casos de Uso mostram os 3 painéis empilhados. O painel do Grover dispensa o quadro, que precisaria do JS para ser montado.
+  - "Testar na demo" é um link para `#demo` e funciona mesmo assim.
+
+### Removido
+- Os cards "IA Clássica" e "SynapseQ" do Comparativo, a grade de 4 números do Mercado e os 3 cards fixos dos Casos de Uso. O conteúdo deles continua nas versões interativas.
+- As classes que só esses blocos usavam (`compare-card*`, `badge`, `market__grid`, `stat`, `stat__desc`, `cases__grid`, `case`, `case__visual`, `case__title`, `case__text`).
+
+### Observação
+- É MINOR porque as âncoras e ids de seção continuam os mesmos (`#tecnologia`, `#comparativo`, `#mercado`, `#casos-de-uso`, `#grover`). As classes removidas eram internas dessas seções, não do design system (`card-glass`, botões, `section`).
+- Bateria de testes: 135/135, com 5 testes novos: o controle do Comparativo, os palpites (um por card, o foco e o placar), as escolhas com teclado e o "Testar na demo", a página sem erros e a versão sem JS. O teste do Grover passou a abrir a escolha "Grover" antes.
+
 ## [2.3.0] — 2026-10-20 · MINOR
 
 ### Adicionado

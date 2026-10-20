@@ -299,10 +299,11 @@
     modes.forEach((b) => b.addEventListener('click', () => (b.dataset.mode === 'classic' ? runClassic() : runQuantum())));
   }
 
-  /* === Comparativo: gráfico de complexidade ===
+  /* === Comparativo: gráfico de complexidade + tamanho do problema ===
      Curvas calculadas, não desenhadas à mão. Eixo x: n de 0 a 60 mapeado em 40..380.
-     Clássica: O(2^n) normalizada para a altura do gráfico; quântica: O(√n).
-     O HTML já traz uma versão simplificada para quem está sem JS. */
+     Clássica: O(2^n) normalizada para a altura do gráfico; quântica: curva achatada (só ilustra a forma).
+     Os tempos do controle usam 28 ns por caminho no clássico e 3 µs·√2ⁿ no quântico.
+     O HTML já traz o estado de 30 variáveis para quem está sem JS. */
   const chart = $('.chart');
   if (chart) {
     const X = (n) => 40 + (340 * n) / 60;
@@ -315,9 +316,53 @@
     };
     $('#curve-exp').setAttribute('d', build(expY));
     $('#curve-sqrt').setAttribute('d', build(sqrtY));
-    $('#dot-exp').setAttribute('cy', expY(50).toFixed(2));
-    $('#dot-sqrt').setAttribute('cy', sqrtY(50).toFixed(2));
     onceInView(chart, () => chart.classList.add('is-drawn'), 0.4);
+
+    const nIn = $('#cmp-n');
+    const fmt = new Intl.NumberFormat('pt-BR');
+    const sig = new Intl.NumberFormat('pt-BR', { maximumSignificantDigits: 3 });
+    // segundos → "98 milissegundos", "1,2 anos", "36 mil anos"
+    const human = (sec) => {
+      const f = (v, one, many) => { const r = v >= 10 ? Math.round(v) : Math.round(v * 10) / 10; return `${fmt.format(r)} ${r === 1 ? one : many}`; };
+      if (sec < 1e-3) return f(sec * 1e6, 'microssegundo', 'microssegundos');
+      if (sec < 1) return f(sec * 1e3, 'milissegundo', 'milissegundos');
+      if (sec < 60) return f(sec, 'segundo', 'segundos');
+      if (sec < 3600) return f(sec / 60, 'minuto', 'minutos');
+      if (sec < 86400) return f(sec / 3600, 'hora', 'horas');
+      if (sec < 31557600) return f(sec / 86400, 'dia', 'dias');
+      const y = sec / 31557600;
+      return y < 1000 ? f(y, 'ano', 'anos') : f(y / 1000, 'mil anos', 'mil anos');
+    };
+    const el = (id) => document.getElementById(id);
+    const marker = el('cmp-marker'), dExp = el('dot-exp'), dSq = el('dot-sqrt'), nl = el('cmp-nlbl');
+    const big = el('cmp-big'), small = el('cmp-small'), verdict = el('cmp-verdict');
+    let verdictTimer = 0;
+    const update = () => {
+      const n = +nIn.value, x = X(n).toFixed(1);
+      const tc = Math.pow(2, n) * 2.8e-8, tq = 3e-6 * Math.pow(2, n / 2);
+      el('cmp-n-out').textContent = `${n} variáveis`;
+      el('cmp-tc').textContent = human(tc);
+      el('cmp-tq').textContent = human(tq);
+      marker.setAttribute('x1', x); marker.setAttribute('x2', x);
+      dExp.setAttribute('cx', x); dExp.setAttribute('cy', expY(n).toFixed(1));
+      dSq.setAttribute('cx', x); dSq.setAttribute('cy', sqrtY(n).toFixed(1));
+      nl.setAttribute('x', x); nl.textContent = `n = ${n}`;
+      // o número grande fica do lado com mais espaço
+      const left = X(n) > 170;
+      [big, small].forEach((t) => { t.setAttribute('x', left ? X(n) - 10 : X(n) + 10); t.setAttribute('text-anchor', left ? 'end' : 'start'); });
+      const wins = tq < tc;
+      big.textContent = wins ? `${sig.format(tc / tq)}×` : 'clássico vence';
+      small.textContent = wins ? 'mais rápido' : 'problema pequeno';
+      // o veredito é aria-live: só muda quando o controle para, senão o leitor de tela fala a cada passo
+      clearTimeout(verdictTimer);
+      verdictTimer = setTimeout(() => {
+        verdict.innerHTML = wins
+          ? `Com ${n} variáveis, o quântico é <strong>${sig.format(tc / tq)}× mais rápido</strong>. Na prática: ${human(tc)} viram ${human(tq)}.`
+          : `Com só ${n} variáveis, o computador clássico ainda vence. <strong>Por isso só usamos quântico quando o problema é grande o bastante.</strong>`;
+      }, 350);
+    };
+    fillRange(nIn); update();
+    nIn.addEventListener('input', () => { fillRange(nIn); $('#cmp-drag').classList.add('is-gone'); update(); });
   }
 
   /* === Casos de uso: grade do Grover ===
@@ -335,6 +380,64 @@
     }
     grover.appendChild(frag);
     onceInView(grover, () => grover.classList.add('is-amplified'), 0.6);
+  }
+
+  /* === Mercado: palpites ===
+     Cada card aceita um palpite; depois disso as opções ficam aria-disabled (e não disabled,
+     para o foco não sumir do botão clicado) e a resposta aparece com a fonte. */
+  const quizzes = $$('.quiz');
+  if (quizzes.length) {
+    const scoreEl = $('#quiz-score'), statusEl = $('#quiz-status');
+    let answered = 0, score = 0;
+    quizzes.forEach((card) => {
+      const ans = +card.dataset.answer;
+      const opts = $$('[data-opt]', card);
+      opts.forEach((b) => b.addEventListener('click', () => {
+        if (card.classList.contains('is-answered')) return;
+        card.classList.add('is-answered');
+        const pick = +b.dataset.opt, right = pick === ans;
+        opts.forEach((o) => {
+          const k = +o.dataset.opt;
+          o.setAttribute('aria-disabled', 'true');
+          if (k === ans) o.classList.add('is-correct');
+          else if (k === pick) o.classList.add('is-wrong');
+        });
+        const verdict = $('.quiz__verdict', card);
+        verdict.textContent = right ? 'Acertou.' : `Quase. A resposta certa é ${opts[ans].textContent}.`;
+        $('.quiz__answer', card).hidden = false;
+        answered++; if (right) score++;
+        // cada resposta só é anunciada; o placar visível aparece quando os 4 foram respondidos
+        if (answered < quizzes.length) statusEl.textContent = `${verdict.textContent} ${$('.stat__number', card).textContent}.`;
+        else scoreEl.textContent = `Você acertou ${score} de ${quizzes.length}. O mercado já é real; falta software que transforme isso em resultado.`;
+      }));
+    });
+  }
+
+  /* === Casos de uso: escolha do desafio ===
+     Abas no mesmo padrão da Jornada e da Demo. "Testar na demo" é um link para #demo
+     (funciona sem JS); com JS ele também abre a aba do algoritmo certo. */
+  const choices = $$('.pick__choice');
+  if (choices.length) {
+    const casePanels = $$('[data-case-panel]');
+    const choose = (i, focus) => {
+      choices.forEach((c, k) => {
+        c.setAttribute('aria-selected', String(k === i));
+        c.tabIndex = k === i ? 0 : -1;
+        if (k === i && focus) c.focus();
+      });
+      casePanels.forEach((p) => { p.hidden = p.dataset.casePanel !== choices[i].dataset.case; });
+    };
+    choices.forEach((c, i) => {
+      c.addEventListener('click', () => choose(i));
+      c.addEventListener('keydown', (e) => {
+        const next = tabKey(e, i, choices.length);
+        if (next !== null) choose(next, true);
+      });
+    });
+    $$('.pick__demo').forEach((a) => a.addEventListener('click', () => {
+      const tab = document.getElementById(`tab-${a.dataset.demo}`);
+      if (tab) tab.click();
+    }));
   }
 
   /* === Demonstração ao vivo: QAOA, Grover e VQE ===
