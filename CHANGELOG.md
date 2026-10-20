@@ -20,6 +20,45 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [3.1.0] — 2026-10-20 · MINOR
+
+Sistema de movimento: o site passa a responder como uma ferramenta, não como um vídeo de fundo.
+
+### Adicionado
+- **Curvas de movimento como tokens**:
+  - `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` para entradas e respostas;
+  - `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` para o que se desloca na tela;
+  - `--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1)` para o menu mobile, que desliza como uma gaveta;
+  - as durações `--dur-press` (140ms) e `--dur-ui` (200ms).
+- **Resposta ao clique** em tudo que é clicável (botões, abas da Demo, passos da Jornada, escolhas dos Casos de Uso, opções do quiz, "Enviar" do terminal, botão do menu): o elemento afunda para 97% no instante do toque e volta rápido.
+- **Jornada pelo teclado**: os passos, que já eram abas, passam a andar com as setas ←/→, Home e End.
+
+### Alterado
+- **Pelo teclado não há animação**: com as setas, o passo da Jornada troca na hora. Com o clique, a entrada caiu de 450ms para 220ms, com deslocamento de 6px (antes 10px).
+- **O hover dos cartões** responde em 200ms depois da entrada. Antes herdava os 600ms da animação de entrada.
+- **A explicação do glossário** abre em 140ms, a partir do termo (base), e não do centro.
+- **A barra de progresso da Jornada** cresce por `transform`, não por `width`: não recalcula o layout a cada quadro.
+- **As dicas de "próximo passo"** (pulso no próximo botão, seta que balança, porta entre seções) chamam atenção 3 vezes e param, em vez de pulsar para sempre.
+- **O ponto "ao vivo"** nasce de 90% do tamanho, e não de zero.
+
+### Removido
+- Movimento decorativo sem propósito: as manchas de luz que derivavam, os brilhos que "respiravam" no Hero e nos Investidores, e as ilustrações dos Casos de Uso flutuando.
+
+### Corrigido
+- No celular, o toque deixava botões e cartões "levantados" (o hover ficava preso). O deslocamento do hover agora só vale com mouse.
+- Com o Hero fora da tela, as animações dele (portas, medidores, pulsos, barras) ficam pausadas.
+
+### Observação
+- É MINOR porque só muda como as coisas se movem; conteúdo, âncoras e classes continuam iguais.
+- Bateria de testes: 119/119, com 7 testes novos:
+  - o clique afunda o botão para 97%;
+  - as setas trocam o passo sem animação e o clique anima em 220ms;
+  - a barra usa `transform`;
+  - as dicas param depois de 3 pulsos;
+  - nenhuma mancha deriva;
+  - o Hero pausa fora da tela;
+  - a página não tem erros JS.
+
 ## [3.0.0] — 2026-10-20 · MAJOR
 
 O site passa a ser feito com **Next.js + React** e chega à versão final do redesenho (a "v5"): a página inteira é reorganizada, com uma intro interativa e seções recompostas.

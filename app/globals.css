@@ -2403,3 +2403,65 @@ body::after { inset: 0; z-index: -1; opacity: .05; mix-blend-mode: normal; }
 /* === Sem JS: a demonstração não roda, então abas e painéis saem e fica o aviso === */
 html:not(.js) .lab__tabs, html:not(.js) .lab__panel { display: none; }
 .demo__nojs { margin-top: 24px; padding: 20px 24px; border: 1px solid var(--border-glass); border-radius: 12px; color: var(--text-secondary); }
+
+/* ==========================================================
+   3.1 · Sistema de movimento
+   Curvas fortes como tokens, resposta ao toque em tudo que é clicável, hover que mexe só com
+   mouse, interações de interface até ~220ms e animações decorativas que param em vez de girar
+   para sempre. Fica no fim do arquivo de propósito: vence as regras espalhadas acima.
+   ========================================================== */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);      /* entradas e respostas de interface */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* o que se move na tela de um lugar a outro */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);   /* painéis que deslizam (menu mobile) */
+  --dur-press: 140ms;
+  --dur-ui: 200ms;
+}
+
+/* Resposta ao clique: afunda 3% na hora do toque e volta rápido */
+.btn-primary, .btn-secondary, .lab__tab, .lab__run, .lab__seg button, .jr__step, .jr__act, .jr__next,
+.pick__choice, .quiz__opt, .quiz__next, .terminal__send, .nav-toggle, .next-hint, .form__submit {
+  transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  transition-duration: var(--dur-press), var(--dur-ui), var(--dur-ui), var(--dur-ui), var(--dur-ui), var(--dur-ui);
+  transition-timing-function: var(--ease-out);
+}
+:is(.btn-primary, .btn-secondary, .lab__tab, .lab__run, .lab__seg button, .jr__step, .jr__act, .jr__next,
+.pick__choice, .quiz__opt, .quiz__next, .terminal__send, .nav-toggle, .next-hint, .form__submit):active:not(:disabled) {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+/* os botões do Hero crescem no hover com uma regra mais específica: o clique precisa vencer ela */
+.is-loaded .hero__actions .btn-glow:active, .is-loaded .hero-in.btn-primary:active { transform: scale(0.97); transition-duration: 80ms; }
+
+/* Hover que desloca só com mouse: no toque o "hover" fica preso depois do toque */
+@media (hover: none) {
+  .btn-primary:hover, .btn-secondary:hover, .card-glass:hover, .card-glass.reveal.is-visible:hover,
+  .is-loaded .hero-in.btn-primary:hover, .is-loaded .hero__actions .btn-glow:hover, .next-hint--glyph:hover .next-hint__gate { transform: none; }
+}
+
+/* Depois da entrada, o hover dos cartões responde em 200ms (antes herdava os 600ms da entrada) */
+.reveal.reveal-done { transition-duration: var(--dur-ui); transition-timing-function: var(--ease-out); }
+
+/* Tooltips do glossário: 140ms, saindo do termo (base), e não do centro */
+.term::after { transform-origin: bottom center; transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out), visibility 140ms; }
+
+/* Barra de progresso da Jornada: cresce por transform a partir da esquerda */
+.jr__progress span { width: 100%; transform: scaleX(0); transform-origin: left center; transition: transform 400ms var(--ease-out); }
+
+/* Menu mobile: desliza com a curva de gaveta */
+@media (max-width: 1080px) {
+  .site-nav { transition: opacity 200ms var(--ease-out), transform 300ms var(--ease-drawer), visibility 200ms; }
+}
+
+/* Nada surge do zero: o ponto "ao vivo" nasce em 90% */
+@keyframes dot-pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Dicas de "próximo passo" chamam atenção 3 vezes e param (pulsar sem fim vira ruído) */
+  .is-hint, .next-hint__arrow, .rm-arrow, .cmp__drag, .next-hint--glyph .next-hint__gate,
+  .cmp2:has(.is-hint-range) .cmp2__handle output { animation-iteration-count: 3; }
+  /* Movimento decorativo sem propósito sai: manchas que derivam, glows que respiram, ilustrações flutuando */
+  .blob--a, .blob--b, .blob--c, .hero__glow--text, .hero__glow--core, .cta__glow, .pick__visual svg, .pick__visual .grover { animation: none; }
+  /* Hero fora da tela: as animações dele param (classe posta pelo script) */
+  .hero.is-offscreen :is(.gate, .mq, .wire-pulse, .bar, .measure__glow, .live-dot) { animation-play-state: paused; }
+}
