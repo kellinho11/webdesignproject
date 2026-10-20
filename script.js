@@ -299,6 +299,179 @@
     modes.forEach((b) => b.addEventListener('click', () => (b.dataset.mode === 'classic' ? runClassic() : runQuantum())));
   }
 
+  /* === Interlúdios: criostato, chip e fluxo nuvem → QPU ===
+     As ilustrações são SVG montados aqui. Cada animação roda uma vez ao entrar na tela (menos de 5 s,
+     dentro do limite da WCAG 2.2.2 para movimento sem botão de pausa), para no estado final e
+     recomeça se o bloco sair e voltar. Com "reduzir movimento" fica o estado final do HTML. */
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs, parent) => {
+    const e = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+    return parent.appendChild(e);
+  };
+  // chama onEnter/onLeave cada vez que o elemento entra/sai da tela
+  const whenVisible = (el, onEnter, onLeave) => {
+    new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? onEnter() : onLeave())), { threshold: 0.25 }).observe(el);
+  };
+  const ilFmt = new Intl.NumberFormat('pt-BR');
+
+  /* --- 1 · Criostato: 5 andares + o chip no fundo, de 300 K a 15 mK --- */
+  const fr = $('#mg-fridge');
+  if (fr) {
+    const C = 250;
+    const plates = [{ y: 52, rx: 170, t: '300 K' }, { y: 140, rx: 146, t: '50 K' }, { y: 226, rx: 122, t: '4 K' }, { y: 308, rx: 98, t: '800 mK' }, { y: 384, rx: 76, t: '100 mK' }];
+    const rg = mk('radialGradient', { id: 'fr-glow' }, mk('defs', {}, fr));
+    mk('stop', { offset: '0', 'stop-color': '#6B46FF', 'stop-opacity': '0.55' }, rg);
+    mk('stop', { offset: '1', 'stop-color': '#6B46FF', 'stop-opacity': '0' }, rg);
+    mk('ellipse', { cx: C, cy: 462, rx: 170, ry: 70, fill: 'url(#fr-glow)' }, fr);
+    // raio do criostato na altura y (interpolado entre os andares)
+    const rxAt = (y) => {
+      if (y <= plates[0].y) return plates[0].rx;
+      for (let i = 0; i < plates.length - 1; i++) {
+        const a = plates[i], b = plates[i + 1];
+        if (y <= b.y) return a.rx + ((y - a.y) / (b.y - a.y)) * (b.rx - a.rx);
+      }
+      return 40;
+    };
+    plates.forEach((pl, i) => {
+      const n = plates[i + 1], y2 = n ? n.y : 404, r = n ? n.rx : 30;
+      [-0.86, -0.4, 0.4, 0.86].forEach((f) => mk('line', { x1: C + f * r, y1: pl.y + 8, x2: C + f * r, y2, class: 'fr-rod' }, fr));
+    });
+    // cabos coaxiais ondulados descendo até o chip, com um pulso de sinal em cada
+    [-0.62, -0.2, 0.22, 0.6].forEach((f, k) => {
+      let d = '';
+      for (let y = 58; y <= 404; y += 3) {
+        const x = C + f * Math.min(rxAt(y), 120) * 0.62 + Math.sin(y / 4.5 + k * 1.7) * 3.2;
+        d += `${y === 58 ? 'M' : 'L'}${x.toFixed(1)} ${y}`;
+      }
+      mk('path', { d, class: 'fr-coax' }, fr);
+      mk('path', { d, class: 'fr-pulse', pathLength: '400' }, fr).style.animationDelay = `${(k * 0.65).toFixed(2)}s`;
+    });
+    const tiers = plates.map((pl) => {
+      const g = mk('g', { class: 'fr-tier' }, fr);
+      mk('ellipse', { cx: C, cy: pl.y + 8, rx: pl.rx, ry: pl.rx * 0.15, class: 'fr-plate-under' }, g);
+      mk('ellipse', { cx: C, cy: pl.y, rx: pl.rx, ry: pl.rx * 0.15, class: 'fr-plate' }, g);
+      mk('line', { x1: C + pl.rx + 4, y1: pl.y, x2: C + pl.rx + 16, y2: pl.y, class: 'fr-tick' }, g);
+      mk('text', { x: C + pl.rx + 20, y: pl.y + 4, class: 'fr-temp' }, g).textContent = pl.t;
+      return g;
+    });
+    const base = mk('g', { class: 'fr-tier' }, fr);
+    mk('rect', { x: C - 26, y: 404, width: 52, height: 38, rx: 6, class: 'fr-mix' }, base);
+    mk('rect', { x: C - 50, y: 448, width: 100, height: 20, rx: 3, class: 'fr-chip' }, base);
+    for (let k = 0; k < 5; k++) mk('circle', { cx: C - 32 + k * 16, cy: 458, r: 3.4, class: 'fr-qubit' }, base);
+    mk('line', { x1: C + 54, y1: 458, x2: C + 70, y2: 458, class: 'fr-tick' }, base);
+    mk('text', { x: C + 74, y: 462, class: 'fr-temp' }, base).textContent = '15 mK · qubits';
+    tiers.push(base);
+
+    const temps = ['300 K', '50 K', '4 K', '800 mK', '100 mK', '15 mK'];
+    const notes = ['temperatura ambiente', 'mais frio que Plutão', 'hélio líquido', 'quase lá…', 'mais frio que o espaço (2,7 K)', '≈ −273,14 °C · qubits prontos'];
+    const tempEl = $('#fridge-temp'), noteEl = $('#fridge-c');
+    const LAST = temps.length - 1;
+    const cool = (st) => {
+      tiers.forEach((t, i) => { t.classList.toggle('is-cold', i <= st); t.classList.toggle('is-now', i === st); });
+      tempEl.textContent = temps[st]; noteEl.textContent = notes[st];
+    };
+    cool(LAST);
+    if (!reduceMotion) {
+      let timer = 0;
+      const stop = () => { clearInterval(timer); timer = 0; fr.classList.remove('is-running'); cool(LAST); };
+      whenVisible(fr, () => {
+        if (timer) return;
+        let st = 0;
+        cool(0); fr.classList.add('is-running');
+        timer = setInterval(() => { st++; cool(st); if (st === LAST) stop(); }, 700);
+      }, stop);
+    }
+  }
+
+  /* --- 2 · Chip: grade 5 × 4 de qubits; 12 portas aleatórias acendem ligações vizinhas --- */
+  const chip = $('#mg-chip');
+  if (chip) {
+    mk('rect', { x: 30, y: 20, width: 460, height: 360, rx: 18, class: 'chip-pkg' }, chip);
+    for (let x = 64; x <= 456; x += 28) {
+      mk('line', { x1: x + 6, y1: 36, x2: x + 6, y2: 60, class: 'chip-bond' }, chip);
+      mk('line', { x1: x + 6, y1: 340, x2: x + 6, y2: 364, class: 'chip-bond' }, chip);
+      mk('rect', { x, y: 28, width: 12, height: 8, rx: 1, class: 'chip-pad' }, chip);
+      mk('rect', { x, y: 364, width: 12, height: 8, rx: 1, class: 'chip-pad' }, chip);
+    }
+    mk('rect', { x: 70, y: 60, width: 380, height: 280, rx: 8, class: 'chip-die' }, chip);
+    const COLS = 5, ROWS = 4, X0 = 120, DX = 70, Y0 = 100, DY = 66;
+    const pos = (i) => ({ x: X0 + (i % COLS) * DX, y: Y0 + Math.floor(i / COLS) * DY });
+    const links = [];
+    for (let i = 0; i < COLS * ROWS; i++) {
+      if (i % COLS < COLS - 1) links.push([i, i + 1]);
+      if (i + COLS < COLS * ROWS) links.push([i, i + COLS]);
+    }
+    const fires = links.map(([a, b]) => {
+      const A = pos(a), B = pos(b);
+      mk('line', { x1: A.x, y1: A.y, x2: B.x, y2: B.y, class: 'chip-link' }, chip);
+      return mk('line', { x1: A.x, y1: A.y, x2: B.x, y2: B.y, class: 'chip-fire', pathLength: '100' }, chip);
+    });
+    const nodes = Array.from({ length: COLS * ROWS }, (_, i) => {
+      const pt = pos(i), g = mk('g', { class: 'chip-node' }, chip);
+      mk('circle', { cx: pt.x, cy: pt.y, r: 13, class: 'chip-q' }, g);
+      mk('circle', { cx: pt.x, cy: pt.y, r: 5, class: 'chip-qc' }, g);
+      return g;
+    });
+    const countEl = $('#chip-count'), readEl = $('#chip-read');
+    const GATES = ['CNOT', 'CZ', 'iSWAP'], PER_RUN = 12;
+    let count = 0, timer = 0;
+    const fire = () => {
+      const k = Math.floor(Math.random() * links.length), [a, b] = links[k], f = fires[k];
+      // tira e recoloca a classe para a animação recomeçar mesmo na mesma ligação
+      f.classList.remove('is-fire'); void f.getBoundingClientRect(); f.classList.add('is-fire');
+      [a, b].forEach((n) => { nodes[n].classList.add('is-on'); setTimeout(() => nodes[n].classList.remove('is-on'), 650); });
+      count++;
+      countEl.textContent = ilFmt.format(count);
+      readEl.textContent = `portas executadas · ${GATES[k % 3]} q${a} ↔ q${b}`;
+    };
+    if (reduceMotion) nodes.forEach((n, i) => { if (i % 3 === 0) n.classList.add('is-on'); });
+    else {
+      const stop = () => { clearInterval(timer); timer = 0; };
+      whenVisible(chip, () => {
+        if (timer) return;
+        let n = 0;
+        fire();
+        timer = setInterval(() => { fire(); if (++n >= PER_RUN - 1) stop(); }, 380);
+      }, stop);
+    }
+  }
+
+  /* --- 3 · Fluxo: ida até o QPU e volta, 340 ms representados em 3,5 s --- */
+  const flow = $('#flow');
+  if (flow && !reduceMotion) {
+    const fnodes = $$('[data-node]', flow), fdots = $$('[data-dot]', flow);
+    const msEl = $('#flow-ms'), capEl = $('#flow-cap');
+    const phases = [
+      { cap: 'Sua requisição sai…', node: 0, dot: 0, dir: 1 },
+      { cap: 'A IA traduz o problema em qubits', node: 1, dot: 1, dir: 1 },
+      { cap: 'O QPU calcula a −273 °C', node: 2 },
+      { cap: 'A IA interpreta o resultado', node: 1, dot: 1, dir: -1 },
+      { cap: 'Resposta na sua tela', node: 0, dot: 0, dir: -1 },
+    ];
+    const PH = 700, TOTAL = PH * phases.length;
+    const render = (t) => {
+      const i = Math.min(phases.length - 1, Math.floor(t / PH)), ph = phases[i], local = Math.min(1, (t - i * PH) / PH);
+      fnodes.forEach((n, k) => n.classList.toggle('is-on', k === ph.node));
+      fdots.forEach((d, k) => {
+        const on = ph.dot === k && t < TOTAL;
+        d.style.opacity = on ? '1' : '0';
+        d.classList.toggle('is-back', on && ph.dir < 0);
+        if (on) d.style.left = `${((ph.dir > 0 ? local : 1 - local) * 100).toFixed(1)}%`;
+      });
+      capEl.textContent = ph.cap;
+      msEl.textContent = `${Math.round((Math.min(t, TOTAL) / TOTAL) * 340)} ms`;
+    };
+    let raf = 0, start = null;
+    const step = (ts) => {
+      if (start === null) start = ts;
+      const t = ts - start;
+      render(t);
+      raf = t < TOTAL ? requestAnimationFrame(step) : 0;
+    };
+    whenVisible(flow, () => { if (!raf) { start = null; raf = requestAnimationFrame(step); } }, () => { cancelAnimationFrame(raf); raf = 0; render(TOTAL); });
+  }
+
   /* === Comparativo: gráfico de complexidade + tamanho do problema ===
      Curvas calculadas, não desenhadas à mão. Eixo x: n de 0 a 60 mapeado em 40..380.
      Clássica: O(2^n) normalizada para a altura do gráfico; quântica: curva achatada (só ilustra a forma).

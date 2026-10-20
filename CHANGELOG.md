@@ -20,6 +20,29 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [2.7.0] — 2026-10-20 · MINOR
+
+### Adicionado
+Três **interlúdios**: pausas visuais entre as seções, cada um com uma ilustração animada em SVG.
+- **"Mais frio que o espaço sideral."** (depois da Jornada): um criostato com 5 andares e o chip no fundo. Os andares acendem do mais quente ao mais frio, de 300 K a 15 mK (≈ −273,14 °C), com pulsos de sinal descendo pelos cabos.
+- **"Cada ponto, um qubit."** (depois dos Casos de Uso): um chip com 20 qubits em grade. Portas lógicas (CNOT, CZ, iSWAP) acendem a ligação entre dois qubits vizinhos, e um contador mostra quantas já rodaram.
+- **"Da sua tela ao qubit e de volta."** (depois da Demonstração): o caminho de uma requisição, da empresa à IA SynapseQ e ao QPU, e a volta, com o tempo subindo até 340 ms.
+
+### Acessibilidade
+- Cada animação roda **uma vez** ao entrar na tela, em menos de 5 segundos, e para no estado final. Ela recomeça se o bloco sair e voltar para a tela. No modelo de referência elas giravam sem parar. Assim não é preciso botão de pausa (WCAG 2.2.2), e nada fica se mexendo enquanto a pessoa lê o resto da página.
+- O estado final já vem escrito no HTML (15 mK, 20 qubits / 31 conexões, 340 ms). É o que aparece com "reduzir movimento" e sem JavaScript. Sem JS, as ilustrações (que dependem do script) saem e fica só o texto.
+- As ilustrações são decorativas (`aria-hidden`). O fluxo é uma lista ordenada com as três etapas, para quem usa leitor de tela.
+
+### Observação
+- É MINOR porque só acrescenta blocos entre as seções. As âncoras e a ordem das dicas "A seguir" continuam as mesmas.
+- O ícone da IA no fluxo tem o próprio degradê, em vez de depender do degradê do logo no header.
+- Bateria de testes: 149/149, com 5 testes novos:
+  - o criostato esfria e para;
+  - o chip roda 12 portas e para;
+  - o fluxo faz uma passada e termina em 340 ms;
+  - a página sem erros JS;
+  - "reduzir movimento" e sem JS já no estado final.
+
 ## [2.6.0] — 2026-10-20 · MINOR
 
 ### Adicionado

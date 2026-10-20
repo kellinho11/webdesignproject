@@ -266,6 +266,25 @@
     </div>
   </section>
 
+  <!-- ============ INTERLÚDIO 1 · POR DENTRO DO HARDWARE ============ -->
+  <!-- os números do HTML são o fim da animação: é o que fica sem JS ou com "reduzir movimento" -->
+  <section class="interlude interlude--fridge" aria-labelledby="il1-title">
+    <div class="container interlude__inner">
+      <div class="interlude__copy">
+        <p class="section-label reveal">POR DENTRO DO HARDWARE</p>
+        <h2 id="il1-title" class="interlude__title reveal" style="--rd:80ms">Mais frio que o <span class="kw">espaço sideral</span>.</h2>
+        <p class="interlude__sub reveal" style="--rd:160ms">Cada andar esfria mais. No fundo, o chip com os qubits.</p>
+        <p class="interlude__readout reveal" style="--rd:240ms">
+          <span class="interlude__big" id="fridge-temp">15 mK</span>
+          <span class="interlude__small" id="fridge-c">≈ −273,14 °C · qubits prontos</span>
+        </p>
+      </div>
+      <div class="interlude__media" aria-hidden="true">
+        <svg class="mg" id="mg-fridge" viewBox="0 0 520 520"></svg>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ COMPARATIVO ============ -->
   <section class="section compare" id="tecnologia" aria-labelledby="compare-title">
     <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">H</span><span class="qwire__name">Hadamard · superposição</span><span class="qwire__line"></span></div></div>
@@ -510,6 +529,24 @@
     </div>
   </section>
 
+  <!-- ============ INTERLÚDIO 2 · O CHIP ============ -->
+  <section class="interlude interlude--chip" aria-labelledby="il2-title">
+    <div class="container interlude__inner interlude__inner--rev">
+      <div class="interlude__media" aria-hidden="true">
+        <svg class="mg" id="mg-chip" viewBox="0 0 520 400"></svg>
+      </div>
+      <div class="interlude__copy">
+        <p class="section-label reveal">O CHIP</p>
+        <h2 id="il2-title" class="interlude__title reveal" style="--rd:80ms">Cada ponto, um <span class="kw">qubit</span>.</h2>
+        <p class="interlude__sub reveal" style="--rd:160ms">Cada linha acesa é uma porta lógica conectando dois qubits.</p>
+        <p class="interlude__readout reveal" style="--rd:240ms">
+          <span class="interlude__big" id="chip-count">20 qubits</span>
+          <span class="interlude__small" id="chip-read">31 conexões possíveis</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ DEMONSTRAÇÃO AO VIVO ============ -->
   <section class="section demo" id="demo" aria-labelledby="demo-title">
     <div class="qwire" aria-hidden="true"><div class="container qwire__inner"><span class="qwire__ket">|q⟩</span><span class="qwire__line"></span><span class="qwire__gate">U</span><span class="qwire__name">U(β, γ) · camada variacional</span><span class="qwire__line"></span></div></div>
@@ -613,6 +650,36 @@
         </div>
       </div>
       <a class="next-hint reveal" href="#quantum-engineering"><span class="next-hint__tag">A seguir</span><span class="next-hint__title">Como sua empresa usaria isso?</span><span class="next-hint__teaser">Veja uma requisição real à API, linha a linha</span><span class="next-hint__arrow" aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+
+  <!-- ============ INTERLÚDIO 3 · DA NUVEM AO QUBIT ============ -->
+  <section class="interlude interlude--flow" aria-labelledby="il3-title">
+    <div class="container">
+      <div class="interlude__copy interlude__copy--center">
+        <p class="section-label reveal">COMO CHEGA ATÉ VOCÊ</p>
+        <h2 id="il3-title" class="interlude__title reveal" style="--rd:80ms">Da sua tela ao <span class="kw">qubit</span> e de volta.</h2>
+      </div>
+      <ol class="flow reveal" id="flow" style="--rd:160ms" aria-label="Caminho de uma requisição">
+        <li class="flow__node" data-node="0">
+          <span class="flow__icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="24" rx="3"/><path d="M18 39h12M24 33v6"/></svg></span>
+          <span class="flow__label">Sua empresa</span>
+        </li>
+        <li class="flow__link" aria-hidden="true"><span class="flow__dot" data-dot="0"></span></li>
+        <li class="flow__node" data-node="1">
+          <span class="flow__icon" aria-hidden="true"><svg viewBox="-20 -20 40 40"><defs><linearGradient id="flow-grad" x1="-16" y1="-16" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#6B46FF"/></linearGradient></defs><g fill="none" stroke="url(#flow-grad)" stroke-width="1.6"><ellipse rx="15" ry="5.8" transform="rotate(20)"/><ellipse rx="15" ry="5.8" transform="rotate(-20)"/><ellipse rx="15" ry="5.8" transform="rotate(90)"/></g><circle r="2.6" fill="#6B46FF"/></svg></span>
+          <span class="flow__label">IA SynapseQ</span>
+        </li>
+        <li class="flow__link" aria-hidden="true"><span class="flow__dot" data-dot="1"></span></li>
+        <li class="flow__node is-on" data-node="2">
+          <span class="flow__icon" aria-hidden="true"><svg viewBox="0 0 48 48"><ellipse cx="24" cy="10" rx="17" ry="3"/><ellipse cx="24" cy="21" rx="13" ry="2.4"/><ellipse cx="24" cy="31" rx="9" ry="1.8"/><path d="M12 11v9M36 11v9M16 22v8M32 22v8M20 32v6M28 32v6"/><rect x="18" y="38" width="12" height="4" rx="1"/></svg></span>
+          <span class="flow__label">QPU · −273 °C</span>
+        </li>
+      </ol>
+      <p class="flow__foot reveal" style="--rd:240ms">
+        <span class="flow__ms" id="flow-ms">340 ms</span>
+        <span class="flow__caption" id="flow-cap">Ida e volta até o QPU</span>
+      </p>
     </div>
   </section>
 
