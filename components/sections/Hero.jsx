@@ -1,4 +1,7 @@
 // Seção: Hero
+import BlochSphere from '../live/BlochSphere.jsx';
+import Telemetry from '../live/Telemetry.jsx';
+
 export default function Hero() {
   return (
     <>
@@ -50,51 +53,39 @@ export default function Hero() {
         </svg>
       </div>
     </div>
-    <div className="hero__glow hero__glow--core" aria-hidden="true"></div>
     <div className="hero__veil" aria-hidden="true"></div>
-    <div className="hero__glow hero__glow--ambient" aria-hidden="true"></div>
-    <div className="hero__circuit hero__circuit--meter" aria-hidden="true">
-      <div className="hero__circuit-inner">
-        <svg viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <radialGradient id="meter-glow"><stop offset="0" stopColor="#6B46FF" stopOpacity=".55" /><stop offset=".55" stopColor="#3B82F6" stopOpacity=".18" /><stop offset="1" stopColor="#3B82F6" stopOpacity="0" /></radialGradient>
-            <filter id="meter-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22" /></filter>
-          </defs>
-          <ellipse className="measure__glow" cx="802" cy="185" rx="130" ry="175" fill="url(#meter-glow)" filter="url(#meter-blur)" />
-          <g className="measure">
-            <rect className="measure__panel" x="720" y="40" width="165" height="280" />
-            <text className="measure__title" x="734" y="64">MEDIÇÃO · q0 q1</text>
-            <line className="measure__base" x1="732" y1="270" x2="878" y2="270" />
-            <rect className="bar" style={{ '--s': '1', '--end': '.06' }} x="740" y="90" width="22" height="180" />
-            <rect className="bar" style={{ '--s': '-1', '--end': '.05' }} x="778" y="90" width="22" height="180" />
-            <rect className="bar bar--win" style={{ '--s': '1', '--end': '.8' }} x="816" y="90" width="22" height="180" />
-            <rect className="bar" style={{ '--s': '-1', '--end': '.09' }} x="854" y="90" width="22" height="180" />
-            <text className="measure__label" x="751" y="290">|00⟩</text>{' '}
-            <text className="measure__label" x="789" y="290">|01⟩</text>{' '}
-            <text className="measure__label" x="827" y="290">|10⟩</text>{' '}
-            <text className="measure__label" x="865" y="290">|11⟩</text>
-          </g>
-        </svg>
-      </div>
-    </div>
-    <div className="hero__glow hero__glow--text" aria-hidden="true"></div>
-
-    <div className="container hero__content">
+    <div className="ed hero__content">
       <div className="hero__parallax">
-        <p className="hero__label hero-in" style={{ '--d': '0ms' }}><span className="live-dot" aria-hidden="true">●</span> IA × COMPUTAÇÃO QUÂNTICA</p>
-        <h1 id="hero-title" className="hero__title">
-          <span className="hero__line hero-in" style={{ '--d': '200ms' }}>A inteligência do futuro,</span>{' '}
-          <span className="hero__line hero-in" style={{ '--d': '320ms' }}>na velocidade do <span className="text-gradient-reveal kw">impossível</span></span>
-        </h1>
-        <p className="hero__subtitle hero-in" style={{ '--d': '450ms' }}>IA de última geração + processamento quântico, para problemas que a computação clássica ainda não alcança.</p>
-        <div className="hero__actions">
-          <a href="#investidores" className="btn-primary btn-glow hero-in hero-in--scale" style={{ '--d': '560ms' }}>Agendar Demonstração</a>{' '}
-          <a href="#quantum-engineering" className="btn-secondary btn-glow hero-in" style={{ '--d': '620ms' }}>Ler Whitepaper Técnico</a>
+        <p className="hero__folio hero-in" style={{ '--d': '0ms' }}><span>SynapseQ</span><span>Nº 04 · Series A · 2026</span><span>IA × Computação Quântica</span></p>
+        <div className="hero__main">
+          <h1 id="hero-title" className="hero__title">
+            <span className="hero__line hero-in" style={{ '--d': '160ms' }}>A inteligência</span>{' '}
+            <span className="hero__line hero__line--in hero-in" style={{ '--d': '260ms' }}>do futuro, na</span>{' '}
+            <span className="hero__line hero-in" style={{ '--d': '360ms' }}>velocidade do</span>{' '}
+            <span className="hero__line hero__line--kw hero-in" style={{ '--d': '480ms' }}><span className="kw">impossível.</span></span>
+          </h1>
+          <div className="hero__side">
+            <p className="hero__subtitle hero-in" style={{ '--d': '600ms' }}>Um modelo de IA traduz o seu problema num circuito quântico, a QPU de 64 qubits resolve a parte difícil e a resposta volta pela API em 340 ms.</p>
+            <div className="hero__actions hero-in" style={{ '--d': '700ms' }}>
+              <a href="#investidores" className="btn-primary">Agendar demonstração <span className="btn__arrow" aria-hidden="true">→</span></a>{' '}
+              <a href="#quantum-engineering" className="btn-secondary">Whitepaper técnico</a>
+            </div>
+          </div>
         </div>
-        <p className="hero__backers hero-in hero-in--fade" style={{ '--d': '750ms' }}>Backed by <span>Quantum Capital</span> · <span>Nebula Ventures</span> · <span>Vertex Partners</span></p>
+        <div className="hero__lab hero-in hero-in--fade" style={{ '--d': '420ms' }}>
+          <BlochSphere />
+          <Telemetry />
+        </div>
+        <dl className="hero__kpis hero-in hero-in--fade" style={{ '--d': '820ms' }}>
+          <div><dt>Qubits físicos</dt><dd>64</dd></div>
+          <div><dt>Vantagem com 30 variáveis</dt><dd>306×</dd></div>
+          <div><dt>Latência p50 da API</dt><dd>340 ms</dd></div>
+          <div><dt>Clientes enterprise</dt><dd>11</dd></div>
+        </dl>
+        <p className="hero__backers hero-in hero-in--fade" style={{ '--d': '900ms' }}><sup>¹</sup> Backed by Quantum Capital, Nebula Ventures e Vertex Partners. Dados de produto ilustrativos: o SynapseQ é um projeto acadêmico.</p>
       </div>
+      <a className="hero__drop hero-in hero-in--fade" href="#tecnologia" style={{ '--d': '900ms' }}><span className="hero__ket">|ψ⟩ = |0⟩</span><span>Desça pelo circuito</span></a>
     </div>
-    <a className="hero__cue hero-in hero-in--fade" style={{ '--d': '1000ms' }} href="#simples"><span className="hero__cue-coin" aria-hidden="true"></span>Comece aqui: gire um qubit <span aria-hidden="true">↓</span></a>
   </section>
     </>
   );

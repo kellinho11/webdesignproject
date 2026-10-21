@@ -4,7 +4,7 @@
 // Um só listener na página (delegação), em vez de um por painel. Não renderiza nada.
 import { useEffect } from 'react';
 
-const GLASS = '.site-header .header__inner, .card-glass.lab__panel, .lab__tab, .terminal, .qreg, .cta .form.sentence';
+const GLASS = '.site-header .header__inner, .glass-panel, .cta .form.sentence';
 
 // px, py: posição do ponteiro dentro do painel (0..1). Devolve onde fica o reflexo (sx, sy em %)
 // e quão forte ele é (sheen, opacidade do branco). A luz "vem de cima": o reflexo fica mais forte

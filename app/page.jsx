@@ -1,46 +1,47 @@
-import LegacyBehaviors from '@/components/LegacyBehaviors';
+import Behavior from '@/components/Behavior';
 import GlassSheen from '@/components/glass/GlassSheen';
 import Intro from '@/components/sections/Intro';
-import Starfield from '@/components/sections/Starfield';
 import SiteHeader from '@/components/sections/SiteHeader';
 import Hero from '@/components/sections/Hero';
-import Journey from '@/components/sections/Journey';
-import InterludeFridge from '@/components/sections/InterludeFridge';
 import Compare from '@/components/sections/Compare';
-import Market from '@/components/sections/Market';
 import Cases from '@/components/sections/Cases';
-import InterludeChip from '@/components/sections/InterludeChip';
 import Demo from '@/components/sections/Demo';
-import InterludeFlow from '@/components/sections/InterludeFlow';
 import Api from '@/components/sections/Api';
-import Roadmap from '@/components/sections/Roadmap';
 import Cta from '@/components/sections/Cta';
-import QubitRegister from '@/components/sections/QubitRegister';
 import SiteFooter from '@/components/sections/SiteFooter';
+import Thread from '@/components/story/Thread';
+import Bridge from '@/components/story/Bridge';
+import Machine from '@/components/story/Machine';
+import Space from '@/components/live/Space';
 
+// Um circuito de uma ponta à outra: o visitante é o qubit. Ele entra em |0⟩ no Hero, passa por
+// uma porta em cada seção (H, Rz, U, SWAP) e é medido nos Investidores. Depois do Hero a página
+// é um percurso em duas trilhas: o texto à esquerda, costurado pelo fio da margem (Thread) e pelas
+// pontes, e à direita o computador quântico (Machine), que a página desce estágio por estágio.
 export default function Home() {
   return (
     <>
+      <Space />
       <Intro />
-      <Starfield />
       <SiteHeader />
       <main id="topo">
         <Hero />
-        <Journey />
-        <InterludeFridge />
+        <div className="story">
+        <Thread />
+        <Machine />
         <Compare />
-        <Market />
+        <Bridge parts={[['Uma moeda girando é bonita no papel.'], ['Onde ela paga a conta?', true]]} note="H → Rz · aplicar ao mundo real" to="#casos-de-uso" />
         <Cases />
-        <InterludeChip />
+        <Bridge align="right" parts={[['Cada caso é um circuito.'], ['Rode um', true], ['e conte as respostas.']]} note="Rz → U · medir mil vezes" to="#demo" />
         <Demo />
-        <InterludeFlow />
+        <Bridge align="center" parts={[['Por trás de cada histograma há um criostato a −273 °C.'], ['Você só vê um endpoint.', true]]} note="U → SWAP · do laboratório para a API" to="#quantum-engineering" />
         <Api />
-        <Roadmap />
+        <Bridge parts={[['Todo circuito termina numa medição.'], ['Esta é a sua.', true]]} note="SWAP → M · colapso" to="#investidores" />
         <Cta />
+        </div>
       </main>
-      <QubitRegister />
       <SiteFooter />
-      <LegacyBehaviors />
+      <Behavior />
       <GlassSheen />
     </>
   );

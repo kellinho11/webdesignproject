@@ -1,32 +1,37 @@
-// Seção: Cta
+// Seção: Cta · porta M: a medição no fim do circuito
+import GateMark from '../story/GateMark.jsx';
+
 export default function Cta() {
   return (
     <>
-  <section className="section cta" id="investidores" aria-labelledby="cta-title">
-    <div className="leak" style={{ '--lx': '50%' }} aria-hidden="true"></div>
-    <div className="qwire" aria-hidden="true"><div className="container qwire__inner"><span className="qwire__ket">|q⟩</span><span className="qwire__line"></span><span className="qwire__gate">M</span><span className="qwire__name">Medição · colapso</span><span className="qwire__line"></span></div></div>
-    <svg className="bloch bloch--cta" data-bloch viewBox="-130 -130 260 260" aria-hidden="true">
-      <circle className="bloch__sphere" r="100" />
-      <ellipse className="bloch__eq" rx="100" ry="28" />
-      <ellipse className="bloch__mer" rx="28" ry="100" />
-      <line className="bloch__axis" x1="0" y1="-114" x2="0" y2="114" />
-      <line className="bloch__axis" x1="-114" y1="0" x2="114" y2="0" />
-      <text className="bloch__lbl" x="0" y="-120" textAnchor="middle">|0⟩</text>{' '}
-      <text className="bloch__lbl" x="0" y="128" textAnchor="middle">|1⟩</text>{' '}
-      <text className="bloch__lbl" x="118" y="4">|+⟩</text>
-      <line className="bloch__proj" data-proj x1="0" y1="0" x2="0" y2="0" />
-      <line className="bloch__vec" data-vec x1="0" y1="0" x2="0" y2="-100" />
-      <circle className="bloch__tip" data-tip cx="0" cy="-100" r="5" />
-      <text className="bloch__state" data-state x="-124" y="-104">θ = 0.00π · φ = 0.00π</text>{' '}
-    </svg>
-    <div className="cta__glow" aria-hidden="true"></div>
-    <div className="blobs blobs--cta" aria-hidden="true"><svg className="blob blob--a" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M420 110C548 84 668 168 652 292C638 404 536 474 414 462C292 450 186 398 178 286C170 176 296 136 420 110Z" /></svg><svg className="blob blob--b" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M250 210C330 132 474 148 524 240C574 334 502 436 388 446C276 456 160 404 152 322C144 254 186 272 250 210Z" /></svg><svg className="blob blob--c" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M590 250C672 212 772 266 768 352C764 444 670 504 576 482C484 460 438 396 460 326C478 272 520 282 590 250Z" /></svg></div>
+  <section className="section cta" id="investidores" aria-labelledby="cta-title" data-gate="M" data-state="M" data-num="§ 05" data-name="Investidores · colapso">
+    <GateMark gate="M" name="Medição · colapso" />
     {/* id antigo (até a v1.3.0), mantido como apelido para links já compartilhados */}
-    <div className="container" id="cta-final">
+    <div className="ed" id="cta-final">
+      <p className="cta__collapse reveal" aria-live="polite">Fim do circuito. Seu qubit colapsou em <output id="cta-qubit">|?⟩</output></p>
       <div className="cta2 reveal">
-        <h2 id="cta-title" className="section-title cta2__title section-title--violet"><span className="tl">Faça parte da próxima</span> <span className="tl"><span className="kw">fronteira</span>.</span></h2>
+        <p className="ed-num"><span>§ 05</span>Investidores · Series A</p>
+        <h2 id="cta-title" className="ed-title cta2__title"><span className="tl">Faça parte</span> <span className="tl tl--in2">da próxima</span> <span className="tl"><span className="kw">fronteira.</span></span></h2>
         <p className="cta__text">Rodada Series A aberta. Acesso ao data room com roadmap, benchmarks e tração.</p>
 
+        <div className="raise">
+          <dl className="raise__kpis">
+            <div><dt>Receita anual (ARR)</dt><dd>US$ 4,2 mi</dd></div>
+            <div><dt>Crescimento</dt><dd>3,1× ao ano</dd></div>
+            <div><dt>Patentes</dt><dd>23</dd></div>
+            <div><dt>Rodada</dt><dd>US$ 40 mi</dd></div>
+          </dl>
+          <figure className="raise__use">
+            <figcaption className="fig-label"><b>Fig. 7</b> Uso dos recursos</figcaption>
+            <p className="raise__bar" aria-hidden="true"><i style={{ '--w': '45%' }} /><i style={{ '--w': '30%' }} /><i style={{ '--w': '25%' }} /></p>
+            <ul className="raise__legend"><li>Hardware SQ-128 · 45%</li><li>P&amp;D em algoritmos · 30%</li><li>Go-to-market · 25%</li></ul>
+          </figure>
+          <ol className="raise__road">
+            <li><b>Q4 2026</b>SQ-64 em disponibilidade geral</li>
+            <li><b>Q2 2027</b>SQ-128 e SDK para Rust</li>
+            <li><b>2028</b>SQ-256 com correção de erro</li>
+          </ol>
+        </div>
         <form className="form sentence" id="investor-form" noValidate>
           <p className="sentence__body">
             <span className="sentence__lead">Para investidores ·</span>
@@ -35,7 +40,7 @@ export default function Cta() {
             {' '}e quero investir <span className="field field--select" style={{ '--w': '19ch' }}><label htmlFor="f-range" className="sr-only">Faixa de investimento</label><select id="f-range" name="range" required><option value="">faixa de investimento</option><option>US$ 250k – 1M</option><option>US$ 1M – 5M</option><option>US$ 5M – 15M</option><option>Acima de US$ 15M</option></select><span className="field__error" aria-live="polite"></span></span>.
             Envie o acesso para <span className="field" style={{ '--w': '17ch' }}><label htmlFor="f-email" className="sr-only">E-mail corporativo</label><input id="f-email" name="email" type="email" autoComplete="email" placeholder="e-mail corporativo" required /><span className="field__error" aria-live="polite"></span></span>
           </p>
-          <button type="submit" className="btn-primary btn-glow form__submit">Solicitar Acesso ao Data Room <span aria-hidden="true">→</span></button>
+          <button type="submit" className="btn-primary form__submit">Solicitar acesso ao data room <span className="btn__arrow" aria-hidden="true">→</span></button>
         </form>
 
         <div className="form__success" id="form-success" hidden>

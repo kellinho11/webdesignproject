@@ -1,4 +1,7 @@
 // Seção: SiteHeader
+import LiveStatus from '../live/LiveStatus.jsx';
+import MotionToggle from '../live/MotionToggle.jsx';
+
 export default function SiteHeader() {
   return (
     <>
@@ -38,6 +41,18 @@ export default function SiteHeader() {
       <button className="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menu">{' '}
         <span></span><span></span>{' '}
       </button>
+    </div>
+  </div>
+  {/* faixa de rumo: em que capítulo do circuito você está, quanto falta e o status da QPU */}
+  <div className="header__strip">
+    <div className="container header__strip-inner">
+      <p className="chapter"><b data-chapter-num>§ 00</b> <span data-chapter-name>Início · estado |0⟩</span></p>
+      <ol className="chapter__track" aria-hidden="true">
+        {['H', 'Rz', 'U', 'SW', 'M'].map((g) => <li key={g} data-tick={g}>{g}</li>)}
+        <i className="chapter__fill" />
+      </ol>
+      <LiveStatus />
+      <MotionToggle />
     </div>
   </div>
 </header>

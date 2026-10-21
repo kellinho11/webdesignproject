@@ -1,18 +1,52 @@
-// Seção: Demo
-import Lab from '../demo/Lab.jsx';
+// Seção: Demo · porta U: a rolagem roda o circuito. A seção é alta e o filme fica preso na tela;
+// descer a página é avançar no tempo (lib/behaviors/thread.js manda o progresso para o filme).
 import GlassOrbs from '../glass/GlassOrbs.jsx';
+import Film from '../films/Film.jsx';
+import GateMark from '../story/GateMark.jsx';
+import Circuits from '../story/Circuits.jsx';
+import ShotLog from '../live/ShotLog.jsx';
+
+const CHAPTERS = [
+  { at: 0, caption: 'Um circuito quântico não dá uma resposta: dá probabilidades. Por isso ele roda muitas vezes.' },
+  { at: 1.5, caption: 'Cada execução (um shot) termina numa medição: uma sequência de 0 e 1.' },
+  { at: 5, caption: 'Shot a shot, as respostas boas aparecem mais e o histograma toma forma.' },
+  { at: 10, caption: 'Com 1.024 shots, a resposta mais frequente é a solução.' },
+];
 
 export default function Demo() {
   return (
     <>
-  <section className="section lab" id="demo" aria-labelledby="lab-title">
-    <div className="leak" style={{ '--lx': '66%' }} aria-hidden="true"></div>
+  <section className="section lab" id="demo" data-algo="qaoa" aria-labelledby="lab-title" data-gate="U" data-state="U(β,γ)|ψ⟩" data-num="§ 03" data-name="Demonstração · medição repetida">
     <GlassOrbs preset="demo" />
-    <div className="qwire" aria-hidden="true"><div className="container qwire__inner"><span className="qwire__ket">|q⟩</span><span className="qwire__line"></span><span className="qwire__gate">U</span><span className="qwire__name">U(β, γ) · camada variacional</span><span className="qwire__line"></span></div></div>
-    <div className="bg-lattice" aria-hidden="true"></div>
-    <div className="container">
-      <Lab />
-      <a className="next-hint next-hint--glyph reveal" href="#quantum-engineering" aria-label="A seguir: Como sua empresa usaria isso?"><span className="next-hint__line" aria-hidden="true"></span><span className="next-hint__gate" aria-hidden="true">SW</span><span className="next-hint__line" aria-hidden="true"></span></a>
+    <GateMark gate="U" name="U(β, γ) · camada variacional" />
+    {/* só este bloco é alto: o circuito, depois dele, não passa por baixo da parte fixa */}
+    <div className="scrub">
+    <div className="scrub__sticky">
+      <div className="ed scrub__grid">
+        <header className="scrub__head">
+          <p className="ed-num"><span>§ 03</span>Demonstração · <span data-algo-label>QAOA · carteira</span></p>
+          <h2 id="lab-title" className="ed-title ed-title--sm"><span className="tl">Rode. Meça.</span> <span className="tl tl--in2">Veja <span className="kw">convergir.</span></span></h2>
+        </header>
+        <div className="scrub__film">
+          <Film scene="demo" duration={13} title="Da medição à resposta" chapters={CHAPTERS} mesh="violet" ratio="16 / 9" captions="below" scrub listen className="film--wide" />
+        </div>
+        <ol className="scrub__chapters">
+          {CHAPTERS.map((c, i) => <li key={i} className="scrub__ch" data-at={c.at / 13}><span>{String(i + 1).padStart(2, '0')}</span>{c.caption}</li>)}
+        </ol>
+        <div className="scrub__side">
+          <dl className="lab__stats">
+            <div><dt>Shots</dt><dd data-count="1024">1.024</dd></div>
+            <div><dt>Resposta vencedora</dt><dd data-count="61" data-suffix="%">61%</dd></div>
+            <div><dt>Qualidade</dt><dd data-count="0.94" data-dec="2">0,94</dd></div>
+          </dl>
+          <ShotLog />
+        </div>
+      </div>
+    </div>
+    </div>
+    <div className="ed lab__after">
+      <Circuits />
+      <p className="lab__note">Cada algoritmo é um circuito diferente rodando no mesmo chip. Escolha outro caso em <a href="#casos-de-uso">Casos de uso</a> e a Demo troca de circuito.</p>
     </div>
   </section>
     </>

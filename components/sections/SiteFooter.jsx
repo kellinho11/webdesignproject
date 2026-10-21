@@ -3,7 +3,6 @@ export default function SiteFooter() {
   return (
     <>
 <footer className="site-footer" id="rodape">
-  <div className="blobs blobs--footer" aria-hidden="true"><svg className="blob blob--a" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M420 110C548 84 668 168 652 292C638 404 536 474 414 462C292 450 186 398 178 286C170 176 296 136 420 110Z" /></svg><svg className="blob blob--b" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M250 210C330 132 474 148 524 240C574 334 502 436 388 446C276 456 160 404 152 322C144 254 186 272 250 210Z" /></svg><svg className="blob blob--c" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice"><path d="M590 250C672 212 772 266 768 352C764 444 670 504 576 482C484 460 438 396 460 326C478 272 520 282 590 250Z" /></svg></div>
   <div className="container footer__inner">
     <div className="footer__brand">
       <a href="#topo" className="brand" aria-label="SynapseQ · início">{' '}
@@ -20,23 +19,29 @@ export default function SiteFooter() {
       <p className="footer__tagline">IA × Computação Quântica</p>
     </div>
     <nav className="footer__nav" aria-label="Seções">
-      <a href="#simples">Jornada</a>{' '}
       <a href="#tecnologia">Tecnologia</a>{' '}
-      <a href="#mercado">Mercado</a>{' '}
       <a href="#casos-de-uso">Casos de Uso</a>{' '}
       <a href="#demo">Demo</a>{' '}
       <a href="#quantum-engineering">Quantum Engineering</a>{' '}
-      <a href="#roadmap">Roadmap</a>{' '}
       <a href="#investidores">Investidores</a>
     </nav>
+    <dl className="footer__spec">
+      <div><dt>Processador</dt><dd>SQ-64 · 64 qubits supercondutores</dd></div>
+      <div><dt>Operação</dt><dd>Criostato de diluição · 15 mK</dd></div>
+      <div><dt>Acesso</dt><dd>api.synapseq.ai · 3 regiões</dd></div>
+    </dl>
     <nav className="footer__nav" aria-label="Projeto">
       <a href="https://github.com/kellinho11/webdesignproject" target="_blank" rel="noopener noreferrer">GitHub</a>{' '}
       <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens</a>
     </nav>
   </div>
+  <ol className="container footer__circuit" aria-label="O circuito desta página">
+    <li><b>|0⟩</b>Início</li><li><b>H</b>Tecnologia</li><li><b>Rz</b>Casos de uso</li><li><b>U</b>Demo</li><li><b>SW</b>Quantum Engineering</li><li><b>M</b>Investidores</li>
+  </ol>
   <div className="container footer__bottom">
     <span>© 2026 SynapseQ. Projeto acadêmico desenvolvido na Facens.</span>{' '}
-    <span>Dados de mercado: IQT Research, TBRI, Quantinuum.</span>
+    <span>Dados de mercado: IQT Research, TBRI, Quantinuum. Métricas de produto ilustrativas.</span>{' '}
+    <span>Composto em Sora, Instrument Serif e JetBrains Mono.</span>
   </div>
 </footer>
     </>

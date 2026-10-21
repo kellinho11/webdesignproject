@@ -20,6 +20,65 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [4.0.0] — 2026-10-21 · MAJOR
+
+O site vira um percurso: o visitante é um qubit que atravessa um circuito, da intro até a medição nos Investidores, ao lado do computador quântico que o processa. MAJOR porque a página foi reduzida às 6 seções do menu, a estrutura e as classes do design system mudaram e âncoras de seções removidas (Jornada, Mercado, Roadmap) deixaram de existir.
+
+### Removido
+- Seções Jornada, Mercado, Roadmap, os três interlúdios, o campo de pontos e o registrador de qubits: ficam o Hero e as 5 seções do menu, além da intro.
+- Demonstrações interativas excessivas: o slider do comparativo, as abas e escalas dos Casos de Uso, o terminal de "Enviar requisição" e a Demo em React (`components/demo/`).
+- A seção clara dos Casos de Uso, que destoava do resto da página.
+- `lib/legacy.js` e `components/LegacyBehaviors.jsx`.
+
+### Adicionado
+- **O circuito da página**:
+  - um fio de qubit percorre a margem e se desenha com a rolagem;
+  - um marcador |ψ⟩ muda de estado a cada porta (H na Tecnologia, Rz nos Casos, U na Demo, SWAP na API, M nos Investidores);
+  - frases-ponte grandes ligam uma seção à próxima, e as palavras acendem conforme a leitura.
+- **O computador quântico ao lado do texto**:
+  - o criostato da intro passou para um módulo compartilhado (`lib/cryostat.js`) e virou um instrumento fixo à direita;
+  - a câmera desce até a parte que cada seção explica (chip, linhas de controle, leitura, máquina inteira, colapso), com nota e ficha técnica;
+  - no celular, é uma faixa fixa de 132px no topo.
+- **Filmes em motion graphics** (`components/films/`):
+  - cenas desenhadas em ASCII num canvas, sobre gradient mesh, com legenda e barra de vidro;
+  - capítulos, linha do tempo com clique e arraste, e botão de pausa;
+  - tocam só quando estão na tela: no máximo 3 de uma vez no desktop e 1 no celular.
+- **A moeda (bit × qubit)** é a interação principal da Tecnologia: girar põe em superposição e parar mede. O resultado medido é o mesmo que colapsa na porta M dos Investidores.
+- **Ligação entre seções**: "Rodar na Demo", nos Casos, leva até a Demo e troca o algoritmo (o histograma e o circuito de QAOA, Grover ou VQE). Na Demo, a rolagem é a linha do tempo do filme.
+- **Faixa de rumo no header**: mostra o capítulo atual, as 5 portas, a telemetria da QPU e o link da seção ativa no menu.
+- **Hero**: esfera de Bloch em canvas, telemetria do processador e números-chave.
+- **Mais informação em cada seção**:
+  - números-chave no topo de todas as seções;
+  - na Tecnologia, o fluxo "como uma pergunta vira resposta" e a tabela clássico × SynapseQ;
+  - nos Casos, o setor e as métricas de antes e depois;
+  - na Demo, o circuito do algoritmo escolhido e o log de shots;
+  - na API, o código em Python, TypeScript e cURL e a ficha técnica do hardware;
+  - nos Investidores, a tração, o uso dos recursos e os marcos;
+  - no rodapé, a ficha da máquina e o mapa do circuito.
+- **Fundo espacial**: céu em degradê com nebulosas, três camadas de estrelas com parallax, órbitas, coordenadas celestes e um fóton que cruza o céu.
+- **"Pausar movimento"**: um botão que para todas as animações automáticas do site de uma vez (WCAG 2.2.2).
+
+### Alterado
+- **Direção visual editorial**:
+  - grade com margem para o fio e 12 colunas;
+  - títulos em escada, com uma palavra em serifa itálica;
+  - cantos secos;
+  - botão principal em chapa de gelo e secundário sublinhado;
+  - sem texto em degradê e sem brilhos de neon.
+- **Interações reorganizadas**: ficam em `lib/behaviors/` (intro, header, entradas, Hero, fio, máquina, contadores, ligações, formulário e glossário), ligadas por `components/Behavior.jsx`. Cada uma recebe um escopo de limpeza (`lib/scope.js`) que desfaz eventos, observers e timers ao desmontar.
+- **CSS reorganizado**: um bloco por componente, na ordem da página, sem as regras mortas. Cada limpeza foi conferida com captura de página inteira em três larguras, com zero diferença de pixel.
+
+### Desempenho e acessibilidade
+- No celular, os filmes rodam a 24 quadros por segundo, com canvas de no máximo 1,5× e um filme tocando por vez.
+- Tudo que se move para fora da tela, com a aba oculta ou com "Pausar movimento".
+- Com "reduzir movimento", os filmes mostram o quadro-resumo e nada toca sozinho.
+- Os filmes têm roteiro completo para leitores de tela.
+
+### Observação
+As métricas de produto (receita, clientes, telemetria) são ilustrativas: o SynapseQ é um projeto acadêmico. O site diz isso no Hero e no rodapé.
+
+---
+
 ## [3.3.0] — 2026-10-20 · MINOR
 
 Desempenho das funções principais: as interações aparecem na tela até 7 vezes mais rápido.
