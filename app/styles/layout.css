@@ -1,0 +1,108 @@
+/* ==== Layout, seções e utilitários ==== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+}
+.section { position: relative; padding-block: clamp(72px, 8vw, 112px); }
+
+.section { overflow-x: clip; }
+@supports not (overflow: clip) {
+  .section { overflow-x: hidden; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Grade editorial (4.0) ----
+   .ed é o contêiner das seções: uma margem larga à esquerda, onde corre o fio do circuito, e 12
+   colunas. Os títulos se deslocam por colunas inteiras (tl--in1 a tl--in4), nunca centralizados. */
+main { position: relative; }
+.ed {
+  position: relative;
+  width: 100%;
+  max-width: var(--ed-max);
+  margin: 0 auto;
+  padding-left: var(--rail);
+  padding-right: var(--pad-r);
+}
+.ed-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  align-items: end;
+  margin-bottom: clamp(40px, 7vw, 96px);
+}
+.ed-num {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: clamp(18px, 2.4vw, 30px);
+  font: 500 11px/1.4 var(--fonte-codigo);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.ed-num > span:first-child { color: var(--ice); letter-spacing: 0.04em; }
+.ed-title {
+  grid-column: 1 / span 10;
+  margin: 0;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.6vw, 5.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  color: var(--text-strong);
+}
+.ed-title--sm { font-size: clamp(2.2rem, 4.8vw, 4.2rem); }
+.ed-title .tl { display: block; }
+.ed-title .kw { font-size: 1.06em; letter-spacing: -0.025em; line-height: 0.86; }
+.tl--in1 { padding-left: 10%; }
+.tl--in2 { padding-left: 20%; }
+.tl--in3 { padding-left: 32%; }
+.tl--in4 { padding-left: 41%; }
+.ed-lead {
+  grid-column: 9 / -1;
+  margin-top: clamp(20px, 3vw, 36px);
+  max-width: 38ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+.fig-label { font: 500 11px/1.4 var(--fonte-codigo); letter-spacing: 0.06em; color: var(--text-secondary); }
+.fig-label b { color: var(--ice); font-weight: 500; margin-right: 8px; }
+/* título entra linha a linha, por máscara (a linha sobe de dentro do próprio recorte) */
+.js .ed-title.reveal { opacity: 1; transform: none; }
+.js .ed-title.reveal .tl { clip-path: inset(0 -0.3em 100% -0.3em); transform: translateY(0.4em); }
+.ed-title.reveal.is-visible .tl {
+  clip-path: inset(-0.25em -0.3em -0.3em -0.3em);
+  transform: none;
+  transition: clip-path 760ms var(--ease-out), transform 760ms var(--ease-out);
+  transition-delay: calc(var(--rd, 0ms) + var(--li, 0) * 90ms);
+}
+.ed-title .tl:nth-child(2) { --li: 1; }
+.ed-title .tl:nth-child(3) { --li: 2; }
+.ed-title .tl:nth-child(4) { --li: 3; }
+@media (prefers-reduced-motion: reduce) {
+  .js .ed-title.reveal .tl { clip-path: none; transform: none; }
+}
+@media (max-width: 760px) {
+  :root { --rail: 30px; --pad-r: 18px; }
+  .ed-title { grid-column: 1 / -1; font-size: clamp(2.3rem, 11.5vw, 3.6rem); }
+  .ed-lead { grid-column: 1 / -1; }
+  .tl--in1 { padding-left: 6%; }
+  .tl--in2 { padding-left: 12%; }
+  .tl--in3, .tl--in4 { padding-left: 18%; }
+}

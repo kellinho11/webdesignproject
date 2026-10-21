@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { reducedMotion } from '@/lib/media';
 
 // Fundo espacial da página inteira, preso à tela e atrás de tudo:
 // - três camadas de estrelas (longe, meio, perto) que a rolagem desloca em velocidades diferentes;
@@ -44,7 +45,7 @@ export default function Space() {
       el.style.backgroundSize = `${L.tile}px ${L.tile}px`;
       el.style.setProperty('--tile', `${L.tile}px`);
     });
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (reducedMotion()) return undefined;
     let raf = 0;
     const move = () => {
       raf = 0;

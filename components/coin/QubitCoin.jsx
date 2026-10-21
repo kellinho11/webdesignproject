@@ -1,6 +1,8 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { reducedMotion } from '@/lib/media';
+import { emit } from '@/lib/signals';
 
 // A única peça interativa do site: a moeda como bit e como qubit.
 // Parada, ela é um bit (0 ou 1). Girando, é um qubit: as duas faces ao mesmo tempo.
@@ -39,14 +41,14 @@ export default function QubitCoin() {
     const base = from + 360;
     const target = base + (((result * 180 - base) % 360) + 360) % 360;
     // sem transição (movimento reduzido) o transitionend nunca chega: a medição é imediata
-    setMode(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'measured' : 'stopping');
+    setMode(reducedMotion() ? 'measured' : 'stopping');
     requestAnimationFrame(() => requestAnimationFrame(() => {
       el.style.transition = '';
       el.style.transform = `rotateY(${target}deg)`;
     }));
     setValue(result);
     // o resultado vira o estado do fio: a porta M, nos Investidores, mostra essa mesma medição
-    window.dispatchEvent(new CustomEvent('sq:measure', { detail: { value: result } }));
+    emit('measure', { value: result });
     setMeasures(([a, b]) => (result ? [a, b + 1] : [a + 1, b]));
   };
   const onEnd = (e) => { if (e.propertyName === 'transform' && mode === 'stopping') setMode('measured'); };

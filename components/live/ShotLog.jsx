@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RUNS } from '../films/scenes';
+import { RUNS } from '@/components/films/scenes';
+import { latest, listen } from '@/lib/signals';
 
-// Registro dos últimos shots medidos, sincronizado com a rolagem da Demo (evento sq:scrub) e com o
-// algoritmo escolhido nos Casos (sq:algo). Determinístico: o mesmo ponto da rolagem dá as mesmas linhas.
+// Registro dos últimos shots medidos, sincronizado com a rolagem da Demo (sinal scrub) e com o
+// algoritmo escolhido nos Casos (sinal algo). Determinístico: o mesmo ponto da rolagem dá as mesmas linhas.
 const rand = (i) => { const x = Math.sin(i * 91.7 + 13.1) * 43758.5453; return x - Math.floor(x); };
 function pick(run, i) {
   let r = rand(i), k = 0;
@@ -16,11 +17,10 @@ export default function ShotLog() {
   const [q, setQ] = useState(0);
   const [algo, setAlgo] = useState('qaoa');
   useEffect(() => {
-    const onScrub = (e) => setQ(e.detail);
-    const onAlgo = (e) => setAlgo(e.detail.algo);
-    window.addEventListener('sq:scrub', onScrub);
-    window.addEventListener('sq:algo', onAlgo);
-    return () => { window.removeEventListener('sq:scrub', onScrub); window.removeEventListener('sq:algo', onAlgo); };
+    if (latest('algo')) setAlgo(latest('algo').algo);
+    const offScrub = listen('scrub', setQ);
+    const offAlgo = listen('algo', ({ algo: a }) => setAlgo(a));
+    return () => { offScrub(); offAlgo(); };
   }, []);
   const run = RUNS[algo] || RUNS.qaoa;
   const n = Math.max(0, Math.round(1024 * Math.min(1, Math.max(0, (q * 13 - 1) / 10))));

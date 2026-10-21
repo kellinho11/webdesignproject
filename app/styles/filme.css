@@ -1,0 +1,133 @@
+/* ---- Filme: cena ASCII (canvas) sobre gradient mesh, com moldura e legenda de vidro ---- */
+.film { position: relative; margin: 0; display: grid; gap: 10px; }
+.film__screen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: var(--ratio, 16 / 9);
+  border-radius: 0;
+  background: #05070D;
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 30px 70px -30px rgba(0, 0, 0, 0.9);
+}
+/* Gradient mesh: três manchas radiais grandes que derivam devagar. Só transform anima (sem blur,
+   sem repintura): o desfoque vem do próprio degradê. */
+.film__mesh { position: absolute; inset: -20%; z-index: -1; }
+.film__mesh i {
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--m, rgba(59, 130, 246, 0.42)) 0%, transparent 66%);
+  will-change: transform;
+}
+.film__mesh i:nth-child(1) { left: -6%; top: 2%; }
+.film__mesh i:nth-child(2) { right: -10%; top: -12%; --m: var(--m2, rgba(107, 70, 255, 0.38)); }
+.film__mesh i:nth-child(3) { left: 28%; bottom: -24%; --m: var(--m3, rgba(201, 216, 255, 0.16)); }
+.film--violet .film__mesh i:nth-child(1) { --m: rgba(107, 70, 255, 0.42); }
+.film--violet { --m2: rgba(59, 130, 246, 0.32); }
+.film--ice { --m2: rgba(201, 216, 255, 0.22); --m3: rgba(59, 130, 246, 0.3); }
+.film__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* chrome do filme: barra de título e legenda são placas de vidro sobre a cena */
+.film__bar,
+.film__caption--over {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 2px;
+  background: rgba(10, 14, 24, 0.5);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(var(--ink-rgb), 0.08);
+  border-top-color: rgba(var(--ink-rgb), 0.16);
+}
+.film__bar { top: 12px; padding: 7px 12px; font: 500 11px/1 var(--fonte-codigo); color: var(--text-secondary); letter-spacing: 0.04em; }
+.film__title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.film__time { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.film__rec { width: 6px; height: 6px; border-radius: 50%; background: rgba(var(--ink-rgb), 0.35); transition: background-color var(--dur-ui); }
+.film[data-playing="true"] .film__rec { background: #FF5C7A; box-shadow: 0 0 8px rgba(255, 92, 122, 0.7); }
+.film__caption--over {
+  bottom: 12px;
+  align-items: baseline;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+.film__step { font: 600 11px var(--fonte-codigo); color: var(--ice); flex: none; }
+/* legenda embaixo da tela (filmes pequenos, nos cartões): texto corrido, altura reservada para duas linhas */
+.film__caption--below {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-height: calc(2 * 1.45em);
+  padding-inline: 4px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+/* controles: um botão e a linha do tempo com marcas de capítulo */
+.film__ctl { display: flex; align-items: center; gap: 12px; padding-inline: 2px; }
+.film__toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  border: 1px solid var(--glass-edge);
+  border-top-color: var(--glass-edge-top);
+  background: rgba(var(--surface-2-rgb), 0.7);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform var(--dur-press) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
+}
+.film__toggle svg { width: 14px; height: 14px; fill: currentColor; }
+.film__toggle:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) {
+  .film__toggle:hover { border-color: rgba(59, 130, 246, 0.6); }
+}
+.film__track { position: relative; flex: 1; height: 2px; border-radius: 2px; background: rgba(var(--ink-rgb), 0.12); }
+.film__track i {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-primary), #8B70FF);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+.film__track b {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: rgba(var(--ink-rgb), 0.3);
+  transition: background-color var(--dur-ui) var(--ease-out);
+}
+.film__track b.is-on { background: var(--ice); }
+@media (prefers-reduced-motion: no-preference) {
+  .film__mesh i:nth-child(1) { animation: mesh-a 18s ease-in-out infinite alternate; }
+  .film__mesh i:nth-child(2) { animation: mesh-b 22s ease-in-out infinite alternate; }
+  .film__mesh i:nth-child(3) { animation: mesh-c 26s ease-in-out infinite alternate; }
+  .film[data-playing="false"] .film__mesh i { animation-play-state: paused; }
+  /* legenda nova entra curta (200ms): é uma troca frequente, basta sinalizar que mudou */
+  .film__caption { animation: caption-in 200ms var(--ease-out); }
+}
+@keyframes mesh-a { to { transform: translate(18%, 14%) scale(1.15); } }
+@keyframes mesh-b { to { transform: translate(-16%, 18%) scale(0.9); } }
+@keyframes mesh-c { to { transform: translate(-12%, -20%) scale(1.2); } }
+@keyframes caption-in { from { opacity: 0; transform: translateY(4px); } }
+@media (max-width: 560px) {
+  .film__caption--over { font-size: 13px; padding: 8px 10px; left: 8px; right: 8px; bottom: 8px; }
+  .film__bar { left: 8px; right: 8px; top: 8px; }
+  /* no celular fica só o tempo atual: sobra espaço para o título do filme */
+  .film__dur { display: none; }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .film__bar, .film__caption--over { background: rgba(var(--surface-2-rgb), 0.96); }
+}

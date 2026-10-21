@@ -1,16 +1,16 @@
 // Seção: Demo · porta U: a rolagem roda o circuito. A seção é alta e o filme fica preso na tela;
 // descer a página é avançar no tempo (lib/behaviors/thread.js manda o progresso para o filme).
-import GlassOrbs from '../glass/GlassOrbs.jsx';
-import Film from '../films/Film.jsx';
-import GateMark from '../story/GateMark.jsx';
-import Circuits from '../story/Circuits.jsx';
-import ShotLog from '../live/ShotLog.jsx';
+import GlassOrbs from '@/components/glass/GlassOrbs';
+import Film from '@/components/films/Film';
+import GateMark from '@/components/story/GateMark';
+import Circuits from '@/components/story/Circuits';
+import ShotLog from '@/components/live/ShotLog';
 
 const CHAPTERS = [
-  { at: 0, caption: 'Um circuito quântico não dá uma resposta: dá probabilidades. Por isso ele roda muitas vezes.' },
-  { at: 1.5, caption: 'Cada execução (um shot) termina numa medição: uma sequência de 0 e 1.' },
-  { at: 5, caption: 'Shot a shot, as respostas boas aparecem mais e o histograma toma forma.' },
-  { at: 10, caption: 'Com 1.024 shots, a resposta mais frequente é a solução.' },
+  { at: 0, caption: 'O circuito dá probabilidades, então roda muitas vezes.' },
+  { at: 1.5, caption: 'Cada shot termina em 0 e 1.' },
+  { at: 5, caption: 'As boas respostas se repetem.' },
+  { at: 10, caption: '1.024 shots: a mais frequente é a solução.' },
 ];
 
 export default function Demo() {
@@ -46,7 +46,7 @@ export default function Demo() {
     </div>
     <div className="ed lab__after">
       <Circuits />
-      <p className="lab__note">Cada algoritmo é um circuito diferente rodando no mesmo chip. Escolha outro caso em <a href="#casos-de-uso">Casos de uso</a> e a Demo troca de circuito.</p>
+      <p className="lab__note">Outro algoritmo? Escolha em <a href="#casos-de-uso">Casos de uso</a>.</p>
     </div>
   </section>
     </>

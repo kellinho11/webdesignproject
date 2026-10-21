@@ -20,6 +20,32 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [4.1.0] — 2026-10-21 · MINOR
+
+Menos texto, conteúdo mais direto e código reorganizado. MINOR porque nada quebra: âncoras, classes e eventos continuam os mesmos.
+
+### Alterado
+- **Conteúdo mais prático** (cerca de 1.580 → 1.080 palavras na página):
+  - frases longas viraram rótulos curtos, números e setas ("Problema → função de custo");
+  - legendas dos filmes, notas da máquina, pontes e etapas do fluxo com uma linha cada;
+  - tabelas com 4 linhas, sem repetir o que a legenda e o filme já mostram;
+  - saiu a linha de setor dos Casos de Uso, que repetia a área do caso.
+- **CSS em partes**: `app/globals.css` virou um índice que importa 19 arquivos de `app/styles/` (tokens, base, componentes, filme, layout, percurso, fio, céu e um por seção), na ordem da página. Saíram 57 declarações que eram sempre sobrescritas pelo mesmo seletor mais abaixo. Capturas da página inteira antes e depois: nenhum pixel de diferença.
+- **Utilitários compartilhados**:
+  - `lib/media.js` reúne as consultas de tela e preferências (antes repetidas em 8 arquivos);
+  - `lib/canvas.js` reúne o ajuste de resolução do canvas e a fonte mono (filmes e esfera de Bloch);
+  - `lib/signals.js` centraliza os eventos `sq:*` e guarda o último valor de cada um, no lugar das variáveis globais `window.__sqAlgo` e `window.__sqMotionOff`;
+  - `components/ui/PlayPauseIcon.jsx`, o ícone de pausa que estava duplicado.
+- Imports dos componentes padronizados com `@/`, sem extensão.
+- `package.json` na versão 4.1.0 (estava em 3.0.0).
+
+### Corrigido
+- Coordenadas do fundo espacial apareciam atrás dos títulos entre 700 e 1100 px: agora somem abaixo de 1100 px.
+- Rótulos dos estágios da máquina (STILL, CP, MXC) ficavam cortados na borda quando a câmera aproxima: agora só aparecem quando cabem inteiros.
+- No celular, a barra dos filmes mostra só o tempo atual, com mais espaço para o título.
+
+---
+
 ## [4.0.0] — 2026-10-21 · MAJOR
 
 O site vira um percurso: o visitante é um qubit que atravessa um circuito, da intro até a medição nos Investidores, ao lado do computador quântico que o processa. MAJOR porque a página foi reduzida às 6 seções do menu, a estrutura e as classes do design system mudaram e âncoras de seções removidas (Jornada, Mercado, Roadmap) deixaram de existir.

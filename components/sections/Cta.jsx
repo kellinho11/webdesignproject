@@ -1,5 +1,5 @@
 // Seção: Cta · porta M: a medição no fim do circuito
-import GateMark from '../story/GateMark.jsx';
+import GateMark from '@/components/story/GateMark';
 
 export default function Cta() {
   return (
@@ -12,24 +12,24 @@ export default function Cta() {
       <div className="cta2 reveal">
         <p className="ed-num"><span>§ 05</span>Investidores · Series A</p>
         <h2 id="cta-title" className="ed-title cta2__title"><span className="tl">Faça parte</span> <span className="tl tl--in2">da próxima</span> <span className="tl"><span className="kw">fronteira.</span></span></h2>
-        <p className="cta__text">Rodada Series A aberta. Acesso ao data room com roadmap, benchmarks e tração.</p>
+        <p className="cta__text">Series A aberta. Peça o data room.</p>
 
         <div className="raise">
           <dl className="raise__kpis">
-            <div><dt>Receita anual (ARR)</dt><dd>US$ 4,2 mi</dd></div>
+            <div><dt>ARR</dt><dd>US$ 4,2 mi</dd></div>
             <div><dt>Crescimento</dt><dd>3,1× ao ano</dd></div>
             <div><dt>Patentes</dt><dd>23</dd></div>
             <div><dt>Rodada</dt><dd>US$ 40 mi</dd></div>
           </dl>
           <figure className="raise__use">
-            <figcaption className="fig-label"><b>Fig. 7</b> Uso dos recursos</figcaption>
+            <figcaption className="fig-label"><b>Fig. 7</b> Uso da rodada</figcaption>
             <p className="raise__bar" aria-hidden="true"><i style={{ '--w': '45%' }} /><i style={{ '--w': '30%' }} /><i style={{ '--w': '25%' }} /></p>
             <ul className="raise__legend"><li>Hardware SQ-128 · 45%</li><li>P&amp;D em algoritmos · 30%</li><li>Go-to-market · 25%</li></ul>
           </figure>
           <ol className="raise__road">
-            <li><b>Q4 2026</b>SQ-64 em disponibilidade geral</li>
-            <li><b>Q2 2027</b>SQ-128 e SDK para Rust</li>
-            <li><b>2028</b>SQ-256 com correção de erro</li>
+            <li><b>Q4 2026</b>SQ-64 para todos</li>
+            <li><b>Q2 2027</b>SQ-128</li>
+            <li><b>2028</b>SQ-256</li>
           </ol>
         </div>
         <form className="form sentence" id="investor-form" noValidate>
@@ -45,7 +45,7 @@ export default function Cta() {
 
         <div className="form__success" id="form-success" hidden>
           <p className="form__success-title">Solicitação recebida.</p>
-          <p className="form__success-text">Nosso time de relações com investidores enviará o NDA e o acesso ao data room em até 48 horas.</p>
+          <p className="form__success-text">NDA e acesso ao data room em até 48 h.</p>
         </div>
 
         <p className="cta__nda"><svg className="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg> Seus dados são protegidos sob NDA automático</p>

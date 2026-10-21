@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import useLive from './useLive';
+import { finePointer, smallScreen } from '@/lib/media';
+import { fitCanvas, monoFont } from '@/lib/canvas';
 
 // Esfera de Bloch: o estado de um qubit é um ponto na superfície (θ, φ). Aqui ele precessiona como
 // sob um campo magnético e oscila entre |0⟩ e |1⟩ (Rabi), deixando um rastro. A câmera inclina com o
@@ -24,13 +26,13 @@ export default function BlochSphere() {
 
   useEffect(() => {
     const canvas = canvasRef.current, ctx = canvas.getContext('2d'), s = st.current;
-    const small = window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
-    const MONO = getComputedStyle(canvas).getPropertyValue('--font-mono');
+    const small = smallScreen();
+    const MONO = monoFont(canvas);
     let W = 0, H = 0;
     const resize = () => {
-      const r = canvas.getBoundingClientRect(), dpr = Math.min(small ? 1.5 : 2, window.devicePixelRatio || 1);
-      W = r.width; H = r.height; canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+      const fit = fitCanvas(canvas);
+      W = fit.w; H = fit.h;
+      ctx.setTransform(fit.dpr, 0, 0, fit.dpr, 0, 0); draw();
     };
     const state = (t) => ({ th: Math.PI * (0.5 - 0.38 * Math.cos(t * 0.45)), ph: t * 0.9 });
     const draw = () => {
@@ -86,8 +88,7 @@ export default function BlochSphere() {
       s.ty = -0.6 + ((e.clientX - r.left) / r.width - 0.5) * 1.6 + s.t * 0.08;
       s.tt = 0.32 + ((e.clientY - r.top) / r.height - 0.5) * 0.6;
     };
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (fine) window.addEventListener('pointermove', move, { passive: true });
+    if (finePointer()) window.addEventListener('pointermove', move, { passive: true });
     const ro = new ResizeObserver(resize); ro.observe(canvas);
     if (on) { s.last = 0; s.raf = requestAnimationFrame(tick); } else draw();
     return () => { cancelAnimationFrame(s.raf); s.raf = 0; ro.disconnect(); window.removeEventListener('pointermove', move); };

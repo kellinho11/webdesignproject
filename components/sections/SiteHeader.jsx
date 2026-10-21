@@ -1,6 +1,6 @@
 // Seção: SiteHeader
-import LiveStatus from '../live/LiveStatus.jsx';
-import MotionToggle from '../live/MotionToggle.jsx';
+import LiveStatus from '@/components/live/LiveStatus';
+import MotionToggle from '@/components/live/MotionToggle';
 
 export default function SiteHeader() {
   return (

@@ -30,13 +30,13 @@ export default function Home() {
         <Thread />
         <Machine />
         <Compare />
-        <Bridge parts={[['Uma moeda girando é bonita no papel.'], ['Onde ela paga a conta?', true]]} note="H → Rz · aplicar ao mundo real" to="#casos-de-uso" />
+        <Bridge parts={[['Bonito no papel.'], ['E na prática?', true]]} note="H → Rz · aplicar ao mundo real" to="#casos-de-uso" />
         <Cases />
-        <Bridge align="right" parts={[['Cada caso é um circuito.'], ['Rode um', true], ['e conte as respostas.']]} note="Rz → U · medir mil vezes" to="#demo" />
+        <Bridge align="right" parts={[['Cada caso é um circuito.'], ['Rode um.', true]]} note="Rz → U · medir mil vezes" to="#demo" />
         <Demo />
-        <Bridge align="center" parts={[['Por trás de cada histograma há um criostato a −273 °C.'], ['Você só vê um endpoint.', true]]} note="U → SWAP · do laboratório para a API" to="#quantum-engineering" />
+        <Bridge align="center" parts={[['Atrás do histograma, −273 °C.'], ['Você só vê a API.', true]]} note="U → SWAP · do laboratório para a API" to="#quantum-engineering" />
         <Api />
-        <Bridge parts={[['Todo circuito termina numa medição.'], ['Esta é a sua.', true]]} note="SWAP → M · colapso" to="#investidores" />
+        <Bridge parts={[['Todo circuito termina numa medição.'], ['A sua.', true]]} note="SWAP → M · colapso" to="#investidores" />
         <Cta />
         </div>
       </main>

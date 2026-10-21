@@ -1,0 +1,67 @@
+/* ==== Tokens ==== */
+/* Paleta fria de instrumento: fundo azul-grafite (sem violeta de fundo). O azul Qorvex marca ação,
+   o violeta marca resultado quântico e o gelo marca destaque. As cores de texto, traço e superfície
+   são canais RGB (--ink-rgb, --surface-rgb) para usar com alfa: uma seção redefine e tudo acompanha. */
+:root {
+  --ink-rgb: 238, 243, 255;
+  --surface-rgb: 7, 9, 15;
+  --surface-2-rgb: 14, 18, 27;
+  --text-strong: #FFFFFF;
+  --bg-primary: #07090F;
+  --bg-elevated: #0E121B;
+  --accent-primary: #3B82F6;
+  --accent-secondary: #6B46FF;
+  --text-primary: #F3F6FC;
+  --text-secondary: rgba(var(--ink-rgb), 0.62);
+  --border-glass: rgba(var(--ink-rgb), 0.10);
+  --fonte-titulo: var(--font-sora), sans-serif;
+  --fonte-corpo: var(--font-sora), sans-serif;
+  --fonte-codigo: var(--font-mono), monospace;
+  --fonte-destaque: var(--font-serif), Georgia, serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --header-h: 72px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-press: 140ms;
+  --dur-ui: 200ms;
+  --ice: #C9D8FF;
+  --glass-tint-thin: rgba(16, 22, 36, 0.36);
+  --glass-tint: rgba(14, 20, 33, 0.48);
+  --glass-tint-thick: rgba(10, 14, 24, 0.74);
+  --glass-edge: rgba(var(--ink-rgb), 0.10);
+  --glass-edge-top: rgba(var(--ink-rgb), 0.24);
+  --glass-blur-thin: 10px;
+  --glass-blur: 18px;
+  --glass-blur-thick: 24px;
+  --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  --glow-primary: rgba(59, 130, 246, 0.18);
+  --glow-secondary: rgba(107, 70, 255, 0.16);
+  /* grade editorial: uma margem larga à esquerda (o trilho do fio) e 12 colunas */
+  --rail: clamp(40px, 7vw, 112px);
+  --ed-max: 1320px;
+  --pad-r: clamp(20px, 4vw, 56px);
+  --gap: clamp(12px, 1.8vw, 28px);
+  --hair: rgba(var(--ink-rgb), 0.14);
+  --strip-h: 30px;
+  --machine-w: clamp(340px, 33vw, 460px);
+}
+@media (max-width: 640px) {
+  :root { --glass-blur: 12px; --glass-blur-thick: 16px; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-tint-thin: rgba(var(--surface-2-rgb), 0.94);
+    --glass-tint: rgba(var(--surface-2-rgb), 0.94);
+    --glass-tint-thick: rgba(15, 12, 24, 0.97);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root {
+    --glass-tint-thin: rgba(var(--surface-2-rgb), 0.97);
+    --glass-tint: rgba(var(--surface-2-rgb), 0.97);
+    --glass-tint-thick: rgba(15, 12, 24, 0.98);
+    --glass-edge: rgba(var(--ink-rgb), 0.35);
+    --glass-edge-top: rgba(var(--ink-rgb), 0.35);
+  }
+}

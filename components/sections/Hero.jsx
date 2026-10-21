@@ -1,6 +1,6 @@
 // Seção: Hero
-import BlochSphere from '../live/BlochSphere.jsx';
-import Telemetry from '../live/Telemetry.jsx';
+import BlochSphere from '@/components/live/BlochSphere';
+import Telemetry from '@/components/live/Telemetry';
 
 export default function Hero() {
   return (
@@ -65,7 +65,7 @@ export default function Hero() {
             <span className="hero__line hero__line--kw hero-in" style={{ '--d': '480ms' }}><span className="kw">impossível.</span></span>
           </h1>
           <div className="hero__side">
-            <p className="hero__subtitle hero-in" style={{ '--d': '600ms' }}>Um modelo de IA traduz o seu problema num circuito quântico, a QPU de 64 qubits resolve a parte difícil e a resposta volta pela API em 340 ms.</p>
+            <p className="hero__subtitle hero-in" style={{ '--d': '600ms' }}>Seu problema vira um circuito quântico. A QPU resolve, a API responde em 340 ms.</p>
             <div className="hero__actions hero-in" style={{ '--d': '700ms' }}>
               <a href="#investidores" className="btn-primary">Agendar demonstração <span className="btn__arrow" aria-hidden="true">→</span></a>{' '}
               <a href="#quantum-engineering" className="btn-secondary">Whitepaper técnico</a>
@@ -78,11 +78,11 @@ export default function Hero() {
         </div>
         <dl className="hero__kpis hero-in hero-in--fade" style={{ '--d': '820ms' }}>
           <div><dt>Qubits físicos</dt><dd>64</dd></div>
-          <div><dt>Vantagem com 30 variáveis</dt><dd>306×</dd></div>
-          <div><dt>Latência p50 da API</dt><dd>340 ms</dd></div>
-          <div><dt>Clientes enterprise</dt><dd>11</dd></div>
+          <div><dt>Mais rápido (30 var.)</dt><dd>306×</dd></div>
+          <div><dt>Resposta da API</dt><dd>340 ms</dd></div>
+          <div><dt>Clientes</dt><dd>11</dd></div>
         </dl>
-        <p className="hero__backers hero-in hero-in--fade" style={{ '--d': '900ms' }}><sup>¹</sup> Backed by Quantum Capital, Nebula Ventures e Vertex Partners. Dados de produto ilustrativos: o SynapseQ é um projeto acadêmico.</p>
+        <p className="hero__backers hero-in hero-in--fade" style={{ '--d': '900ms' }}>Projeto acadêmico · números ilustrativos</p>
       </div>
       <a className="hero__drop hero-in hero-in--fade" href="#tecnologia" style={{ '--d': '900ms' }}><span className="hero__ket">|ψ⟩ = |0⟩</span><span>Desça pelo circuito</span></a>
     </div>

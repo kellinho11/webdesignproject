@@ -3,6 +3,7 @@
 // Reflexo de luz que acompanha o ponteiro sobre os painéis de vidro.
 // Um só listener na página (delegação), em vez de um por painel. Não renderiza nada.
 import { useEffect } from 'react';
+import { finePointer, reducedTransparency } from '@/lib/media';
 
 const GLASS = '.site-header .header__inner, .glass-panel, .cta .form.sentence';
 
@@ -17,8 +18,7 @@ export function sheenAt(px, py) {
 export default function GlassSheen() {
   useEffect(() => {
     // só com mouse: no toque não há ponteiro pairando para acompanhar
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    if (window.matchMedia('(prefers-reduced-transparency: reduce)').matches) return;
+    if (!finePointer() || reducedTransparency()) return;
     let last = null, raf = 0, ev = null;
     const clear = (el) => { el.style.removeProperty('--sheen'); el.style.removeProperty('--sx'); el.style.removeProperty('--sy'); };
     const paint = () => {

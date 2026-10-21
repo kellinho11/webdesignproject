@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import SCENES, { setMono } from './scenes';
+import PlayPauseIcon from '@/components/ui/PlayPauseIcon';
+import { reducedMotion, smallScreen } from '@/lib/media';
+import { fitCanvas, monoFont } from '@/lib/canvas';
+import { latest, listen, motionPaused } from '@/lib/signals';
 
 // Filme explicativo: uma cena em ASCII desenhada num canvas, sobre um gradient mesh, dentro de uma
 // moldura de vidro com legenda e linha do tempo. Roda em loop como um vídeo, mas é código: pesa
@@ -11,6 +15,7 @@ import SCENES, { setMono } from './scenes';
 //   os mais visíveis;
 // - a linha do tempo aceita clique e arraste; o botão pausa/retoma (WCAG 2.2.2);
 // - scrub: não toca sozinho, o tempo vem de fora (evento film:seek com 0..1, a rolagem da Demo);
+// - listen: segue o algoritmo escolhido nos Casos (sinal algo);
 // - com movimento reduzido, não toca sozinho: mostra o quadro-resumo (poster) e a legenda final;
 // - desenha a 30 quadros por segundo (24 no celular, com resolução de no máximo 1,5×).
 const live = new Set();
@@ -22,7 +27,7 @@ function elect() {
 
 const fmt = (s) => `00:${String(Math.floor(s)).padStart(2, '0')}`;
 
-export default function Film({ scene, duration, chapters, title, poster = duration * 0.92, mesh = 'blue', ratio = '16 / 9', captions = 'over', scrub = false, listen = false, className = '' }) {
+export default function Film({ scene, duration, chapters, title, poster = duration * 0.92, mesh = 'blue', ratio = '16 / 9', captions = 'over', scrub = false, listen: follow = false, className = '' }) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const barRef = useRef(null);
@@ -47,13 +52,12 @@ export default function Film({ scene, duration, chapters, title, poster = durati
   useEffect(() => {
     const root = rootRef.current, canvas = canvasRef.current, ctx = canvas.getContext('2d'), s = state.current;
     const draw = SCENES[scene];
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const small = window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
+    const small = smallScreen();
     const FPS = small ? 24 : 30;
     limit = small ? 1 : 3;
-    setMono(getComputedStyle(root).getPropertyValue('--font-mono').trim());
+    setMono(monoFont(root));
     s.capH = 0;
-    if (listen && window.__sqAlgo) s.opts = { algo: window.__sqAlgo };
+    if (follow && latest('algo')) s.opts = { algo: latest('algo').algo };
 
     const chapterAt = (t) => { let i = 0; chapters.forEach((c, k) => { if (t >= c.at) i = k; }); return i; };
     const paint = () => {
@@ -64,20 +68,19 @@ export default function Film({ scene, duration, chapters, title, poster = durati
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw(ctx, s.t, s.w, s.h, s.box, s.opts);
       barRef.current.style.transform = `scaleX(${s.t / duration})`;
-      timeRef.current.textContent = `${fmt(s.t)} / ${fmt(duration)}`;
+      timeRef.current.textContent = fmt(s.t);
       setChapter((c) => { const n = chapterAt(s.t); return c === n ? c : n; });
     };
     const resize = () => {
-      const r = canvas.getBoundingClientRect(), dpr = Math.min(small ? 1.5 : 2, window.devicePixelRatio || 1);
-      if (!r.width) return;
-      s.w = r.width; s.h = r.height;
+      const r = fitCanvas(canvas);
+      if (!r.w) return;
+      s.w = r.w; s.h = r.h;
       // área livre para textos da cena: entre a barra de título e a legenda (a maior já vista, para
       // o gráfico não pular quando uma legenda de duas linhas troca por uma de uma)
       const top = headRef.current.offsetTop + headRef.current.offsetHeight + 8;
-      s.capH = place === 'over' ? Math.max(s.capH, r.height - capRef.current.offsetTop) : 0;
-      const bottom = r.height - (s.capH ? s.capH + 8 : 12);
-      s.box = { x: 16, y: top, w: r.width - 32, h: Math.max(40, bottom - top) };
-      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+      s.capH = place === 'over' ? Math.max(s.capH, r.h - capRef.current.offsetTop) : 0;
+      const bottom = r.h - (s.capH ? s.capH + 8 : 12);
+      s.box = { x: 16, y: top, w: r.w - 32, h: Math.max(40, bottom - top) };
       paint();
     };
     const tick = (now) => {
@@ -90,7 +93,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     };
     let allowed = false;
     const sync = () => {
-      const run = allowed && !s.paused && !document.hidden && !window.__sqMotionOff;
+      const run = allowed && !s.paused && !document.hidden && !motionPaused();
       if (run && !s.raf) { s.last = 0; s.raf = requestAnimationFrame(tick); }
       if (!run && s.raf) { cancelAnimationFrame(s.raf); s.raf = 0; }
       setPlaying(run);
@@ -100,7 +103,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     s.sync = elect;
 
     if (scrub) s.paused = true;
-    else if (reduce.matches) { s.paused = true; s.t = poster; setPaused(true); }
+    else if (reducedMotion()) { s.paused = true; s.t = poster; setPaused(true); }
 
     // rolagem (scrub) e clique/arraste na linha do tempo levam o filme a um instante
     const seek = (q) => { s.t = Math.min(duration - 0.001, Math.max(0, q * duration)); paint(); };
@@ -109,15 +112,15 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     const at = (e) => { const r = track.getBoundingClientRect(); seek((e.clientX - r.left) / r.width); };
     const down = (e) => { if (scrub) return; track.setPointerCapture(e.pointerId); at(e); track.addEventListener('pointermove', at); };
     const up = () => track.removeEventListener('pointermove', at);
-    const onAlgo = (e) => { s.opts = { ...s.opts, algo: e.detail.algo }; if (!scrub) s.t = 0; paint(); };
+    const onAlgo = ({ algo }) => { s.opts = { ...s.opts, algo }; if (!scrub) s.t = 0; paint(); };
     const vis = () => sync();
     root.addEventListener('film:seek', onSeek);
     track.addEventListener('pointerdown', down);
     track.addEventListener('pointerup', up);
     track.addEventListener('pointercancel', up);
-    if (listen) window.addEventListener('sq:algo', onAlgo);
+    const offAlgo = follow ? listen('algo', onAlgo) : () => {};
     document.addEventListener('visibilitychange', vis);
-    window.addEventListener('sq:motion', vis);
+    const offMotion = listen('motion', vis);
 
     const ro = new ResizeObserver(resize); ro.observe(canvas);
     const io = new IntersectionObserver(([e]) => { s.visible = e.isIntersecting; me.ratio = e.intersectionRatio; elect(); }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
@@ -128,12 +131,12 @@ export default function Film({ scene, duration, chapters, title, poster = durati
       ro.disconnect(); io.disconnect();
       root.removeEventListener('film:seek', onSeek);
       track.removeEventListener('pointerdown', down); track.removeEventListener('pointerup', up); track.removeEventListener('pointercancel', up);
-      window.removeEventListener('sq:algo', onAlgo);
+      offAlgo();
       document.removeEventListener('visibilitychange', vis);
-      window.removeEventListener('sq:motion', vis);
+      offMotion();
       cancelAnimationFrame(s.raf); s.raf = 0;
     };
-  }, [scene, duration, chapters, poster, place, scrub, listen]);
+  }, [scene, duration, chapters, poster, place, scrub, follow]);
 
   const toggle = () => {
     const s = state.current;
@@ -157,7 +160,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
         <div className="film__bar" ref={headRef}>
           <span className="film__rec" aria-hidden="true" />
           <span className="film__title">{title}</span>
-          <span className="film__time" ref={timeRef} aria-hidden="true">00:00</span>
+          <span className="film__time" aria-hidden="true"><span ref={timeRef}>00:00</span><span className="film__dur"> / {fmt(duration)}</span></span>
         </div>
         {place === 'over' && caption}
       </div>
@@ -167,7 +170,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
           ? <span className="film__hint" aria-hidden="true">role ↓</span>
           : (
             <button type="button" className="film__toggle" onClick={toggle} aria-pressed={paused} aria-label={paused ? `Reproduzir: ${title}` : `Pausar: ${title}`}>
-              <svg viewBox="0 0 16 16" aria-hidden="true">{paused ? <path d="M5 3.5v9l7.5-4.5z" /> : <path d="M4.5 3.5h2.5v9H4.5zM9 3.5h2.5v9H9z" />}</svg>
+              <PlayPauseIcon paused={paused} />
             </button>
           )}
         <span className="film__track" ref={trackRef} aria-hidden="true">
