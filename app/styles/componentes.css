@@ -56,10 +56,6 @@
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-@keyframes live-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.4; }
-}
 @media (prefers-reduced-motion: reduce) {
   .reveal { transform: none !important; }
   

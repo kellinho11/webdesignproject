@@ -37,14 +37,11 @@
   --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.10);
   --glow-primary: rgba(59, 130, 246, 0.18);
   --glow-secondary: rgba(107, 70, 255, 0.16);
-  /* grade editorial: uma margem larga à esquerda (o trilho do fio) e 12 colunas */
-  --rail: clamp(40px, 7vw, 112px);
+  /* grade editorial: 12 colunas com a mesma margem dos dois lados */
   --ed-max: 1320px;
-  --pad-r: clamp(20px, 4vw, 56px);
+  --pad: clamp(20px, 4vw, 56px);
   --gap: clamp(12px, 1.8vw, 28px);
   --hair: rgba(var(--ink-rgb), 0.14);
-  --strip-h: 30px;
-  --machine-w: clamp(340px, 33vw, 460px);
 }
 @media (max-width: 640px) {
   :root { --glass-blur: 12px; --glass-blur-thick: 16px; }

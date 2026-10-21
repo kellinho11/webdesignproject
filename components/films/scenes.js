@@ -19,19 +19,41 @@ export const easeInOut = (x) => { x = clamp(x); return x < 0.5 ? 8 * x ** 4 : 1 
 const phase = (t, a, b) => clamp((t - a) / (b - a));       // progresso 0..1 de t dentro de [a, b]
 const rand = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 
+// Folha de glifos: cada caractere da rampa, numa cor, desenhado uma vez (o brilho vem do próprio
+// caractere: quanto mais denso, mais opaco). O campo ASCII só copia daqui com drawImage, que custa
+// bem menos que um fillText por célula. Chave: cor, tamanho, escala da tela e fonte.
+const sheets = new Map();
+if (typeof document !== 'undefined' && document.fonts) document.fonts.ready.then(() => sheets.clear());
+function sheet(color, cell, dpr) {
+  const key = `${color}|${cell}|${dpr}|${MONO}`;
+  let s = sheets.get(key);
+  if (s) return s;
+  const cw = cell * 0.62, gw = Math.ceil(cw * dpr), gh = Math.ceil(cell * dpr);
+  const c = document.createElement('canvas'); c.width = gw * RAMP.length; c.height = gh;
+  const g = c.getContext('2d');
+  g.scale(dpr, dpr); g.font = `${cell * 0.92}px ${MONO}`; g.textBaseline = 'top';
+  for (let i = 1; i < RAMP.length; i++) {
+    g.fillStyle = `rgba(${color}, ${0.18 + 0.62 * ((i + 0.5) / RAMP.length)})`;
+    g.fillText(RAMP[i], (i * gw) / dpr, 0);
+  }
+  s = { c, gw, gh };
+  sheets.set(key, s);
+  return s;
+}
+
 // Campo ASCII: a grade cobre o canvas; field(c, r) devolve 0..1 (densidade) e, opcional, uma cor RGB
 function ascii(ctx, w, h, cell, field) {
   const cw = cell * 0.62, cols = Math.ceil(w / cw), rows = Math.ceil(h / cell);
-  ctx.font = `${cell * 0.92}px ${MONO}`;
-  ctx.textBaseline = 'top';
+  const dpr = ctx.getTransform().a, ink = sheet(INK, cell, dpr);
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const v = field(c / cols, r / rows, c, r);
       const d = typeof v === 'number' ? v : v[0];
       if (d < 0.06) continue;
-      const ch = RAMP[Math.min(RAMP.length - 1, Math.floor(d * RAMP.length))];
-      ctx.fillStyle = `rgba(${typeof v === 'number' ? INK : v[1]}, ${0.18 + 0.62 * d})`;
-      ctx.fillText(ch, c * cw, r * cell);
+      const i = Math.min(RAMP.length - 1, Math.floor(d * RAMP.length));
+      if (!i) continue;
+      const g = typeof v === 'number' ? ink : sheet(v[1], cell, dpr);
+      ctx.drawImage(g.c, i * g.gw, 0, g.gw, g.gh, c * cw, r * cell, g.gw / dpr, g.gh / dpr);
     }
   }
 }

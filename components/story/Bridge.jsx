@@ -1,5 +1,5 @@
 // Ponte entre duas seções: uma frase grande que fecha um assunto e abre o próximo. As palavras
-// acendem conforme a frase passa pela tela (--p, de lib/behaviors/thread.js; --i é a posição da
+// acendem conforme a frase passa pela tela (--p, de lib/behaviors/percurso.js; --i é a posição da
 // palavra e --n o total). parts: lista de [texto, destaque?]; o destaque sai em serifa itálica.
 export default function Bridge({ parts, note, align = 'left', to }) {
   let i = 0;

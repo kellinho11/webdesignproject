@@ -69,7 +69,6 @@ export default function Space() {
           <ellipse cx="760" cy="420" rx="380" ry="138" transform="rotate(-18 760 420)" />
           <ellipse cx="760" cy="420" rx="250" ry="92" transform="rotate(-18 760 420)" />
         </g>
-        <g className="space__sat"><circle cx="760" cy="420" r="3" transform="rotate(-18 760 420) translate(380 0)" /></g>
         <g className="space__coords">
           <text x="18" y="40">RA 14h 29m 43s</text>
           <text x="18" y="60">DEC −62° 40′ 46″</text>

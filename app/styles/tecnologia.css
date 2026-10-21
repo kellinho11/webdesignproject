@@ -63,33 +63,16 @@
 }
 @keyframes coin-flip { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
 
-/* ---- Tecnologia (4.0): moeda à esquerda, deslocada para baixo; filme sangrando até a borda ---- */
-.compare { padding-block: clamp(72px, 10vh, 120px) clamp(24px, 4vh, 48px); }
-.ed-head--tech .ed-lead { grid-column: 8 / -1; margin-top: 24px; align-self: end; }
-.tech { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
-.tech__coin { grid-column: 1 / span 4; margin-top: clamp(48px, 9vw, 132px); }
-.tech__film {
-  grid-column: 5 / -1;
-  margin-right: calc(-1 * (max(0px, (100vw - var(--ed-max)) / 2) + var(--pad-r)));
-}
-.tech__film .film__screen { border-right: 0; }
-.tech__film .tech__legend,
-.tech__film .film__ctl { padding-right: calc(max(0px, (100vw - var(--ed-max)) / 2) + var(--pad-r)); }
+/* ---- Tecnologia: a moeda (a interação) ao lado do filme; depois o fluxo e a tabela ---- */
+.compare { padding-block: clamp(88px, 10vw, 140px) clamp(24px, 4vh, 48px); }
+.tech { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 28px; align-items: stretch; }
+.tech__coin { grid-column: 1 / span 4; }
+.tech__film { grid-column: 5 / -1; }
 .qcoin__note { font: 500 12px/1.4 var(--fonte-codigo); color: var(--ice); animation: caption-in 300ms var(--ease-out); }
+.tech__more { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: clamp(48px, 6vw, 72px); margin-top: clamp(56px, 7vw, 96px); }
+.tech__more > :first-child { grid-column: 1 / -1; }
+.tech__more > :last-child { grid-column: 1 / span 8; }
 @media (max-width: 960px) {
-  .ed-head--tech .ed-lead { grid-column: 1 / -1; margin-top: 24px; }
-  .tech__coin, .tech__film { grid-column: 1 / -1; }
-  .tech__coin { margin-top: 0; max-width: 420px; }
-  .tech__film { margin-top: 28px; }
-}
-
-
-/* Tecnologia nas duas trilhas: moeda e filme dividem a coluna, sem sangria (a máquina está ao lado) */
-.story .tech__coin { grid-column: 1 / span 5; margin-top: clamp(32px, 5vw, 72px); }
-.story .tech__film { grid-column: 6 / -1; margin-right: 0; }
-.story .tech__film .film__screen { border-right: 1px solid var(--glass-edge); }
-.story .tech__film .tech__legend, .story .tech__film .film__ctl { padding-right: 0; }
-.tech__more { display: grid; gap: clamp(48px, 7vw, 88px); margin-top: clamp(56px, 8vw, 104px); }
-@media (max-width: 960px) {
-  .story .tech__coin, .story .tech__film { grid-column: 1 / -1; }
+  .tech__coin, .tech__film, .tech__more > :last-child { grid-column: 1 / -1; }
+  .tech__coin { max-width: 440px; }
 }

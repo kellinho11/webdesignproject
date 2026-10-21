@@ -17,7 +17,7 @@ export const metadata = {
   title,
   description,
   alternates: { canonical: '/' },
-  openGraph: { type: 'website', locale: 'pt_BR', url: '/', siteName: 'SynapseQ', title, description },
+  openGraph: { type: 'website', locale: 'pt_BR', url: '/', siteName: 'SynapseQ', title, description, videos: [{ url: '/videos/teaser.mp4', type: 'video/mp4', width: 1920, height: 1080 }] },
   twitter: { card: 'summary_large_image', title, description },
 };
 

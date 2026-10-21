@@ -1,8 +1,9 @@
 // Seção: Api · porta SWAP: o roteamento no hardware fica escondido atrás de um endpoint.
+// Primeiro a máquina (o que a API esconde), depois a chamada que a usa.
 import GlassOrbs from '@/components/glass/GlassOrbs';
 import Film from '@/components/films/Film';
-import GateMark from '@/components/story/GateMark';
 import Kpis from '@/components/story/Kpis';
+import Machine from '@/components/story/Machine';
 import SpecTable from '@/components/story/SpecTable';
 import CodeTabs from '@/components/live/CodeTabs';
 
@@ -21,13 +22,12 @@ const FEATURES = [
 export default function Api() {
   return (
     <>
-  <section className="section api" id="quantum-engineering" aria-labelledby="api-title" data-gate="SW" data-state="SWAP|ψ⟩" data-num="§ 04" data-name="Quantum Engineering · roteamento">
+  <section className="section api" id="quantum-engineering" aria-labelledby="api-title" data-gate="SW">
     <GlassOrbs preset="api" />
-    <GateMark gate="SW" name="SWAP · roteamento no hardware" />
     <div className="ed">
       <header className="ed-head ed-head--api">
         <p className="ed-num reveal"><span>§ 04</span>Quantum Engineering · POST /v1/quantum/solve</p>
-        <h2 id="api-title" className="ed-title reveal"><span className="tl">Um endpoint.</span> <span className="tl tl--in4"><span className="kw">Toda a física</span></span> <span className="tl tl--in2">por trás.</span></h2>
+        <h2 id="api-title" className="ed-title reveal"><span className="tl">Um endpoint.</span> <span className="tl"><span className="kw">Toda a física</span></span> <span className="tl">por trás.</span></h2>
       </header>
       <Kpis items={[
         { label: 'Latência', value: '340 ms' },
@@ -35,6 +35,7 @@ export default function Api() {
         { label: 'Regiões', value: '3', note: 'SP · Virgínia · Frankfurt' },
         { label: 'Chamadas 2026', value: '2,8 mi' },
       ]} />
+      <Machine />
       <div className="api__grid">
         <div className="api__film reveal" style={{ '--rd': '80ms' }}>
           <Film scene="api" duration={10} title="synapseq · api.synapseq.ai" chapters={CHAPTERS} mesh="blue" ratio="16 / 11" />
@@ -50,8 +51,8 @@ export default function Api() {
         </ol>
       </div>
       <div className="api__dev">
-        <div className="reveal"><p className="fig-label"><b>Fig. 6</b> A chamada</p><CodeTabs /></div>
-        <SpecTable caption={<><b>Tab. 2</b> Hardware</>} head={['', 'SQ-64 (hoje)', 'SQ-128 (2027)']} rows={[
+        <div className="reveal"><p className="fig-label">A chamada</p><CodeTabs /></div>
+        <SpecTable caption={<>Hardware</>} head={['', 'SQ-64 (hoje)', 'SQ-128 (2027)']} rows={[
           ['Qubits físicos', '64', '128'],
           ['Fidelidade', '99,71%', '99,85%'],
           ['Coerência T1', '118 µs', '200 µs'],

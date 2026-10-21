@@ -1,8 +1,7 @@
 // Seção: Demo · porta U: a rolagem roda o circuito. A seção é alta e o filme fica preso na tela;
-// descer a página é avançar no tempo (lib/behaviors/thread.js manda o progresso para o filme).
+// descer a página é avançar no tempo (lib/behaviors/percurso.js manda o progresso para o filme).
 import GlassOrbs from '@/components/glass/GlassOrbs';
 import Film from '@/components/films/Film';
-import GateMark from '@/components/story/GateMark';
 import Circuits from '@/components/story/Circuits';
 import ShotLog from '@/components/live/ShotLog';
 
@@ -16,16 +15,15 @@ const CHAPTERS = [
 export default function Demo() {
   return (
     <>
-  <section className="section lab" id="demo" data-algo="qaoa" aria-labelledby="lab-title" data-gate="U" data-state="U(β,γ)|ψ⟩" data-num="§ 03" data-name="Demonstração · medição repetida">
+  <section className="section lab" id="demo" data-algo="qaoa" aria-labelledby="lab-title" data-gate="U">
     <GlassOrbs preset="demo" />
-    <GateMark gate="U" name="U(β, γ) · camada variacional" />
     {/* só este bloco é alto: o circuito, depois dele, não passa por baixo da parte fixa */}
     <div className="scrub">
     <div className="scrub__sticky">
       <div className="ed scrub__grid">
         <header className="scrub__head">
           <p className="ed-num"><span>§ 03</span>Demonstração · <span data-algo-label>QAOA · carteira</span></p>
-          <h2 id="lab-title" className="ed-title ed-title--sm"><span className="tl">Rode. Meça.</span> <span className="tl tl--in2">Veja <span className="kw">convergir.</span></span></h2>
+          <h2 id="lab-title" className="ed-title ed-title--sm"><span className="tl">Rode. Meça.</span> <span className="tl">Veja <span className="kw">convergir.</span></span></h2>
         </header>
         <div className="scrub__film">
           <Film scene="demo" duration={13} title="Da medição à resposta" chapters={CHAPTERS} mesh="violet" ratio="16 / 9" captions="below" scrub listen className="film--wide" />

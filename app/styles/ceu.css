@@ -16,8 +16,6 @@
 .space__twinkles i { position: absolute; width: 2px; height: 2px; background: #EEF3FF; box-shadow: 0 0 6px 1px rgba(201, 216, 255, 0.7); opacity: 0.2; }
 .space__orbits { position: absolute; inset: 0; width: 100%; height: 100%; }
 .space__rings ellipse { fill: none; stroke: rgba(201, 216, 255, 0.07); stroke-width: 1; stroke-dasharray: 2 6; }
-.space__sat circle { fill: var(--ice); }
-.space__sat { transform-origin: 76% 42%; }
 .space__coords text { font: 400 11px var(--fonte-codigo); fill: rgba(201, 216, 255, 0.28); letter-spacing: 0.06em; }
 .space__coords line { stroke: rgba(201, 216, 255, 0.25); }
 .space__photon {
@@ -32,11 +30,9 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .space__twinkles i { animation: twinkle var(--td, 4s) ease-in-out var(--to, 0s) infinite; }
-  .space__sat { animation: orbit 60s linear infinite; }
   .space__photon { animation: photon 11s var(--ease-in-out) 3s infinite; }
 }
 @keyframes twinkle { 50% { opacity: 0.95; } }
-@keyframes orbit { to { transform: rotate(360deg); } }
 @keyframes photon {
   0% { opacity: 0; translate: 0 0; }
   4% { opacity: 1; }

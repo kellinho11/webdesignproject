@@ -1,0 +1,96 @@
+/* ---- A máquina (Quantum Engineering): o criostato à esquerda, os estágios à direita ----
+   .story é a coluna única das seções e pontes depois do Hero. */
+.story { position: relative; }
+
+.machine {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: stretch;
+  margin-bottom: clamp(56px, 8vw, 104px);
+}
+.machine__view {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 600 / 745;
+  border: 1px solid var(--hair);
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 78%, rgba(107, 70, 255, 0.16), transparent 70%),
+    linear-gradient(180deg, rgba(var(--surface-2-rgb), 0.6), rgba(var(--surface-rgb), 0.9));
+}
+/* grade de mira por cima do desenho: dá escala e cara de instrumento */
+.machine__view::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(201, 216, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 216, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.machine__qc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform-origin: 0 0;
+  transition: transform 900ms var(--ease-in-out);
+}
+html:not(.js) .machine__qc { display: none; }
+.machine__temp {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  margin: 0;
+  padding: 4px 8px;
+  background: rgba(var(--surface-rgb), 0.85);
+  border: 1px solid var(--hair);
+  font: 500 11px/1 var(--fonte-codigo);
+  color: var(--ice);
+}
+/* o desenho fica parado: só a câmera e os estágios acesos mudam (animação em SVG repinta tudo);
+   a exceção são os pulsos nas linhas de controle, e só quando esse estágio está na tela */
+.machine .iq-halo { opacity: 0.35; }
+.machine .iq-q.is-one { fill: var(--text-strong); filter: drop-shadow(0 0 4px #8DB4FF); }
+.machine[data-stage="H"] .iq-q:not(.is-one) { fill: #A592FF; }
+.machine[data-stage="H"] .iq-die, .machine[data-stage="U"] .iq-die, .machine[data-stage="M"] .iq-die { stroke: #A592FF; }
+.machine[data-stage="Rz"] .iq-pulse { opacity: 1; animation: iq-run 1.1s linear var(--pd, 0s) infinite; }
+.machine[data-stage="SW"] .iq-label { fill: var(--text-strong); }
+.machine.is-offscreen * { animation-play-state: paused !important; }
+.machine.is-still .machine__qc { transition: none; }
+.machine.is-still * { animation: none !important; }
+
+/* os estágios: uma lista que abre um por vez */
+.machine__stages { display: grid; align-self: center; align-content: start; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--hair); }
+.machine__stages li { border-bottom: 1px solid var(--hair); }
+.machine__pick {
+  display: grid;
+  grid-template-columns: 2.6em minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--dur-ui) var(--ease-out);
+}
+.machine__pick:hover, .machine__stages li.is-on .machine__pick { color: var(--text-strong); }
+.machine__n { font: 500 11px/1 var(--fonte-codigo); color: var(--ice); }
+.machine__name { font: 600 clamp(16px, 1.5vw, 19px)/1.2 var(--fonte-titulo); letter-spacing: -0.015em; }
+.machine__t { font: 500 11px/1 var(--fonte-codigo); color: var(--text-secondary); white-space: nowrap; }
+.machine__detail { display: grid; gap: 12px; padding: 0 0 20px 2.6em; margin-left: 12px; }
+.js .machine__stages li:not(.is-on) .machine__detail { display: none; }
+.js .machine__stages li.is-on .machine__detail { animation: caption-in 300ms var(--ease-out); }
+.machine__text { font-size: 15px; line-height: 1.55; color: var(--text-primary); }
+.machine__specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.machine__specs dt { font: 500 10px/1.3 var(--fonte-codigo); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+.machine__specs dd { margin: 3px 0 0; font: 600 15px/1.2 var(--fonte-titulo); color: var(--text-strong); }
+@media (max-width: 960px) {
+  .machine { grid-template-columns: minmax(0, 1fr); }
+  .machine__view { width: min(100%, 520px); }
+}

@@ -11,11 +11,11 @@
 @import './styles/componentes.css';
 @import './styles/filme.css';
 @import './styles/dados.css';
+@import './styles/criostato.css';
 
-/* estrutura: grade editorial, percurso com a máquina, o fio e as pontes, o céu */
+/* estrutura: grade editorial, pontes entre seções, o céu */
 @import './styles/layout.css';
-@import './styles/percurso.css';
-@import './styles/fio.css';
+@import './styles/pontes.css';
 @import './styles/ceu.css';
 
 /* a página, de cima para baixo */
@@ -26,5 +26,6 @@
 @import './styles/casos.css';
 @import './styles/demo.css';
 @import './styles/engineering.css';
+@import './styles/maquina.css';
 @import './styles/investidores.css';
 @import './styles/rodape.css';

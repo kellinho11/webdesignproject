@@ -1,17 +1,15 @@
 // Seção: Cta · porta M: a medição no fim do circuito
-import GateMark from '@/components/story/GateMark';
 
 export default function Cta() {
   return (
     <>
-  <section className="section cta" id="investidores" aria-labelledby="cta-title" data-gate="M" data-state="M" data-num="§ 05" data-name="Investidores · colapso">
-    <GateMark gate="M" name="Medição · colapso" />
+  <section className="section cta" id="investidores" aria-labelledby="cta-title" data-gate="M">
     {/* id antigo (até a v1.3.0), mantido como apelido para links já compartilhados */}
     <div className="ed" id="cta-final">
       <p className="cta__collapse reveal" aria-live="polite">Fim do circuito. Seu qubit colapsou em <output id="cta-qubit">|?⟩</output></p>
       <div className="cta2 reveal">
         <p className="ed-num"><span>§ 05</span>Investidores · Series A</p>
-        <h2 id="cta-title" className="ed-title cta2__title"><span className="tl">Faça parte</span> <span className="tl tl--in2">da próxima</span> <span className="tl"><span className="kw">fronteira.</span></span></h2>
+        <h2 id="cta-title" className="ed-title cta2__title"><span className="tl">Faça parte</span> <span className="tl">da próxima</span> <span className="tl"><span className="kw">fronteira.</span></span></h2>
         <p className="cta__text">Series A aberta. Peça o data room.</p>
 
         <div className="raise">
@@ -22,7 +20,7 @@ export default function Cta() {
             <div><dt>Rodada</dt><dd>US$ 40 mi</dd></div>
           </dl>
           <figure className="raise__use">
-            <figcaption className="fig-label"><b>Fig. 7</b> Uso da rodada</figcaption>
+            <figcaption className="fig-label">Uso da rodada</figcaption>
             <p className="raise__bar" aria-hidden="true"><i style={{ '--w': '45%' }} /><i style={{ '--w': '30%' }} /><i style={{ '--w': '25%' }} /></p>
             <ul className="raise__legend"><li>Hardware SQ-128 · 45%</li><li>P&amp;D em algoritmos · 30%</li><li>Go-to-market · 25%</li></ul>
           </figure>

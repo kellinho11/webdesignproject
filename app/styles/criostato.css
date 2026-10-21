@@ -1,0 +1,44 @@
+/* ==== Criostato (components/cryostat/Cryostat.jsx): o desenho da intro e da máquina ==== */
+.iq-hang { stroke: rgba(201, 214, 255, 0.18); stroke-width: 1; }
+.iq-rod { opacity: .55; }
+.iq-coil { fill: none; stroke: rgba(201, 214, 255, 0.35); stroke-width: 1.1; }
+.iq-coax { fill: none; stroke: rgba(201, 214, 255, 0.22); stroke-width: 1.3; }
+.iq-pulse {
+  fill: none;
+  stroke: #CFE0FF;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 4 96;
+  stroke-dashoffset: 100;
+  opacity: 0;
+}
+.iq-side { opacity: .78; }
+.iq-top { stroke: rgba(220, 230, 255, 0.55); stroke-width: 1; }
+.iq-hole { fill: #07050D; stroke: rgba(201, 214, 255, 0.2); }
+.iq-bolt { fill: rgba(220, 230, 255, 0.55); }
+.iq-att { fill: #1A1F33; stroke: rgba(201, 214, 255, 0.4); stroke-width: .8; }
+.iq-sma { fill: #C9D6FF; opacity: .5; }
+.iq-tick { stroke: rgba(201, 214, 255, 0.35); transition: opacity .3s; }
+.iq-label { font: 500 10px var(--fonte-codigo); letter-spacing: .08em; fill: rgba(201, 214, 255, 0.55); transition: fill .4s, opacity .3s; }
+.iq-frost { fill: #EEF3FF; opacity: .25; }
+.iq-mxc { opacity: .9; }
+.iq-pkg-l { fill: #120F20; stroke: rgba(201, 214, 255, 0.25); }
+.iq-pkg-r { fill: #1A1630; stroke: rgba(201, 214, 255, 0.25); }
+.iq-pkg-t { fill: #1E1A36; stroke: rgba(201, 214, 255, 0.45); }
+.iq-die { fill: #0F0C1C; stroke: rgba(141, 180, 255, 0.5); stroke-width: .8; }
+.iq-bus { stroke: rgba(141, 180, 255, 0.25); stroke-width: 1.4; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.iq-res { fill: none; stroke: rgba(201, 214, 255, 0.3); stroke-width: .8; }
+.iq-q { fill: #2A3150; stroke: rgba(201, 214, 255, 0.6); stroke-width: .8; transform-box: fill-box; transform-origin: center; }
+.iq-chiplabel { font: 500 9px var(--fonte-codigo); letter-spacing: .12em; fill: rgba(201, 214, 255, 0.45); }
+.iq-halo { opacity: .28; }
+/* estágio aceso por classe (a máquina); a intro acende pelo quadro, com estilo direto em cada peça */
+.iq-tier.is-on .iq-top { stroke: #8DB4FF; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.9)); }
+.iq-tier.is-on .iq-att { fill: #6B46FF; stroke: #A592FF; }
+.iq-tier.is-on .iq-label, .iq-tier[data-on="true"] .iq-label { fill: var(--text-strong); }
+.iq-tier.is-on .iq-frost { opacity: 0; }
+/* rótulo que a câmera da máquina cortaria na borda */
+.iq-label.is-cut, .iq-tick.is-cut { opacity: 0; }
+@keyframes iq-run { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@media (max-width: 560px) {
+  .iq-label { font-size: 13px; }
+}

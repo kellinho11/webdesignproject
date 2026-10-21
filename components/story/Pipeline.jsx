@@ -9,7 +9,7 @@ const STEPS = [
 export default function Pipeline() {
   return (
     <figure className="pipe reveal">
-      <figcaption className="fig-label"><b>Fig. 3</b> Da pergunta à resposta</figcaption>
+      <figcaption className="fig-label">Da pergunta à resposta</figcaption>
       <ol className="pipe__steps">
         {STEPS.map((s, i) => (
           <li className="pipe__step" key={s.n} style={{ '--k': i }}>

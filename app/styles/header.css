@@ -81,7 +81,7 @@
 .nav-open .nav-toggle span:first-child { transform: translateY(3.75px) rotate(45deg); }
 .nav-open .nav-toggle span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
 @media (prefers-reduced-motion: no-preference) {
-  .logo__orbits { animation: orbit-spin 18s linear infinite; }
+  .brand:hover .logo__orbits { animation: orbit-spin 6s linear infinite; }
 }
 @keyframes orbit-spin {
   to { transform: rotate(360deg); }
@@ -195,48 +195,37 @@
 }
 
 
-/* ---- Faixa de rumo (4.0): capítulo atual, as 5 portas e a telemetria da QPU ---- */
-.site-header { overflow: visible; }
-.header__strip {
+/* ---- Seções no menu: a porta do circuito antes do nome; a da seção atual acende ---- */
+.site-nav a { display: inline-flex; align-items: baseline; gap: 7px; }
+.site-nav__gate { font: 500 10px/1 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.55); transition: color var(--dur-ui) var(--ease-out); }
+.site-nav a:hover .site-nav__gate, .site-nav a[aria-current="true"] .site-nav__gate { color: var(--ice); }
+.site-nav a[aria-current="true"] { color: var(--text-strong); }
+.site-nav a[aria-current="true"]::after { transform: scaleX(1); background: var(--ice); }
+/* "Pausar movimento" no header: só o ícone (o texto continua para leitores de tela) */
+.site-header .motion-toggle { width: 34px; height: 34px; justify-content: center; padding: 0; }
+.site-header .motion-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* progresso da leitura: uma linha fina na base da cápsula (lib/behaviors/percurso.js) */
+.header__progress {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  height: var(--strip-h);
-  background: rgba(var(--surface-rgb), 0.97);
-  border-bottom: 1px solid var(--hair);
+  left: max(0px, (100% - 1200px) / 2);
+  right: max(0px, (100% - 1200px) / 2);
+  bottom: 10px;
+  height: 1px;
+  background: var(--ice);
+  transform-origin: left;
+  transform: scaleX(0);
+  pointer-events: none;
 }
-.header__strip-inner { height: 100%; display: flex; align-items: center; gap: clamp(14px, 3vw, 40px); }
-.chapter { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; margin: 0; font: 500 11px/1 var(--fonte-codigo); letter-spacing: 0.08em; color: var(--text-secondary); white-space: nowrap; }
-.chapter b { color: var(--ice); font-weight: 500; }
-.chapter__track { position: relative; flex: 1; max-width: 420px; display: flex; justify-content: space-between; margin: 0; padding: 0; list-style: none; }
-.chapter__track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--hair); }
-.chapter__fill { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--ice); transform-origin: left; transform: scaleX(0); }
-.chapter__track li {
-  position: relative;
-  z-index: 1;
-  min-width: 22px;
-  padding: 2px 4px;
-  border: 1px solid var(--hair);
-  background: var(--bg-primary);
-  font: 500 9.5px/1 var(--fonte-codigo);
-  text-align: center;
-  color: var(--text-secondary);
-  transition: border-color 240ms var(--ease-out), color 240ms var(--ease-out);
-}
-.chapter__track li.is-on { border-color: var(--ice); color: var(--ice); }
-.live-status { flex: none; display: flex; align-items: center; gap: 14px; margin: 0 0 0 auto; font: 500 11px/1 var(--fonte-codigo); color: var(--text-secondary); white-space: nowrap; }
-.live-status b { color: var(--text-strong); font-weight: 500; font-variant-numeric: tabular-nums; }
+/* ponto "ao vivo" da telemetria do Hero */
 .live-status__dot { width: 6px; height: 6px; background: #4ADE80; display: inline-block; margin-right: 6px; }
 @media (prefers-reduced-motion: no-preference) {
   .live-status__dot { animation: dot-blink 2s steps(1) infinite; }
 }
 @keyframes dot-blink { 50% { opacity: 0.35; } }
-.site-nav a[aria-current="true"] { color: var(--text-strong); }
-.site-nav a[aria-current="true"]::after { transform: scaleX(1); background: var(--ice); }
-@media (max-width: 900px) {
-  .live-status__wide, .chapter__track { display: none; }
+@media (max-width: 640px) {
+  .header__progress { left: 10px; right: 10px; }
 }
-@media (max-width: 480px) {
-  .live-status > span:nth-child(2) { display: none; }
+@media (max-width: 1180px) {
+  .site-nav { gap: 22px; }
+  .site-nav__gate { display: none; }
 }

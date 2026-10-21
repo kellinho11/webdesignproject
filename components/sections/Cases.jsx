@@ -1,6 +1,5 @@
 // Seção: Cases · porta Rz: o mesmo qubit, três problemas. Cada caso manda o algoritmo para a Demo.
 import Film from '@/components/films/Film';
-import GateMark from '@/components/story/GateMark';
 import Kpis from '@/components/story/Kpis';
 
 const CASES = [
@@ -16,7 +15,7 @@ const CASES = [
     ],
   },
   {
-    id: 'vqe', n: '2.2', algo: 'VQE', area: 'Descoberta de fármacos', mesh: 'blue', ratio: '4 / 5',
+    id: 'vqe', n: '2.2', algo: 'VQE', area: 'Descoberta de fármacos', mesh: 'blue', ratio: '16 / 10',
     def: 'Algoritmo híbrido que calcula a energia de moléculas: o quântico mede, o clássico ajusta, repetidamente.',
     title: 'Anos de laboratório em minutos.', fact: 'H₂ · LiH · BeH₂',
     metrics: [['Triagem', '14 meses → 9 dias'], ['Moléculas', '2.400'], ['Erro', '< 1,6 mHa']],
@@ -27,7 +26,7 @@ const CASES = [
     ],
   },
   {
-    id: 'grover', n: '2.3', algo: 'Grover', area: 'Busca em dados', mesh: 'ice', ratio: '21 / 9',
+    id: 'grover', n: '2.3', algo: 'Grover', area: 'Busca em dados', mesh: 'ice', ratio: '16 / 10',
     def: 'Algoritmo de busca quântica: encontra um item em N possibilidades com cerca de √N tentativas.',
     title: 'Sem varrer a base inteira.', fact: '1 mi de registros → 785 consultas',
     metrics: [['Consultas', '−99,9%'], ['Base', '10⁹ registros'], ['Fraudes achadas', '+31%']],
@@ -42,12 +41,11 @@ const CASES = [
 export default function Cases() {
   return (
     <>
-  <section className="section cases" id="casos-de-uso" aria-labelledby="cases-title" data-gate="Rz" data-state="Rz(θ)|+⟩" data-num="§ 02" data-name="Casos de uso · fase">
-    <GateMark gate="Rz" name="Rz(θ) · rotação de fase" />
+  <section className="section cases" id="casos-de-uso" aria-labelledby="cases-title" data-gate="Rz">
     <div className="ed">
       <header className="ed-head ed-head--cases">
         <p className="ed-num reveal"><span>§ 02</span>Casos de uso</p>
-        <h2 id="cases-title" className="ed-title reveal"><span className="tl">Qual desafio</span> <span className="tl tl--in3">é o <span className="kw">seu?</span></span></h2>
+        <h2 id="cases-title" className="ed-title reveal"><span className="tl">Qual desafio</span> <span className="tl">é o <span className="kw">seu?</span></span></h2>
         <p className="ed-lead reveal" style={{ '--rd': '120ms' }}>Escolha um. Ele vai para a Demo.</p>
       </header>
       <Kpis items={[

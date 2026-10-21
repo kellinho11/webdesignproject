@@ -20,6 +20,29 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.0.0] — 2026-10-21 · MAJOR
+
+A página ganha uma organização que faz sentido de cima para baixo e fica mais leve. MAJOR porque a estrutura e as classes do design system mudam: saem o fio da margem, as portas laterais, a faixa de rumo do header e a máquina fixa ao lado do texto. As âncoras continuam as mesmas.
+
+### Alterado
+- **Uma coluna larga numa grade de 12 colunas**, com a mesma margem dos dois lados. Títulos alinhados à esquerda (sem escada), texto de apoio logo abaixo, pontes entre seções mais contidas.
+- **Header com uma barra só:** as seções na ordem da página, cada uma com a sua porta do circuito (H, Rz, U, SW, M); a seção atual acende e uma linha fina marca o progresso. "Pausar movimento" vira um ícone na barra.
+- **O computador quântico mora em Quantum Engineering:** o criostato ao lado da lista de estágios; escolher um estágio leva a câmera até ele e abre a nota.
+- **Casos de uso em três linhas iguais**, o filme alternando de lado; Tecnologia com a moeda ao lado do filme; Investidores alinhados à grade.
+- **A intro é uma composição Remotion** (`components/intro/`), tocada pelo Remotion Player: cada quadro é função do quadro atual. Roda sozinha (~4,4 s); tocar no processador, "Pular" ou Esc entram na hora. O Player chega num pedaço de JS separado, só para quem vê a intro.
+- **O criostato virou um componente** (`components/cryostat/Cryostat.jsx`, geometria em `lib/cryostat.js`), usado pela intro e pela máquina; o desenho vem no HTML.
+- Saíram os rótulos "Fig. N" e "Tab. N" e o fólio do Hero.
+
+### Desempenho
+- Filmes ASCII copiam cada caractere de uma folha de glifos (`drawImage`) em vez de um `fillText` por célula: o desenho dos filmes caiu de ~30% para ~11% da CPU durante a rolagem.
+- Sem animações infinitas dentro de SVG (pulsos do circuito do Hero, brilho da geada, satélite do céu): cada uma repintava o desenho inteiro a cada quadro.
+- Rolagem medida com a CPU 4× mais lenta: de 47 para 64 fps; parado no Hero, de 46 para 59 fps.
+
+### Adicionado
+- **Teaser de 12 s em HyperFrames** (`video/`): o criostato e a logo do site, o título e o site rodando de verdade. Publicado em `public/videos/teaser.mp4`, no rodapé (só baixa no play) e como `og:video`.
+
+---
+
 ## [4.2.0] — 2026-10-21 · MINOR
 
 Uma revisão crítica de qualidade, desempenho e segurança. MINOR porque nada quebra: âncoras, classes e a intro continuam; entram favicon, imagem de compartilhamento, robots e sitemap.

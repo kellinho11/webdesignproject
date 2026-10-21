@@ -24,24 +24,23 @@
   border: 0;
 }
 
-/* ---- Grade editorial (4.0) ----
-   .ed é o contêiner das seções: uma margem larga à esquerda, onde corre o fio do circuito, e 12
-   colunas. Os títulos se deslocam por colunas inteiras (tl--in1 a tl--in4), nunca centralizados. */
+/* ---- Grade editorial ----
+   .ed é o contêiner das seções: 12 colunas, a mesma margem dos dois lados. Títulos alinhados à
+   esquerda, com o texto de apoio logo abaixo: a leitura desce numa linha só. */
 main { position: relative; }
 .ed {
   position: relative;
   width: 100%;
   max-width: var(--ed-max);
   margin: 0 auto;
-  padding-left: var(--rail);
-  padding-right: var(--pad-r);
+  padding-inline: var(--pad);
 }
 .ed-head {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
   align-items: end;
-  margin-bottom: clamp(40px, 7vw, 96px);
+  margin-bottom: clamp(36px, 5vw, 64px);
 }
 .ed-num {
   grid-column: 1 / -1;
@@ -56,27 +55,24 @@ main { position: relative; }
 }
 .ed-num > span:first-child { color: var(--ice); letter-spacing: 0.04em; }
 .ed-title {
-  grid-column: 1 / span 10;
+  grid-column: 1 / span 9;
   margin: 0;
   font-family: var(--fonte-titulo);
   font-weight: 700;
-  font-size: clamp(2.4rem, 5.6vw, 5.4rem);
-  line-height: 0.92;
-  letter-spacing: -0.055em;
+  font-size: clamp(2.3rem, 4.6vw, 4.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
   color: var(--text-strong);
 }
-.ed-title--sm { font-size: clamp(2.2rem, 4.8vw, 4.2rem); }
+.ed-title--sm { font-size: clamp(2.1rem, 4vw, 3.6rem); }
 .ed-title .tl { display: block; }
-.ed-title .kw { font-size: 1.06em; letter-spacing: -0.025em; line-height: 0.86; }
-.tl--in1 { padding-left: 10%; }
-.tl--in2 { padding-left: 20%; }
-.tl--in3 { padding-left: 32%; }
-.tl--in4 { padding-left: 41%; }
+.ed-title .kw { font-size: 1.06em; letter-spacing: -0.025em; line-height: 0.9; }
 .ed-lead {
-  grid-column: 9 / -1;
-  margin-top: clamp(20px, 3vw, 36px);
-  max-width: 38ch;
-  font-size: 15px;
+  grid-column: 1 / span 6;
+  margin-top: clamp(16px, 2vw, 24px);
+  max-width: 46ch;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--text-secondary);
   text-wrap: pretty;
@@ -99,10 +95,7 @@ main { position: relative; }
   .js .ed-title.reveal .tl { clip-path: none; transform: none; }
 }
 @media (max-width: 760px) {
-  :root { --rail: 30px; --pad-r: 18px; }
-  .ed-title { grid-column: 1 / -1; font-size: clamp(2.3rem, 11.5vw, 3.6rem); }
+  :root { --pad: 18px; }
+  .ed-title { grid-column: 1 / -1; font-size: clamp(2.2rem, 10.5vw, 3.3rem); }
   .ed-lead { grid-column: 1 / -1; }
-  .tl--in1 { padding-left: 6%; }
-  .tl--in2 { padding-left: 12%; }
-  .tl--in3, .tl--in4 { padding-left: 18%; }
 }

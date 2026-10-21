@@ -9,15 +9,12 @@ import Demo from '@/components/sections/Demo';
 import Api from '@/components/sections/Api';
 import Cta from '@/components/sections/Cta';
 import SiteFooter from '@/components/sections/SiteFooter';
-import Thread from '@/components/story/Thread';
 import Bridge from '@/components/story/Bridge';
-import Machine from '@/components/story/Machine';
 import Space from '@/components/live/Space';
 
 // Um circuito de uma ponta à outra: o visitante é o qubit. Ele entra em |0⟩ no Hero, passa por
-// uma porta em cada seção (H, Rz, U, SWAP) e é medido nos Investidores. Depois do Hero a página
-// é um percurso em duas trilhas: o texto à esquerda, costurado pelo fio da margem (Thread) e pelas
-// pontes, e à direita o computador quântico (Machine), que a página desce estágio por estágio.
+// uma porta em cada seção (H, Rz, U, SWAP) e é medido nos Investidores. As pontes entre as seções
+// fecham um assunto e abrem o próximo; o computador quântico mora em Quantum Engineering.
 export default function Home() {
   return (
     <>
@@ -27,8 +24,6 @@ export default function Home() {
       <main id="topo">
         <Hero />
         <div className="story">
-        <Thread />
-        <Machine />
         <Compare />
         <Bridge parts={[['Bonito no papel.'], ['E na prática?', true]]} note="H → Rz · aplicar ao mundo real" to="#casos-de-uso" />
         <Cases />

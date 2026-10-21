@@ -98,7 +98,7 @@ export default function BlochSphere() {
     <figure className="bloch" ref={ref}>
       <canvas ref={canvasRef} className="bloch__canvas" aria-hidden="true" />
       <figcaption className="bloch__read">
-        <span className="bloch__tag">Fig. 0 · Esfera de Bloch · 1 qubit{reduced ? ' (parada)' : ''}</span>
+        <span className="bloch__tag">Esfera de Bloch · 1 qubit{reduced ? ' (parada)' : ''}</span>
         <span className="bloch__amp" ref={ampRef} aria-hidden="true">|ψ⟩ = 0,71|0⟩ + 0,71|1⟩</span>
         <span className="bloch__p" ref={pRef} aria-hidden="true"><i /><span>P(0)</span><span>P(1)</span></span>
         <span className="sr-only">Um qubit desenhado como um ponto numa esfera: no polo de cima é 0, no de baixo é 1; entre os dois, uma superposição.</span>

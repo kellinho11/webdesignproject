@@ -1,0 +1,35 @@
+/* ---- Ponte entre seções: uma frase fecha um assunto e abre o próximo ----
+   As palavras acendem conforme a frase passa pela tela (--p, de lib/behaviors/percurso.js). */
+.bridge { position: relative; padding-block: clamp(40px, 7vh, 80px); }
+.bridge .ed { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; }
+.bridge__text {
+  grid-column: 1 / span 8;
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--hair);
+  font: 600 clamp(1.5rem, 2.6vw, 2.4rem)/1.12 var(--fonte-titulo);
+  letter-spacing: -0.035em;
+  color: var(--text-strong);
+}
+.bridge__w { opacity: clamp(0.18, calc(var(--p, 1) * (var(--n) + 3) - var(--i)), 1); }
+.bridge__w--em { font-family: var(--fonte-destaque); font-style: italic; font-weight: 400; font-size: 1.07em; letter-spacing: -0.02em; color: var(--ice); }
+.bridge__note {
+  grid-column: 9 / -1;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 0.5em;
+  font: 500 11px/1 var(--fonte-codigo);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--dur-ui) var(--ease-out);
+}
+.bridge__note::after { content: "↓"; letter-spacing: 0; transition: transform 300ms var(--ease-out); }
+.bridge__note:hover { color: var(--ice); }
+.bridge__note:hover::after { transform: translateY(3px); }
+@media (max-width: 760px) {
+  .bridge__text { grid-column: 1 / -1; font-size: clamp(1.4rem, 6.4vw, 1.9rem); }
+  .bridge__note { grid-column: 1 / -1; justify-self: start; margin-top: 18px; }
+}

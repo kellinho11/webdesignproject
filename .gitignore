@@ -78,6 +78,12 @@ web_modules/
 .next
 out
 
+# HyperFrames: estado do Studio, revisões e renders locais (o teaser publicado fica em public/videos)
+video/.hyperframes
+video/renders
+video/check.json
+video/.transcode-cache
+
 # Nuxt.js build / generate output
 .nuxt
 dist

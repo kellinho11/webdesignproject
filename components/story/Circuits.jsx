@@ -29,7 +29,7 @@ export default function Circuits() {
     <div className="circuits">
       {Object.entries(DEFS).map(([k, d]) => (
         <figure key={k} className="cq" data-circuit={k}>
-          <figcaption className="fig-label"><b>Fig. 4</b> {d.name}</figcaption>
+          <figcaption className="fig-label">{d.name}</figcaption>
           <svg viewBox={`0 0 ${X0 + (d.cols + 0.6) * DX} ${Y0 + Q * DY - 6}`} role="img" aria-label={`Circuito do ${d.name}`}>
             {[0, 1, 2, 3].map((q) => <g key={q} className="cq__wire"><text x="6" y={y(q) + 4}>q{q}</text><line x1="30" y1={y(q)} x2={X0 + (d.cols + 0.4) * DX} y2={y(q)} /></g>)}
             {d.body}

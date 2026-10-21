@@ -56,13 +56,12 @@ export default function Hero() {
     <div className="hero__veil" aria-hidden="true"></div>
     <div className="ed hero__content">
       <div className="hero__parallax">
-        <p className="hero__folio hero-in" style={{ '--d': '0ms' }}><span>SynapseQ</span><span>Nº 04 · Series A · 2026</span><span>IA × Computação Quântica</span></p>
         <div className="hero__main">
           <h1 id="hero-title" className="hero__title">
             <span className="hero__line hero-in" style={{ '--d': '160ms' }}>A inteligência</span>{' '}
-            <span className="hero__line hero__line--in hero-in" style={{ '--d': '260ms' }}>do futuro, na</span>{' '}
+            <span className="hero__line hero-in" style={{ '--d': '260ms' }}>do futuro, na</span>{' '}
             <span className="hero__line hero-in" style={{ '--d': '360ms' }}>velocidade do</span>{' '}
-            <span className="hero__line hero__line--kw hero-in" style={{ '--d': '480ms' }}><span className="kw">impossível.</span></span>
+            <span className="hero__line hero-in" style={{ '--d': '480ms' }}><span className="kw">impossível.</span></span>
           </h1>
           <div className="hero__side">
             <p className="hero__subtitle hero-in" style={{ '--d': '600ms' }}>Seu problema vira um circuito quântico. A QPU resolve, a API responde em 340 ms.</p>
@@ -84,7 +83,6 @@ export default function Hero() {
         </dl>
         <p className="hero__backers hero-in hero-in--fade" style={{ '--d': '900ms' }}>Projeto acadêmico · números ilustrativos</p>
       </div>
-      <a className="hero__drop hero-in hero-in--fade" href="#tecnologia" style={{ '--d': '900ms' }}><span className="hero__ket">|ψ⟩ = |0⟩</span><span>Desça pelo circuito</span></a>
     </div>
   </section>
     </>

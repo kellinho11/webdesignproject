@@ -65,41 +65,31 @@
 
 .api__film { position: relative; z-index: 1; }
 
-/* ---- Quantum Engineering (4.0): filme largo à esquerda, notas numeradas descendo à direita ---- */
-.api { padding-block: clamp(32px, 5vh, 64px) clamp(80px, 12vh, 140px); background: none; }
-.ed-head--api .ed-title { grid-column: 2 / -1; }
-.api__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
+/* ---- Quantum Engineering: a máquina, depois o filme da chamada com as notas, depois o código ---- */
+.api { padding-block: clamp(32px, 5vh, 64px) clamp(80px, 10vw, 140px); background: none; }
+.api__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: center; }
 .api__film { grid-column: 1 / span 7; }
-.api__features { grid-column: 9 / -1; list-style: none; margin: clamp(40px, 7vw, 110px) 0 0; padding: 0; display: grid; gap: 0; }
+.api__features { grid-column: 9 / -1; list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
 .api .feature {
   display: grid;
   grid-template-columns: 3.2em 1fr;
   gap: 6px 0;
-  padding: 18px 0 26px;
+  padding: 18px 0 22px;
   border: 0;
   border-top: 1px solid var(--hair);
   background: none;
   box-shadow: none;
   border-radius: 0;
 }
-.api .feature:nth-child(2) { margin-left: 12%; }
-.api .feature:nth-child(3) { margin-left: 4%; }
 .api .feature__index { grid-row: 1 / span 2; font: 500 11px/1.9 var(--fonte-codigo); color: var(--ice); -webkit-text-stroke: 0; }
 .api .feature__title { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
 .api .feature__text { margin: 0; font-size: 14px; color: var(--text-secondary); }
+.api__dev { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 40px); margin-top: clamp(56px, 7vw, 96px); align-items: start; }
 @media (max-width: 960px) {
-  .ed-head--api .ed-title, .api__film, .api__features { grid-column: 1 / -1; }
-  .api__features { margin-top: 36px; }
+  .api__film, .api__features { grid-column: 1 / -1; }
+  .api__features { margin-top: 32px; }
+  .api__dev { grid-template-columns: minmax(0, 1fr); }
 }
-
-
-/* API nas duas trilhas: filme em cima, notas em três colunas; depois o código e a ficha do hardware */
-.story .api__film { grid-column: 1 / -1; }
-.story .api__features { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(14px, 2vw, 24px); margin-top: 32px; }
-.story .api .feature:nth-child(n) { margin-left: 0; }
-.story .api .feature:nth-child(2) { margin-top: 28px; }
-.story .api .feature:nth-child(3) { margin-top: 12px; }
-.api__dev { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 40px); margin-top: clamp(56px, 8vw, 96px); align-items: start; }
 .code { margin-top: 12px; border: 1px solid var(--hair); background: #05070D; }
 .code__bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--hair); }
 .code__tabs { display: flex; }
@@ -118,8 +108,4 @@
 .code__copy { border-right: 0; border-left: 1px solid var(--hair); }
 .code__tabs button:hover, .code__copy:hover { color: var(--ice); }
 .code__body { margin: 0; padding: 16px; overflow-x: auto; font: 400 12.5px/1.7 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.86); }
-@media (max-width: 960px) {
-  .api__dev { grid-template-columns: minmax(0, 1fr); }
-  .story .api__features { grid-template-columns: minmax(0, 1fr); }
-  .story .api .feature:nth-child(n) { margin-top: 0; }
-}
+

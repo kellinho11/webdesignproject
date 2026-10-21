@@ -236,10 +236,10 @@
 .cta__collapse output { font: 400 clamp(2.2rem, 5vw, 3.6rem)/1 var(--fonte-destaque); font-style: italic; letter-spacing: 0; text-transform: none; color: var(--ice); }
 .cta2 { max-width: none; margin: 0; text-align: left; }
 .cta2__title { max-width: none; margin: 0 0 28px; }
-.cta2 .cta__text { width: min(100%, 46ch); max-width: none; margin: 0 0 0 20%; font-size: 16px; }
-.cta .form.sentence { margin-top: clamp(40px, 6vw, 72px); margin-left: 8%; align-items: flex-start; text-align: left; }
+.cta2 .cta__text { width: min(100%, 46ch); max-width: none; margin: clamp(16px, 2vw, 24px) 0 0; font-size: 16px; }
+.cta .form.sentence { margin-top: clamp(40px, 6vw, 72px); align-items: flex-start; text-align: left; }
 .cta .sentence__body { max-width: 34em; }
-.cta2 .cta__nda { margin: 18px 0 0 8%; }
+.cta2 .cta__nda { margin: 18px 0 0; }
 @media (max-width: 760px) {
   .cta2 .cta__text, .cta .form.sentence, .cta2 .cta__nda { margin-left: 0; }
 }
