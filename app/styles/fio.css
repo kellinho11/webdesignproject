@@ -88,7 +88,7 @@ html:not(.js) .thread__ket { display: none; }
   font: 400 10px/1 var(--fonte-codigo);
   font-style: normal;
   letter-spacing: 0.08em;
-  color: rgba(var(--ink-rgb), 0.36);
+  color: rgba(var(--ink-rgb), 0.55);
 }
 .is-passed > .gate-mark b { border-color: var(--ice); color: var(--ice); transform: scale(1.08); }
 @media (max-width: 760px) {

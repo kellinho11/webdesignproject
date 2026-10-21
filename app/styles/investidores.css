@@ -127,14 +127,14 @@
     max-width: 24ch;
   }
 }
-.sentence .field input::placeholder { color: rgba(var(--ink-rgb), 0.36); font-weight: 500; }
+.sentence .field input::placeholder { color: rgba(var(--ink-rgb), 0.55); font-weight: 500; }
 .sentence .field select {
   padding-right: 1.1em;
   background-size: 6px 6px, 6px 6px;
   background-position: calc(100% - 12px) 60%, calc(100% - 6px) 60%;
   cursor: pointer;
 }
-.sentence .field select:invalid { color: rgba(var(--ink-rgb), 0.4); font-weight: 500; }
+.sentence .field select:invalid { color: rgba(var(--ink-rgb), 0.55); font-weight: 500; }
 .sentence .field select option { font-size: 16px; }
 .sentence .field input:focus,
 .sentence .field select:focus {

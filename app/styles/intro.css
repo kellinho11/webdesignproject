@@ -1,6 +1,8 @@
 /* ==== Intro ==== */
 html.intro-open,
 html.intro-open body { overflow: hidden; }
+/* "Pular" antes de o JS da página chegar (lib/boot.js): a intro some na hora */
+html.intro-skipped .intro { display: none; }
 .intro {
   position: fixed;
   inset: 0;
@@ -88,7 +90,7 @@ html.intro-open body { overflow: hidden; }
   font: 500 11px var(--fonte-codigo);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(var(--ink-rgb), 0.45);
+  color: rgba(var(--ink-rgb), 0.62);
   cursor: pointer;
   transition: color .25s;
 }

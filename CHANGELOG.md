@@ -20,6 +20,26 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [4.2.0] — 2026-10-21 · MINOR
+
+Uma revisão crítica de qualidade, desempenho e segurança. MINOR porque nada quebra: âncoras, classes e a intro continuam; entram favicon, imagem de compartilhamento, robots e sitemap.
+
+### Corrigido
+- **A página não fica mais presa atrás da intro.** A trava de rolagem vinha no próprio HTML e só saía depois que todo o JS carregava: com rede ruim ou bloqueador, a página ficava travada. Agora quem abre a intro é um script curto no `<head>` (`lib/boot.js`), que já deixa "Pular" e Esc funcionando antes do resto do JS; um toque no processador antes da hora fica guardado e, se o JS não chegar em 3 s, a intro sai.
+- **Rolagem mais leve:** fora da Demo, o filme guiado pela rolagem era redesenhado a cada quadro (137 vezes até chegar nela). Agora só redesenha quando o instante muda.
+- **Contraste AA (4,5:1)** no aviso "números ilustrativos" do Hero, nos placeholders e no select do formulário, nas notas dos números, nos nomes das portas e no "Pular" da intro.
+
+### Alterado
+- **Formulário honesto:** a confirmação não diz mais "Solicitação recebida" nem promete NDA; avisa que é uma demonstração e que nada foi enviado.
+- **Botões do Hero levam aonde dizem:** "Ver a demonstração" (→ Demo) e "Como funciona" (→ Quantum Engineering), no lugar de "Agendar demonstração" e "Whitepaper técnico".
+- README atualizado com a estrutura atual.
+
+### Adicionado
+- Cabeçalhos de segurança no `vercel.json`: `Content-Security-Policy` (`frame-ancestors 'none'`, `base-uri`, `form-action`, `object-src`), `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy`.
+- Favicon (`app/icon.svg`), imagem de compartilhamento 1200×630 (`app/opengraph-image.png`), Open Graph, Twitter Card, link canônico, cor do tema, `robots.txt` e `sitemap.xml`.
+
+---
+
 ## [4.1.0] — 2026-10-21 · MINOR
 
 Menos texto, conteúdo mais direto e código reorganizado. MINOR porque nada quebra: âncoras, classes e eventos continuam os mesmos.

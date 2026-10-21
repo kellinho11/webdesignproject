@@ -67,8 +67,8 @@ export default function Hero() {
           <div className="hero__side">
             <p className="hero__subtitle hero-in" style={{ '--d': '600ms' }}>Seu problema vira um circuito quântico. A QPU resolve, a API responde em 340 ms.</p>
             <div className="hero__actions hero-in" style={{ '--d': '700ms' }}>
-              <a href="#investidores" className="btn-primary">Agendar demonstração <span className="btn__arrow" aria-hidden="true">→</span></a>{' '}
-              <a href="#quantum-engineering" className="btn-secondary">Whitepaper técnico</a>
+              <a href="#demo" className="btn-primary">Ver a demonstração <span className="btn__arrow" aria-hidden="true">→</span></a>{' '}
+              <a href="#quantum-engineering" className="btn-secondary">Como funciona</a>
             </div>
           </div>
         </div>

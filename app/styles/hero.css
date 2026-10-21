@@ -233,7 +233,7 @@ html:not(.js) .hero__circuit { opacity: 0.42; }
 .hero__side { grid-column: 8 / -1; margin-top: clamp(32px, 5vh, 56px); }
 .hero__subtitle { max-width: 40ch; margin-top: 0; font-size: 16px; color: rgba(var(--ink-rgb), 0.66); }
 .hero__actions { align-items: center; gap: 22px; margin-top: 28px; }
-.hero__backers { margin-top: 28px; font: 400 12px/1.5 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.42); }
+.hero__backers { margin-top: 28px; font: 400 12px/1.5 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.62); }
 .hero__backers sup { color: var(--ice); margin-right: 4px; }
 /* o fio nasce aqui: o estado inicial |0⟩ desce até a primeira porta */
 .hero__drop {

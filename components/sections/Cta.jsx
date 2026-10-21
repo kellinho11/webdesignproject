@@ -44,11 +44,11 @@ export default function Cta() {
         </form>
 
         <div className="form__success" id="form-success" hidden>
-          <p className="form__success-title">Solicitação recebida.</p>
-          <p className="form__success-text">NDA e acesso ao data room em até 48 h.</p>
+          <p className="form__success-title">Dados válidos.</p>
+          <p className="form__success-text">Projeto acadêmico: nada foi enviado nem guardado.</p>
         </div>
 
-        <p className="cta__nda"><svg className="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg> Seus dados são protegidos sob NDA automático</p>
+        <p className="cta__nda"><svg className="icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7.5v.5" /></svg> Demonstração: o formulário só confere os campos, não envia dados</p>
       </div>
     </div>
   </section>
