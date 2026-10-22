@@ -20,6 +20,13 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.1.1] — 2026-10-21 · PATCH
+
+### Corrigido
+- `og:video` saía com endereço relativo (`/videos/...`); redes sociais só leem endereço absoluto, então a prévia do link ficava sem o vídeo. Agora sai com o endereço completo do site.
+
+---
+
 ## [5.1.0] — 2026-10-21 · MINOR
 
 Uma intro mais simples, o funcionamento do computador quântico em destaque no Hero e menos trabalho por quadro. MINOR porque nada quebra: âncoras, classes do design system e a estrutura da 5.0.0 continuam.
