@@ -35,11 +35,6 @@ export default function SiteFooter() {
       <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens</a>
     </nav>
   </div>
-  {/* o teaser renderizado em HyperFrames (video/): só baixa quando a pessoa aperta play */}
-  <figure className="container footer__teaser">
-    <video src="/videos/teaser.mp4" poster="/videos/teaser.jpg" controls muted playsInline preload="none" width="1920" height="1080" />
-    <figcaption>Teaser · 12 s · feito a partir do próprio site</figcaption>
-  </figure>
   <ol className="container footer__circuit" aria-label="O circuito desta página">
     <li><b>|0⟩</b>Início</li><li><b>H</b>Tecnologia</li><li><b>Rz</b>Casos de uso</li><li><b>U</b>Demo</li><li><b>SW</b>Quantum Engineering</li><li><b>M</b>Investidores</li>
   </ol>

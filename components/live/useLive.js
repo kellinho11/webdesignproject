@@ -25,9 +25,3 @@ export default function useLive(threshold = 0.1) {
   }, [threshold]);
   return [ref, on, reduced];
 }
-
-// passeio aleatório limitado: o valor anda um pouco a cada passo e volta para perto do centro
-export const drift = (v, center, spread, step) => {
-  const next = v + (Math.random() - 0.5) * step + (center - v) * 0.15;
-  return Math.min(center + spread, Math.max(center - spread, next));
-};

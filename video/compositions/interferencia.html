@@ -1,0 +1,47 @@
+<template>
+  <style>
+    @font-face { font-family: 'Sora'; src: url('assets/fonts/Sora-700.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'Instrument Serif'; src: url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2'); font-style: italic; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/JetBrainsMono-500.woff2') format('woff2'); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 50% 42%, #161236 0%, #07090F 72%); }
+    #root .kick { position: absolute; left: 90px; top: 84px; margin: 0; font: 500 30px 'JetBrains Mono'; letter-spacing: 0.16em; text-transform: uppercase; color: #C9D8FF; }
+    #root .kick b { font-weight: 500; color: #8B70FF; margin-right: 18px; }
+    #root .say { position: absolute; left: 90px; right: 90px; bottom: 96px; margin: 0; font: 700 70px/1.04 'Sora'; letter-spacing: -0.045em; color: #FFFFFF; }
+    #root .say em { font: italic 400 1.1em 'Instrument Serif'; letter-spacing: -0.02em; color: #C9D8FF; }
+    #root .art { position: absolute; left: 0; right: 0; top: 150px; height: 600px; }
+    #interferencia-art .amp { fill: rgba(139, 112, 255, 0.55); }
+    #interferencia-art .amp.win { fill: rgba(139, 112, 255, 0.55); }
+  </style>
+  <div id="root" data-composition-id="interferencia" data-width="1080" data-height="1080">
+    <p id="interferencia-kick" class="clip kick" data-start="0" data-duration="3.6" data-track-index="1"><b>04</b>Interferência</p>
+    <div id="interferencia-art" class="clip art" data-start="0" data-duration="3.6" data-track-index="2">
+      <svg viewBox="-540 -300 1080 600" width="1080" height="600" style="position:absolute;left:0;top:0;overflow:visible">
+        <line x1="-450" y1="0" x2="450" y2="0" stroke="rgba(238,243,255,0.3)" stroke-width="2" />
+        <rect class="amp" x="-430" y="-150" width="80" height="150" />
+        <rect class="amp" x="-320" y="-150" width="80" height="150" />
+        <rect class="amp" x="-210" y="-150" width="80" height="150" />
+        <rect class="amp" x="-100" y="-150" width="80" height="150" />
+        <rect class="amp" x="10" y="-150" width="80" height="150" />
+        <rect class="amp win" x="120" y="-150" width="80" height="150" />
+        <rect class="amp" x="230" y="-150" width="80" height="150" />
+        <rect class="amp" x="340" y="-150" width="80" height="150" />
+        <rect id="int-scan" x="-470" y="-280" width="6" height="300" fill="#8B70FF" />
+      </svg>
+    </div>
+    <p id="interferencia-say" class="clip say" data-start="0" data-duration="3.6" data-track-index="3"><span class="w">As</span> <span class="w">respostas</span> <span class="w">erradas</span> <span class="w">se</span> <em class="w">cancelam</em>.</p>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // entrada comum: o rótulo e a frase chegam palavra por palavra, sem deslizar
+    tl.fromTo('#interferencia-kick', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 0);
+    tl.fromTo('#interferencia-say .w', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out', stagger: 0.067 }, 0.25);
+    tl.fromTo('#interferencia-art .amp', { scaleY: 0, svgOrigin: '0 0' }, { scaleY: 1, duration: 0.4, ease: 'expo.out', stagger: 0.04, svgOrigin: '0 0' }, 0.1);
+    // uma porta passa pelo circuito: as amplitudes erradas encolhem e a certa cresce
+    tl.fromTo('#int-scan', { x: 0 }, { x: 930, duration: 1.4, ease: 'power2.inOut' }, 0.8);
+    tl.to('#interferencia-art .amp:not(.win)', { scaleY: 0.12, duration: 0.5, ease: 'power3.out', stagger: 0.15, svgOrigin: '0 0' }, 0.95);
+    tl.to('#interferencia-art .amp.win', { scaleY: 1.85, fill: '#C9D8FF', duration: 0.6, ease: 'expo.out', svgOrigin: '0 0' }, 1.7);
+    // saída: tudo some junto em 0,2 s antes do corte
+    tl.fromTo('#interferencia-kick, #interferencia-art, #interferencia-say', { opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)', duration: 0.2, ease: 'power3.in' }, 3.6 - 0.25);
+    window.__timelines['interferencia'] = tl;
+  </script>
+</template>

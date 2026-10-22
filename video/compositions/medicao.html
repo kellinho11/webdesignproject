@@ -1,0 +1,50 @@
+<template>
+  <style>
+    @font-face { font-family: 'Sora'; src: url('assets/fonts/Sora-700.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'Instrument Serif'; src: url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2'); font-style: italic; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/JetBrainsMono-500.woff2') format('woff2'); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 50% 42%, #161236 0%, #07090F 72%); }
+    #root .kick { position: absolute; left: 90px; top: 84px; margin: 0; font: 500 30px 'JetBrains Mono'; letter-spacing: 0.16em; text-transform: uppercase; color: #C9D8FF; }
+    #root .kick b { font-weight: 500; color: #8B70FF; margin-right: 18px; }
+    #root .say { position: absolute; left: 90px; right: 90px; bottom: 96px; margin: 0; font: 700 70px/1.04 'Sora'; letter-spacing: -0.045em; color: #FFFFFF; }
+    #root .say em { font: italic 400 1.1em 'Instrument Serif'; letter-spacing: -0.02em; color: #C9D8FF; }
+    #root .art { position: absolute; left: 0; right: 0; top: 150px; height: 600px; }
+    #medicao-art .hb { fill: rgba(139, 112, 255, 0.5); }
+    #medicao-art .hb.win { fill: #C9D8FF; }
+  </style>
+  <div id="root" data-composition-id="medicao" data-width="1080" data-height="1080">
+    <p id="medicao-kick" class="clip kick" data-start="0" data-duration="3.2" data-track-index="1"><b>05</b>Medição</p>
+    <div id="medicao-art" class="clip art" data-start="0" data-duration="3.2" data-track-index="2">
+      <svg viewBox="-540 -330 1080 600" width="1080" height="600" style="position:absolute;left:0;top:0;overflow:visible">
+        <line x1="-450" y1="0" x2="450" y2="0" stroke="rgba(238,243,255,0.3)" stroke-width="2" />
+        <rect class="hb" x="-400" y="-34" width="120" height="34" />
+        <text x="-340" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="rgba(201,216,255,0.6)">00110</text>
+        <rect class="hb" x="-230" y="-21" width="120" height="21" />
+        <text x="-170" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="rgba(201,216,255,0.6)">01001</text>
+        <rect class="hb win" x="-60" y="-256" width="120" height="256" />
+        <text x="0" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="#FFFFFF">10110</text>
+        <rect class="hb" x="110" y="-46" width="120" height="46" />
+        <text x="170" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="rgba(201,216,255,0.6)">10010</text>
+        <rect class="hb" x="280" y="-63" width="120" height="63" />
+        <text x="340" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="rgba(201,216,255,0.6)">11100</text>
+        <text id="med-n" x="440" y="-290" text-anchor="end" font-family="JetBrains Mono" font-size="34" fill="#C9D8FF">0 / 1.024 shots</text>
+      </svg>
+    </div>
+    <p id="medicao-say" class="clip say" data-start="0" data-duration="3.2" data-track-index="3"><span class="w">A</span> <span class="w">mais</span> <em class="w">frequente</em> <span class="w">é</span> <span class="w">a</span> <span class="w">resposta.</span></p>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // entrada comum: o rótulo e a frase chegam palavra por palavra, sem deslizar
+    tl.fromTo('#medicao-kick', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 0);
+    tl.fromTo('#medicao-say .w', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out', stagger: 0.067 }, 0.25);
+    tl.fromTo('#medicao-art .hb', { scaleY: 0, svgOrigin: '0 0' }, { scaleY: 1, duration: 1.6, ease: 'power2.out', svgOrigin: '0 0' }, 0.2);
+    // o contador acompanha a mesma curva das barras (função do tempo da timeline)
+    const shots = { n: 0 };
+    tl.fromTo(shots, { n: 0 }, { n: 1024, duration: 1.6, ease: 'power2.out', onUpdate: () => {
+      document.getElementById('med-n').textContent = `${Math.round(shots.n).toLocaleString('pt-BR')} / 1.024 shots`;
+    } }, 0.2);
+    // saída: tudo some junto em 0,2 s antes do corte
+    tl.fromTo('#medicao-kick, #medicao-art, #medicao-say', { opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)', duration: 0.2, ease: 'power3.in' }, 3.2 - 0.25);
+    window.__timelines['medicao'] = tl;
+  </script>
+</template>

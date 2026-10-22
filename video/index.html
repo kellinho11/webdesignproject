@@ -1,23 +1,25 @@
 <!doctype html>
-<html lang="pt-BR" data-resolution="landscape">
+<html lang="pt-BR" data-resolution="square">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta name="viewport" content="width=1080, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #07090F; }
+      html, body { margin: 0; width: 1080px; height: 1080px; overflow: hidden; background: #07090F; }
       #root { position: relative; width: 100%; height: 100%; }
     </style>
   </head>
   <body>
-    <!-- Teaser do SynapseQ (12 s): o criostato resfria e a câmera mergulha no chip; o título; o site
-         rodando de verdade; a marca e o endereço. Uma cena por arquivo em compositions/. -->
-    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1920" data-height="1080">
-      <div id="frio" data-composition-id="frio" data-composition-src="compositions/frio.html" data-start="0" data-duration="2.9" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
-      <div id="titulo" data-composition-id="titulo" data-composition-src="compositions/titulo.html" data-start="2.8" data-duration="3.2" data-track-index="2" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
-      <div id="prova" data-composition-id="prova" data-composition-src="compositions/prova.html" data-start="6" data-duration="3.2" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
-      <div id="marca" data-composition-id="marca" data-composition-src="compositions/marca.html" data-start="9.2" data-duration="2.8" data-track-index="2" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+    <!-- Como funciona um computador quântico, em 20 s: bit, superposição, emaranhamento, interferência,
+         medição e o hardware. Quadrado e sem som, para tocar no Hero do site. Uma cena por arquivo. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1080" data-height="1080">
+      <div id="bit" data-composition-id="bit" data-composition-src="compositions/bit.html" data-start="0" data-duration="3" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
+      <div id="superposicao" data-composition-id="superposicao" data-composition-src="compositions/superposicao.html" data-start="3" data-duration="3.4" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
+      <div id="emaranhamento" data-composition-id="emaranhamento" data-composition-src="compositions/emaranhamento.html" data-start="6.4" data-duration="3.2" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
+      <div id="interferencia" data-composition-id="interferencia" data-composition-src="compositions/interferencia.html" data-start="9.6" data-duration="3.6" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
+      <div id="medicao" data-composition-id="medicao" data-composition-src="compositions/medicao.html" data-start="13.2" data-duration="3.2" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
+      <div id="hardware" data-composition-id="hardware" data-composition-src="compositions/hardware.html" data-start="16.4" data-duration="3.6" data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1080"></div>
     </div>
     <script>
       window.__timelines["main"] = gsap.timeline({ paused: true });

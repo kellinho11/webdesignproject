@@ -1,0 +1,42 @@
+<template>
+  <style>
+    @font-face { font-family: 'Sora'; src: url('assets/fonts/Sora-700.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'Instrument Serif'; src: url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2'); font-style: italic; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/JetBrainsMono-500.woff2') format('woff2'); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 50% 42%, #161236 0%, #07090F 72%); }
+    #root .kick { position: absolute; left: 90px; top: 84px; margin: 0; font: 500 30px 'JetBrains Mono'; letter-spacing: 0.16em; text-transform: uppercase; color: #C9D8FF; }
+    #root .kick b { font-weight: 500; color: #8B70FF; margin-right: 18px; }
+    #root .say { position: absolute; left: 90px; right: 90px; bottom: 96px; margin: 0; font: 700 70px/1.04 'Sora'; letter-spacing: -0.045em; color: #FFFFFF; }
+    #root .say em { font: italic 400 1.1em 'Instrument Serif'; letter-spacing: -0.02em; color: #C9D8FF; }
+    #root .art { position: absolute; left: 0; right: 0; top: 150px; height: 600px; }
+    #bit-coin { position: absolute; left: 50%; top: 50%; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%;
+      border: 3px solid rgba(238, 243, 255, 0.45); background: radial-gradient(circle at 35% 30%, rgba(201, 216, 255, 0.24), #0E121B 70%);
+      font: 700 150px/300px 'Sora'; text-align: center; color: #FFFFFF; }
+    #bit-coin span { position: absolute; inset: 0; }
+  </style>
+  <div id="root" data-composition-id="bit" data-width="1080" data-height="1080">
+    <p id="bit-kick" class="clip kick" data-start="0" data-duration="3" data-track-index="1"><b>01</b>Bit</p>
+    <div id="bit-art" class="clip art" data-start="0" data-duration="3" data-track-index="2">
+      <div id="bit-coin"><span id="bit-0">0</span><span id="bit-1">1</span></div>
+    </div>
+    <p id="bit-say" class="clip say" data-start="0" data-duration="3" data-track-index="3"><span class="w">Um</span> <span class="w">bit</span> <span class="w">é</span> <span class="w">0</span> <em class="w">ou</em> <span class="w">1.</span></p>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // entrada comum: o rótulo e a frase chegam palavra por palavra, sem deslizar
+    tl.fromTo('#bit-kick', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 0);
+    tl.fromTo('#bit-say .w', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out', stagger: 0.067 }, 0.25);
+    tl.set('#bit-coin', { scale: 0.6, scaleX: 1, opacity: 0 }, 0);
+    tl.to('#bit-coin', { scale: 1, opacity: 1, duration: 0.5, ease: 'expo.out' }, 0.1);
+    tl.set('#bit-1', { opacity: 0 }, 0);
+    // vira duas vezes: em cada meia-volta troca a face (0 → 1 → 0)
+    [0.9, 1.8].forEach((t, k) => {
+      tl.to('#bit-coin', { scaleX: 0, duration: 0.14, ease: 'power2.in' }, t);
+      tl.set('#bit-0', { opacity: k ? 1 : 0 }, t + 0.14); tl.set('#bit-1', { opacity: k ? 0 : 1 }, t + 0.14);
+      tl.to('#bit-coin', { scaleX: 1, duration: 0.18, ease: 'power2.out' }, t + 0.14);
+    });
+    // saída: tudo some junto em 0,2 s antes do corte
+    tl.fromTo('#bit-kick, #bit-art, #bit-say', { opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)', duration: 0.2, ease: 'power3.in' }, 3 - 0.25);
+    window.__timelines['bit'] = tl;
+  </script>
+</template>

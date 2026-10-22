@@ -216,12 +216,6 @@
   transform: scaleX(0);
   pointer-events: none;
 }
-/* ponto "ao vivo" da telemetria do Hero */
-.live-status__dot { width: 6px; height: 6px; background: #4ADE80; display: inline-block; margin-right: 6px; }
-@media (prefers-reduced-motion: no-preference) {
-  .live-status__dot { animation: dot-blink 2s steps(1) infinite; }
-}
-@keyframes dot-blink { 50% { opacity: 0.35; } }
 @media (max-width: 640px) {
   .header__progress { left: 10px; right: 10px; }
 }

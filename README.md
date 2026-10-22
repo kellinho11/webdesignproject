@@ -16,7 +16,7 @@ npm start       # serve out/ localmente
 - `app/styles/`: o CSS em partes, importado por `app/globals.css` na ordem da página.
 - `components/sections/`: uma seção da página por componente.
 - `components/cryostat/Cryostat.jsx` + `lib/cryostat.js`: o computador quântico em SVG, usado pela intro e por Quantum Engineering.
-- `components/intro/`: a intro, uma composição [Remotion](https://www.remotion.dev/) tocada pelo Remotion Player (cada quadro é função do quadro atual; o Player só baixa para quem vê a intro).
+- `components/intro/`: a intro, uma composição [Remotion](https://www.remotion.dev/) tocada pelo Remotion Player: a marca se desenha e uma íris se abre sobre a página (cada quadro é função do quadro atual; o Player só baixa para quem vê a intro).
 - `components/story/`, `live/`, `films/`, `coin/`: pontes, máquina, peças ao vivo, filmes em ASCII e a moeda.
 - `lib/boot.js`: script do `<head>` que abre a intro (e deixa "Pular" funcionando antes do resto do JS).
 - `lib/behaviors/`: header, percurso (seção atual, pontes, Demo pela rolagem), máquina, formulário e demais interações, ligados por `components/Behavior.jsx`.
@@ -24,15 +24,16 @@ npm start       # serve out/ localmente
 
 O formulário dos Investidores é uma demonstração: confere os campos e não envia dados.
 
-## Teaser em vídeo (HyperFrames)
+## Vídeo do Hero (HyperFrames)
 
-`video/` é um projeto [HyperFrames](https://hyperframes.heygen.com/): o teaser de 12 s é HTML renderizado quadro a quadro. Usa o próprio criostato e a logo do site (`video/assets/`) e uma gravação do site rodando. O resultado publicado fica em `public/videos/teaser.mp4` (rodapé e `og:video`).
+`video/` é um projeto [HyperFrames](https://hyperframes.heygen.com/): "como funciona um computador quântico" em 20 s (bit, superposição, emaranhamento, interferência, medição e o criostato do site), quadrado e sem som, renderizado quadro a quadro a partir de HTML. Uma cena por arquivo em `video/compositions/`. O resultado fica em `public/videos/computador-quantico.mp4`, no Hero (só toca visível) e como `og:video`.
 
 ```bash
 cd video
 npm run dev      # Studio: pré-visualiza e edita
 npm run check    # valida a composição
-npx --yes hyperframes@0.8.185 render --crf 22 --video-frame-format png -o ../public/videos/teaser.mp4
+npx --yes hyperframes@0.8.185 render --crf 18 -o renders/computador-quantico-1080.mp4
+ffmpeg -i renders/computador-quantico-1080.mp4 -c:v libx264 -crf 24 -preset slow -pix_fmt yuv420p -movflags +faststart -an ../public/videos/computador-quantico.mp4
 ```
 
-O render precisa do FFmpeg no PATH. Uma cena por arquivo em `video/compositions/` (frio, titulo, prova, marca).
+O render precisa do FFmpeg no PATH.

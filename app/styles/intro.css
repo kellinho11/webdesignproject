@@ -1,31 +1,16 @@
 /* ==== Intro ====
-   A sobreposição que cobre a página enquanto a composição em Remotion toca
-   (components/intro/IntroFilm.jsx). Quem abre e trava a rolagem é lib/boot.js. */
+   A chegada ao site (components/intro/IntroFilm.jsx, em Remotion): a marca se desenha e uma íris se
+   abre sobre a página. Quem abre e trava a rolagem é lib/boot.js. Até o Player assumir, o escuro é
+   o fundo desta sobreposição; depois, é a própria composição (com o buraco da íris). */
 html.intro-open,
 html.intro-open body { overflow: hidden; }
 /* "Pular" antes de o JS da página chegar (lib/boot.js): a intro some na hora */
 html.intro-skipped .intro { display: none; }
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(ellipse 60% 55% at 50% 58%, #120E22 0%, var(--bg-primary) 60%, #07050D 100%);
-  transition: opacity .6s ease-out;
-  outline: none;
-}
-.intro.is-out, .intro.is-skip { opacity: 0; pointer-events: none; }
-.intro.is-skip { transition-duration: .3s; }
-.intro__machine {
-  width: min(720px, 92vw);
-  height: min(900px, 92vh);
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-.intro__machine:focus-visible { outline: 1px dashed rgba(141, 180, 255, 0.5); outline-offset: 8px; }
+.intro { position: fixed; inset: 0; z-index: 1000; background: #07090F; outline: none; transition: opacity .3s ease-out; }
+.intro.is-ready { background: none; }
+.intro.is-skip { opacity: 0; pointer-events: none; }
+.intro__stage { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: pointer; }
+.intro__stage:focus-visible { outline: 1px dashed rgba(141, 180, 255, 0.5); outline-offset: -12px; }
 .intro__skip {
   position: absolute;
   z-index: 2;
@@ -43,25 +28,6 @@ html.intro-skipped .intro { display: none; }
   transition: color .25s;
 }
 .intro__skip:hover { color: var(--text-strong); }
-/* a composição: o criostato em cima, o status embaixo */
-.intro-film__stage { position: absolute; left: 60px; top: 20px; width: 600px; height: 760px; transform-origin: 50% 81.3%; }
-.intro-film__stage svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.intro-film__status {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  font: 500 15px var(--fonte-codigo);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #C9D6FF;
-}
-.intro-film__status i { width: 7px; height: 7px; border-radius: 50%; background: #8DB4FF; box-shadow: 0 0 10px #8DB4FF; }
 @media (prefers-reduced-motion: reduce) {
   .intro { display: none; }
   html.intro-open,

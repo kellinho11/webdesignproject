@@ -1,0 +1,48 @@
+<template>
+  <style>
+    @font-face { font-family: 'Sora'; src: url('assets/fonts/Sora-700.woff2') format('woff2'); font-weight: 700; }
+    @font-face { font-family: 'Instrument Serif'; src: url('assets/fonts/InstrumentSerif-400-italic.woff2') format('woff2'); font-style: italic; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/JetBrainsMono-500.woff2') format('woff2'); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(ellipse 70% 60% at 50% 42%, #161236 0%, #07090F 72%); }
+    #root .kick { position: absolute; left: 90px; top: 84px; margin: 0; font: 500 30px 'JetBrains Mono'; letter-spacing: 0.16em; text-transform: uppercase; color: #C9D8FF; }
+    #root .kick b { font-weight: 500; color: #8B70FF; margin-right: 18px; }
+    #root .say { position: absolute; left: 90px; right: 90px; bottom: 96px; margin: 0; font: 700 70px/1.04 'Sora'; letter-spacing: -0.045em; color: #FFFFFF; }
+    #root .say em { font: italic 400 1.1em 'Instrument Serif'; letter-spacing: -0.02em; color: #C9D8FF; }
+    #root .art { position: absolute; left: 0; right: 0; top: 150px; height: 600px; }
+
+  </style>
+  <div id="root" data-composition-id="emaranhamento" data-width="1080" data-height="1080">
+    <p id="emaranhamento-kick" class="clip kick" data-start="0" data-duration="3.2" data-track-index="1"><b>03</b>Emaranhamento</p>
+    <div id="emaranhamento-art" class="clip art" data-start="0" data-duration="3.2" data-track-index="2">
+      <svg viewBox="-540 -300 1080 600" width="1080" height="600" style="position:absolute;left:0;top:0;overflow:visible">
+        <line id="ent-link" x1="-200" y1="0" x2="200" y2="0" stroke="#8B70FF" stroke-width="3" stroke-dasharray="10 10" />
+        <g transform="translate(-220 0)"><circle r="120" fill="#0E121B" stroke="rgba(201,216,255,0.4)" stroke-width="2" />
+          <g id="ent-a"><line x1="0" y1="0" x2="0" y2="-108" stroke="#C9D8FF" stroke-width="6" stroke-linecap="round" /><circle cy="-108" r="10" fill="#fff" /></g>
+          <text id="ent-ma" x="0" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="34" fill="#FFFFFF">|1⟩</text></g>
+        <g transform="translate(220 0)"><circle r="120" fill="#0E121B" stroke="rgba(201,216,255,0.4)" stroke-width="2" />
+          <g id="ent-b"><line x1="0" y1="0" x2="0" y2="-108" stroke="#C9D8FF" stroke-width="6" stroke-linecap="round" /><circle cy="-108" r="10" fill="#fff" /></g>
+          <text id="ent-mb" x="0" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="34" fill="#FFFFFF">|1⟩</text></g>
+        <circle id="ent-flash" cx="-220" cy="0" r="120" fill="none" stroke="#FFFFFF" stroke-width="4" />
+      </svg>
+    </div>
+    <p id="emaranhamento-say" class="clip say" data-start="0" data-duration="3.2" data-track-index="3"><span class="w">Medir</span> <span class="w">um</span> <em class="w">define</em> <span class="w">o</span> <span class="w">outro.</span></p>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // entrada comum: o rótulo e a frase chegam palavra por palavra, sem deslizar
+    tl.fromTo('#emaranhamento-kick', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power4.out' }, 0);
+    tl.fromTo('#emaranhamento-say .w', { opacity: 0, filter: 'blur(6px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.13, ease: 'power4.out', stagger: 0.067 }, 0.25);
+    tl.fromTo('#ent-link', { strokeDashoffset: 0 }, { strokeDashoffset: -60, duration: 1.4, ease: 'none' }, 0);
+    // os dois giram juntos, como um só sistema
+    tl.fromTo('#ent-a, #ent-b', { rotation: 0 }, { rotation: 300, duration: 1.4, ease: 'none', svgOrigin: '0 0' }, 0);
+    // a medição do primeiro: um clarão, e os dois param no mesmo estado
+    tl.fromTo('#ent-flash', { opacity: 0, scale: 1, svgOrigin: '-220 0' }, { opacity: 1, scale: 1.25, duration: 0.25, ease: 'expo.out', svgOrigin: '-220 0' }, 1.4);
+    tl.to('#ent-flash', { opacity: 0, duration: 0.3 }, 1.65);
+    tl.to('#ent-a, #ent-b', { rotation: 540, duration: 0.35, ease: 'expo.out', svgOrigin: '0 0' }, 1.4);
+    tl.fromTo('#ent-ma', { opacity: 0 }, { opacity: 1, duration: 0.15 }, 1.5);
+    tl.fromTo('#ent-mb', { opacity: 0 }, { opacity: 1, duration: 0.15 }, 1.62);
+    // saída: tudo some junto em 0,2 s antes do corte
+    tl.fromTo('#emaranhamento-kick, #emaranhamento-art, #emaranhamento-say', { opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)', duration: 0.2, ease: 'power3.in' }, 3.2 - 0.25);
+    window.__timelines['emaranhamento'] = tl;
+  </script>
+</template>

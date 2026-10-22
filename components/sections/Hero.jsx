@@ -1,6 +1,5 @@
 // Seção: Hero
-import BlochSphere from '@/components/live/BlochSphere';
-import Telemetry from '@/components/live/Telemetry';
+import HeroFilm from '@/components/live/HeroFilm';
 
 export default function Hero() {
   return (
@@ -72,8 +71,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="hero__lab hero-in hero-in--fade" style={{ '--d': '420ms' }}>
-          <BlochSphere />
-          <Telemetry />
+          <HeroFilm />
         </div>
         <dl className="hero__kpis hero-in hero-in--fade" style={{ '--d': '820ms' }}>
           <div><dt>Qubits físicos</dt><dd>64</dd></div>

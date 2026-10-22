@@ -20,6 +20,21 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.1.0] — 2026-10-21 · MINOR
+
+Uma intro mais simples, o funcionamento do computador quântico em destaque no Hero e menos trabalho por quadro. MINOR porque nada quebra: âncoras, classes do design system e a estrutura da 5.0.0 continuam.
+
+### Alterado
+- **A intro é a chegada ao site:** as órbitas da marca se desenham no escuro, o núcleo acende e vira uma íris que se abre sobre a página de verdade, com o Hero entrando por baixo (~2,2 s, antes ~4,4 s). Continua em Remotion, agora no tamanho da janela.
+- **Vídeo no Hero:** "como funciona um computador quântico" em 20 s (bit, superposição, emaranhamento, interferência, medição e o criostato a 15 mK), feito em HyperFrames, quadrado e sem som, no lugar da esfera de Bloch e da telemetria. Começa quando a intro sai, só toca visível e para com "Pausar movimento"; é também o `og:video`.
+- Sai o teaser do rodapé.
+
+### Desempenho
+- Filmes ASCII: um tocando por vez (o mais visível), a 24 fps, com canvas de no máximo 1,5× (1,25× no celular).
+- Sem a esfera de Bloch e a telemetria, que redesenhavam a cada quadro: o vídeo é decodificado pela GPU (532 KB).
+
+---
+
 ## [5.0.0] — 2026-10-21 · MAJOR
 
 A página ganha uma organização que faz sentido de cima para baixo e fica mais leve. MAJOR porque a estrutura e as classes do design system mudam: saem o fio da margem, as portas laterais, a faixa de rumo do header e a máquina fixa ao lado do texto. As âncoras continuam as mesmas.

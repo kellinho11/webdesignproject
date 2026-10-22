@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import SCENES, { setMono } from './scenes';
 import PlayPauseIcon from '@/components/ui/PlayPauseIcon';
-import { reducedMotion, smallScreen } from '@/lib/media';
+import { reducedMotion } from '@/lib/media';
 import { fitCanvas, monoFont } from '@/lib/canvas';
 import { latest, listen, motionPaused } from '@/lib/signals';
 
@@ -11,18 +11,19 @@ import { latest, listen, motionPaused } from '@/lib/signals';
 // moldura de vidro com legenda e linha do tempo. Roda em loop como um vídeo, mas é código: pesa
 // quase nada, fica nítido em qualquer tela e segue a paleta do site.
 //
-// - toca só enquanto está visível e a aba está aberta; no máximo 3 ao mesmo tempo (1 no celular),
+// - toca só enquanto está visível e a aba está aberta; um por vez, o mais visível (os outros
+//   mostram o quadro em que pararam):
 //   os mais visíveis;
 // - a linha do tempo aceita clique e arraste; o botão pausa/retoma (WCAG 2.2.2);
 // - scrub: não toca sozinho, o tempo vem de fora (evento film:seek com 0..1, a rolagem da Demo);
 // - listen: segue o algoritmo escolhido nos Casos (sinal algo);
 // - com movimento reduzido, não toca sozinho: mostra o quadro-resumo (poster) e a legenda final;
-// - desenha a 30 quadros por segundo (24 no celular, com resolução de no máximo 1,5×).
+// - desenha a 24 quadros por segundo, com resolução de no máximo 1,5× (1,25× no celular).
 const live = new Set();
-let limit = 3;
+const LIMIT = 1;
 function elect() {
   const ranked = [...live].filter((f) => f.wants()).sort((a, b) => b.ratio - a.ratio);
-  live.forEach((f) => { const k = ranked.indexOf(f); f.allow(k > -1 && k < limit); });
+  live.forEach((f) => { const k = ranked.indexOf(f); f.allow(k > -1 && k < LIMIT); });
 }
 
 const fmt = (s) => `00:${String(Math.floor(s)).padStart(2, '0')}`;
@@ -52,9 +53,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
   useEffect(() => {
     const root = rootRef.current, canvas = canvasRef.current, ctx = canvas.getContext('2d'), s = state.current;
     const draw = SCENES[scene];
-    const small = smallScreen();
-    const FPS = small ? 24 : 30;
-    limit = small ? 1 : 3;
+    const FPS = 24;
     setMono(monoFont(root));
     s.capH = 0;
     if (follow && latest('algo')) s.opts = { algo: latest('algo').algo };
