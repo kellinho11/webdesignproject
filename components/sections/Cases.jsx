@@ -1,11 +1,12 @@
 // Seção: Cases · porta Rz: o mesmo qubit, três problemas. Cada caso manda o algoritmo para a Demo.
 import Film from '@/components/films/Film';
 import Kpis from '@/components/story/Kpis';
+import { def } from '@/lib/glossario';
 
 const CASES = [
   {
     id: 'qaoa', n: '2.1', algo: 'QAOA', area: 'Otimização de portfólio', mesh: 'violet', ratio: '16 / 10',
-    def: 'Algoritmo quântico para otimização: procura a melhor combinação ajustando o circuito em camadas.',
+    def: def('qaoa'),
     title: 'Menos risco, em tempo real.', fact: '1.200 ativos → 64 qubits',
     metrics: [['Risco', '−18%'], ['Rebalanceamento', '6 h → 340 ms'], ['Em produção', '3 gestoras']],
     chapters: [
@@ -16,7 +17,7 @@ const CASES = [
   },
   {
     id: 'vqe', n: '2.2', algo: 'VQE', area: 'Descoberta de fármacos', mesh: 'blue', ratio: '16 / 10',
-    def: 'Algoritmo híbrido que calcula a energia de moléculas: o quântico mede, o clássico ajusta, repetidamente.',
+    def: def('vqe'),
     title: 'Anos de laboratório em minutos.', fact: 'H₂ · LiH · BeH₂',
     metrics: [['Triagem', '14 meses → 9 dias'], ['Moléculas', '2.400'], ['Erro', '< 1,6 mHa']],
     chapters: [
@@ -27,7 +28,7 @@ const CASES = [
   },
   {
     id: 'grover', n: '2.3', algo: 'Grover', area: 'Busca em dados', mesh: 'ice', ratio: '16 / 10',
-    def: 'Algoritmo de busca quântica: encontra um item em N possibilidades com cerca de √N tentativas.',
+    def: def('grover'),
     title: 'Sem varrer a base inteira.', fact: '1 mi de registros → 785 consultas',
     metrics: [['Consultas', '−99,9%'], ['Base', '10⁹ registros'], ['Fraudes achadas', '+31%']],
     chapters: [

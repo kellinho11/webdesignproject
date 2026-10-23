@@ -20,6 +20,22 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.2.0] — 2026-10-23 · MINOR
+
+### Adicionado
+- **Glossário** (`/glossario`), a segunda página do site: os 17 termos que a home usa (qubit, superposição, medição, QAOA, Grover, criostato…), em ordem alfabética, cada um com o link para a seção onde aparece. Busca que ignora acentos e maiúsculas; sem JS, a lista vem inteira. Abre em nova guia pelo menu e pelo rodapé (`target="_blank"` com `rel="noopener"`, seta ↗ e aviso para leitor de tela).
+- `lib/glossario.js`: os termos num lugar só; as dicas da home (`.term`) passam a ler a definição daqui.
+- `components/ui/Logo.jsx` e `NewTab.jsx`: a marca e o aviso de nova guia, usados pelas duas páginas.
+
+### Alterado
+- O rodapé serve às duas páginas: no Glossário, os links levam de volta às seções da home (`/#tecnologia`…).
+- `lib/boot.js` só abre a intro na home: nas outras páginas a rolagem nunca trava.
+- Título das páginas com modelo (`Glossário quântico · SynapseQ`); o sitemap lista a página nova.
+- Menu mais compacto para caber o Glossário em todas as larguras de desktop (portas escondidas entre 1081 e 1280px).
+- Um link `#termo` do Glossário para logo abaixo do cabeçalho (o recuo não é mais contado duas vezes).
+
+---
+
 ## [5.1.1] — 2026-10-21 · PATCH
 
 ### Corrigido

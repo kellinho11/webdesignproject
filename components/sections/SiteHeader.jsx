@@ -1,6 +1,8 @@
 // Seção: SiteHeader · uma barra: marca, as seções na ordem da página (cada uma com a sua porta do
 // circuito), o botão de movimento e o Portal do Investidor. A linha de baixo marca o progresso.
 import MotionToggle from '@/components/live/MotionToggle';
+import Logo from '@/components/ui/Logo';
+import NewTab from '@/components/ui/NewTab';
 
 const NAV = [
   ['#tecnologia', 'H', 'Tecnologia'],
@@ -15,20 +17,7 @@ export default function SiteHeader() {
 <header className="site-header">
   <div className="container header__inner">
     <a href="#topo" className="brand" aria-label="SynapseQ · início">
-      <svg className="logo" viewBox="-20 -20 40 40" width="32" height="32" aria-hidden="true">
-        <defs>
-          <linearGradient id="logo-grad" x1="-18" y1="-18" x2="18" y2="18" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#3B82F6" />
-            <stop offset="1" stopColor="#6B46FF" />
-          </linearGradient>
-        </defs>
-        <g className="logo__orbits" fill="none" stroke="url(#logo-grad)" strokeWidth="1.6">
-          <ellipse rx="17" ry="6.5" transform="rotate(20)" />
-          <ellipse rx="17" ry="6.5" transform="rotate(-20)" />
-          <ellipse rx="17" ry="6.5" transform="rotate(90)" />
-        </g>
-        <circle r="3" fill="#6B46FF" />
-      </svg>
+      <Logo defs />
       <span className="brand__name">SynapseQ</span>
     </a>
 
@@ -36,6 +25,7 @@ export default function SiteHeader() {
       {NAV.map(([href, gate, label]) => (
         <a key={href} href={href}><b className="site-nav__gate" aria-hidden="true">{gate}</b>{label}</a>
       ))}
+      <a href="/glossario" target="_blank" rel="noopener" className="site-nav__out">Glossário<NewTab /></a>
     </nav>
 
     <div className="header__actions">

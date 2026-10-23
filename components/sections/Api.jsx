@@ -6,6 +6,7 @@ import Kpis from '@/components/story/Kpis';
 import Machine from '@/components/story/Machine';
 import SpecTable from '@/components/story/SpecTable';
 import CodeTabs from '@/components/live/CodeTabs';
+import { def } from '@/lib/glossario';
 
 const CHAPTERS = [
   { at: 0, caption: 'Você manda JSON.' },
@@ -14,7 +15,7 @@ const CHAPTERS = [
 ];
 
 const FEATURES = [
-  { n: '4.1', title: 'Rápida', text: <>A <span className="term" tabIndex="0" data-def="Quantum Processing Unit: o chip quântico, equivalente quântico da CPU.">QPU</span> só faz a parte difícil.</> },
+  { n: '4.1', title: 'Rápida', text: <>A <span className="term" tabIndex="0" data-def={def('qpu')}>QPU</span> só faz a parte difícil.</> },
   { n: '4.2', title: 'Segura', text: 'Criptografia pós-quântica.' },
   { n: '4.3', title: 'Simples', text: 'SDK Python e TypeScript.' },
 ];

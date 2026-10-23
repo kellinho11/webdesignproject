@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 .brand {
   display: inline-flex;
@@ -32,7 +32,7 @@
 }
 .logo { display: block; overflow: visible; }
 .logo__orbits { transform-origin: 0 0; }
-.site-nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
+.site-nav { display: flex; gap: clamp(12px, 1.3vw, 20px); }
 .site-nav a {
   position: relative;
   white-space: nowrap;
@@ -196,7 +196,7 @@
 
 
 /* ---- Seções no menu: a porta do circuito antes do nome; a da seção atual acende ---- */
-.site-nav a { display: inline-flex; align-items: baseline; gap: 7px; }
+.site-nav a { display: inline-flex; align-items: baseline; gap: 5px; }
 .site-nav__gate { font: 500 10px/1 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.55); transition: color var(--dur-ui) var(--ease-out); }
 .site-nav a:hover .site-nav__gate, .site-nav a[aria-current="true"] .site-nav__gate { color: var(--ice); }
 .site-nav a[aria-current="true"] { color: var(--text-strong); }
@@ -219,7 +219,13 @@
 @media (max-width: 640px) {
   .header__progress { left: 10px; right: 10px; }
 }
-@media (max-width: 1180px) {
-  .site-nav { gap: 22px; }
+@media (min-width: 1081px) and (max-width: 1280px) {
   .site-nav__gate { display: none; }
+}
+@media (min-width: 1081px) and (max-width: 1180px) {
+  .header__actions .btn__label { display: none; }
+}
+/* Glossário: sai da página (nova guia), separado das seções por um fio */
+@media (min-width: 1081px) {
+  .site-nav__out { padding-left: clamp(12px, 1.3vw, 20px); border-left: 1px solid var(--hair); }
 }

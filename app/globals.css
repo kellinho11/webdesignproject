@@ -29,3 +29,6 @@
 @import './styles/maquina.css';
 @import './styles/investidores.css';
 @import './styles/rodape.css';
+
+/* outras páginas */
+@import './styles/glossario.css';

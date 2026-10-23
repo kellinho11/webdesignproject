@@ -14,7 +14,7 @@ const description = 'SynapseQ combina modelos de linguagem de última geração 
 // favicon (app/icon.svg) e imagem de compartilhamento (app/opengraph-image.png) entram sozinhos
 export const metadata = {
   metadataBase: new URL(SITE),
-  title,
+  title: { default: title, template: '%s · SynapseQ' },
   description,
   alternates: { canonical: '/' },
   openGraph: { type: 'website', locale: 'pt_BR', url: '/', siteName: 'SynapseQ', title, description, videos: [{ url: `${SITE}/videos/computador-quantico.mp4`, type: 'video/mp4', width: 1080, height: 1080 }] },

@@ -4,6 +4,7 @@ import Film from '@/components/films/Film';
 import Kpis from '@/components/story/Kpis';
 import Pipeline from '@/components/story/Pipeline';
 import SpecTable from '@/components/story/SpecTable';
+import { def } from '@/lib/glossario';
 
 const CHAPTERS = [
   { at: 0, caption: 'Clássico: um caminho por vez.' },
@@ -37,7 +38,7 @@ export default function Compare() {
           <Film scene="compare" duration={14} title="Por que quântico" chapters={CHAPTERS} mesh="blue" />
           <ul className="tech__legend" aria-label="Legenda">
             <li><i className="is-c" aria-hidden="true" />Clássico · O(2ⁿ)</li>
-            <li><i className="is-q" aria-hidden="true" />SynapseQ · <span className="term" tabIndex="0" data-def="Técnica quântica que encontra a melhor solução deixando o sistema se acomodar no estado de menor energia, como uma bola rolando até o fundo do vale.">Quantum Annealing</span> · O(√2ⁿ)</li>
+            <li><i className="is-q" aria-hidden="true" />SynapseQ · <span className="term" tabIndex="0" data-def={def('annealing')}>Quantum Annealing</span> · O(√2ⁿ)</li>
           </ul>
         </div>
       </div>

@@ -1,29 +1,25 @@
-// Seção: SiteFooter
-export default function SiteFooter() {
+// Seção: SiteFooter · também fecha o Glossário: lá, `home="/"` leva os links de volta às seções da home.
+import Logo from '@/components/ui/Logo';
+import NewTab from '@/components/ui/NewTab';
+
+export default function SiteFooter({ home = '' }) {
   return (
     <>
 <footer className="site-footer" id="rodape">
   <div className="container footer__inner">
     <div className="footer__brand">
-      <a href="#topo" className="brand" aria-label="SynapseQ · início">{' '}
-        <svg className="logo" viewBox="-20 -20 40 40" width="28" height="28" aria-hidden="true">
-          <g className="logo__orbits" fill="none" stroke="url(#logo-grad)" strokeWidth="1.6">
-            <ellipse rx="17" ry="6.5" transform="rotate(20)" />
-            <ellipse rx="17" ry="6.5" transform="rotate(-20)" />
-            <ellipse rx="17" ry="6.5" transform="rotate(90)" />
-          </g>
-          <circle r="3" fill="#6B46FF" />
-        </svg>{' '}
+      <a href={`${home}#topo`} className="brand" aria-label="SynapseQ · início">{' '}
+        <Logo size={28} />{' '}
         <span className="brand__name">SynapseQ</span>{' '}
       </a>
       <p className="footer__tagline">IA × Computação Quântica</p>
     </div>
     <nav className="footer__nav" aria-label="Seções">
-      <a href="#tecnologia">Tecnologia</a>{' '}
-      <a href="#casos-de-uso">Casos de Uso</a>{' '}
-      <a href="#demo">Demo</a>{' '}
-      <a href="#quantum-engineering">Quantum Engineering</a>{' '}
-      <a href="#investidores">Investidores</a>
+      <a href={`${home}#tecnologia`}>Tecnologia</a>{' '}
+      <a href={`${home}#casos-de-uso`}>Casos de Uso</a>{' '}
+      <a href={`${home}#demo`}>Demo</a>{' '}
+      <a href={`${home}#quantum-engineering`}>Quantum Engineering</a>{' '}
+      <a href={`${home}#investidores`}>Investidores</a>
     </nav>
     <dl className="footer__spec">
       <div><dt>Processador</dt><dd>SQ-64 · 64 qubits supercondutores</dd></div>
@@ -31,8 +27,9 @@ export default function SiteFooter() {
       <div><dt>Acesso</dt><dd>api.synapseq.ai · 3 regiões</dd></div>
     </dl>
     <nav className="footer__nav" aria-label="Projeto">
-      <a href="https://github.com/kellinho11/webdesignproject" target="_blank" rel="noopener noreferrer">GitHub</a>{' '}
-      <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens</a>
+      <a href="/glossario" target={home ? undefined : '_blank'} rel={home ? undefined : 'noopener'} aria-current={home ? 'page' : undefined}>Glossário{!home && <NewTab />}</a>{' '}
+      <a href="https://github.com/kellinho11/webdesignproject" target="_blank" rel="noopener noreferrer">GitHub<NewTab /></a>{' '}
+      <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens<NewTab /></a>
     </nav>
   </div>
   <ol className="container footer__circuit" aria-label="O circuito desta página">
