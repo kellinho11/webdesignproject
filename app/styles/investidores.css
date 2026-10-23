@@ -9,6 +9,8 @@
   text-wrap: pretty;
 }
 .form { margin-top: 40px; text-align: left; }
+/* campo-isca (anti-robô): fora da tela, sem foco e escondido de leitores de tela */
+.form__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .field {
   display: flex;
   flex-direction: column;

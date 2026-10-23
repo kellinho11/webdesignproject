@@ -20,6 +20,21 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.0] — 2026-10-23 · MINOR
+
+### Segurança
+- **CSP por hash** (`scripts/csp.mjs`, roda depois do `next build`): cada página ganha uma política que só deixa rodar os arquivos do próprio site e os scripts embutidos que o build gerou, cada um pelo seu sha256. Um script injetado não tem hash e não roda.
+- Cabeçalhos (`vercel.json`): CSP completa (`default-src 'self'`, nada de fora; iframes recusados; `upgrade-insecure-requests`), HSTS de 2 anos, `Cross-Origin-Opener-Policy`, `X-Permitted-Cross-Domain-Policies` e mais permissões negadas.
+- Formulário: regras em `lib/validate.js`, sem DOM (dá para repetir no servidor). O texto é limpo antes de validar (Unicode NFC, sem caracteres de controle nem invisíveis), cada campo tem tamanho máximo, a faixa só aceita as opções da lista (uma opção inventada no DevTools é barrada) e o nome segue uma lista do que pode ter. Campo-isca e tempo mínimo de preenchimento descartam robôs sem avisá-los.
+- Remotion Player sem as tags de áudio compartilhadas: a intro não tem som e o áudio mudo em `data:` que ele tocava era barrado pela CSP.
+- `SECURITY.md`: como o site pode ser atacado e o que impede cada ataque, com SQL injection explicado (o site não tem banco; se um dia tiver, consulta parametrizada).
+- `.github/dependabot.yml` (avisos de correção das dependências) e `/.well-known/security.txt` (onde avisar sobre uma falha).
+
+### Testes
+- `qa.py`: T193 (cabeçalhos, CSP por hash, script injetado que não roda), T194 (o site recusa abrir num iframe) e T195 (formulário com textos de SQL injection, HTML, texto gigante, caracteres invisíveis, faixa inventada e robô).
+
+---
+
 ## [5.4.0] — 2026-10-23 · MINOR
 
 ### Adicionado (SEO)

@@ -8,7 +8,7 @@ O site é feito com [Next.js](https://nextjs.org/) e React, e gerado como págin
 ```bash
 npm install
 npm run dev     # desenvolvimento em http://localhost:3000 (webpack: o Turbopack falha com next/font em dev)
-npm run build   # gera o site estático em out/
+npm run build   # gera o site estático em out/ (e grava a CSP de cada página)
 npm start       # serve out/ localmente
 ```
 
@@ -22,7 +22,8 @@ npm start       # serve out/ localmente
 - `components/story/`, `live/`, `films/`, `coin/`: pontes, máquina, peças ao vivo, filmes em ASCII e a moeda.
 - `lib/boot.js`: script do `<head>` que abre a intro (e deixa "Pular" funcionando antes do resto do JS).
 - `lib/behaviors/`: header, percurso (seção atual, pontes, Demo pela rolagem), máquina, formulário e demais interações, ligados por `components/Behavior.jsx`.
-- `vercel.json`: cabeçalhos de segurança do site publicado.
+- `vercel.json`: cabeçalhos de segurança do site publicado; `scripts/csp.mjs` grava, depois do build, a CSP por hash de cada página. Ver `SECURITY.md`.
+- `lib/validate.js`: as regras do formulário, sem DOM.
 
 O formulário dos Investidores é uma demonstração: confere os campos e não envia dados.
 

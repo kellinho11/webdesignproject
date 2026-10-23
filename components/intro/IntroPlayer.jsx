@@ -33,6 +33,9 @@ export default function IntroPlayer({ onReady, onReveal, onEnded }) {
       clickToPlay={false}
       doubleClickToFullscreen={false}
       spaceKeyToPlayOrPause={false}
+      // a intro não tem som: sem as tags de áudio compartilhadas, o Player não toca o áudio mudo
+      // em data: que serve para liberar autoplay (a CSP bloqueia media-src data:)
+      numberOfSharedAudioTags={0}
       acknowledgeRemotionLicense
       style={{ width: '100%', height: '100%' }}
     />

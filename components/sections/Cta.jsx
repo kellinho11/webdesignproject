@@ -33,11 +33,13 @@ export default function Cta() {
         <form className="form sentence" id="investor-form" noValidate>
           <p className="sentence__body">
             <span className="sentence__lead">Para investidores ·</span>
-            {' '}Meu nome é <span className="field" style={{ '--w': '15ch' }}><label htmlFor="f-name" className="sr-only">Nome completo</label><input id="f-name" name="name" type="text" autoComplete="name" placeholder="nome completo" required /><span className="field__error" aria-live="polite"></span></span>,
-            falo por <span className="field" style={{ '--w': '13ch' }}><label htmlFor="f-fund" className="sr-only">Fundo / empresa</label><input id="f-fund" name="fund" type="text" autoComplete="organization" placeholder="fundo / empresa" required /><span className="field__error" aria-live="polite"></span></span>
+            {' '}Meu nome é <span className="field" style={{ '--w': '15ch' }}><label htmlFor="f-name" className="sr-only">Nome completo</label><input id="f-name" name="name" type="text" autoComplete="name" placeholder="nome completo" maxLength={80} required /><span className="field__error" aria-live="polite"></span></span>,
+            falo por <span className="field" style={{ '--w': '13ch' }}><label htmlFor="f-fund" className="sr-only">Fundo / empresa</label><input id="f-fund" name="fund" type="text" autoComplete="organization" placeholder="fundo / empresa" maxLength={80} required /><span className="field__error" aria-live="polite"></span></span>
             {' '}e quero investir <span className="field field--select" style={{ '--w': '19ch' }}><label htmlFor="f-range" className="sr-only">Faixa de investimento</label><select id="f-range" name="range" required><option value="">faixa de investimento</option><option>US$ 250k – 1M</option><option>US$ 1M – 5M</option><option>US$ 5M – 15M</option><option>Acima de US$ 15M</option></select><span className="field__error" aria-live="polite"></span></span>.
-            Envie o acesso para <span className="field" style={{ '--w': '17ch' }}><label htmlFor="f-email" className="sr-only">E-mail corporativo</label><input id="f-email" name="email" type="email" autoComplete="email" placeholder="e-mail corporativo" required /><span className="field__error" aria-live="polite"></span></span>
+            Envie o acesso para <span className="field" style={{ '--w': '17ch' }}><label htmlFor="f-email" className="sr-only">E-mail corporativo</label><input id="f-email" name="email" type="email" autoComplete="email" placeholder="e-mail corporativo" maxLength={254} required /><span className="field__error" aria-live="polite"></span></span>
           </p>
+          {/* isca para robôs: invisível para pessoas e fora do Tab; quem preenche é descartado */}
+          <p className="form__trap" aria-hidden="true"><label>Site <input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></p>
           <button type="submit" className="btn-primary form__submit">Solicitar acesso ao data room <span className="btn__arrow" aria-hidden="true">→</span></button>
         </form>
 
