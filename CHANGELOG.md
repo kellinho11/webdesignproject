@@ -20,6 +20,13 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.2] — 2026-10-23 · PATCH
+
+### Atualizado
+- `remotion` e `@remotion/player` de 4.0.533 para 4.0.537, juntos. O Dependabot abriu um pedido para cada pacote, mas os dois precisam estar sempre na mesma versão (o Player usa o `remotion` instalado); aplicar só um deixaria a intro com versões desencontradas. `npm audit`: 0 vulnerabilidades.
+
+---
+
 ## [5.5.1] — 2026-10-23 · PATCH
 
 ### Corrigido

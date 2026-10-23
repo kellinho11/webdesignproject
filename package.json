@@ -1,6 +1,6 @@
 {
   "name": "synapseq",
-  "version": "5.5.1",
+  "version": "5.5.2",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
@@ -8,10 +8,10 @@
     "start": "npx serve@14 out"
   },
   "dependencies": {
-    "@remotion/player": "4.0.533",
+    "@remotion/player": "4.0.537",
     "next": "16.4.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "remotion": "4.0.533"
+    "remotion": "4.0.537"
   }
 }
