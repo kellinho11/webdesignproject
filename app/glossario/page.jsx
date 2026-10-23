@@ -3,7 +3,9 @@
 import Logo from '@/components/ui/Logo';
 import SiteFooter from '@/components/sections/SiteFooter';
 import GlossaryList from '@/components/glossario/GlossaryList';
+import JsonLd from '@/components/seo/JsonLd';
 import { TERMS } from '@/lib/glossario';
+import { OG, OG_IMAGE, glossaryLd } from '@/lib/seo';
 
 const title = 'Glossário quântico';
 const description = 'Qubit, superposição, emaranhamento, medição, QAOA, Grover: os termos de computação quântica usados pela SynapseQ, explicados em linguagem simples.';
@@ -11,9 +13,9 @@ const description = 'Qubit, superposição, emaranhamento, medição, QAOA, Grov
 export const metadata = {
   title,
   description,
-  alternates: { canonical: '/glossario' },
-  openGraph: { type: 'article', url: '/glossario', title: `${title} · SynapseQ`, description },
-  twitter: { title: `${title} · SynapseQ`, description },
+  alternates: { canonical: '/glossario', languages: { 'pt-BR': '/glossario' } },
+  openGraph: { ...OG, type: 'article', url: '/glossario', title: `${title} · SynapseQ`, description, images: [OG_IMAGE] },
+  twitter: { card: 'summary_large_image', title: `${title} · SynapseQ`, description, images: [OG_IMAGE] },
 };
 
 const SORTED = [...TERMS].sort((a, b) => a.term.localeCompare(b.term, 'pt-BR'));
@@ -21,6 +23,7 @@ const SORTED = [...TERMS].sort((a, b) => a.term.localeCompare(b.term, 'pt-BR'));
 export default function Glossario() {
   return (
     <>
+      <JsonLd data={glossaryLd({ title, description })} />
       <header className="site-header page-header">
         <div className="container header__inner">
           <a href="/" className="brand" aria-label="SynapseQ · início">

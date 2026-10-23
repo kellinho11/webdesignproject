@@ -14,6 +14,7 @@ npm start       # serve out/ localmente
 
 - `app/`: layout, a home (`page.jsx`), o Glossário (`glossario/page.jsx`), favicon, imagem de compartilhamento, robots e sitemap.
 - `lib/glossario.js`: os termos do Glossário, também usados pelas dicas da home.
+- `lib/seo.js` + `components/seo/JsonLd.jsx`: título e descrição da home e os dados estruturados (JSON-LD) de cada página; `app/manifest.js` e `app/not-found.jsx` completam o SEO.
 - `app/styles/`: o CSS em partes, importado por `app/globals.css` na ordem da página.
 - `components/sections/`: uma seção da página por componente.
 - `components/cryostat/Cryostat.jsx` + `lib/cryostat.js`: o computador quântico em SVG, usado pela intro e por Quantum Engineering.

@@ -1,0 +1,4 @@
+/* ==== Página 404 ==== usa a grade e os títulos do Glossário */
+.lost { min-height: 100svh; display: grid; align-items: center; }
+.lost .brand { margin-bottom: clamp(40px, 8vh, 80px); }
+.lost__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 32px; }

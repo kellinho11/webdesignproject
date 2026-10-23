@@ -20,6 +20,24 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.4.0] — 2026-10-23 · MINOR
+
+### Adicionado (SEO)
+- Dados estruturados (schema.org em JSON-LD, `lib/seo.js` + `components/seo/JsonLd.jsx`): na home, a organização, o site, a página e o vídeo do Hero (`VideoObject`); no Glossário, a página, a trilha (`BreadcrumbList`) e os 17 termos (`DefinedTermSet`). O `<` dos dados sai escapado, para nenhum texto fechar a tag.
+- Manifesto (`app/manifest.js`), ícone da Apple e ícones PNG de 192 e 512px.
+- Página 404 própria (`app/not-found.jsx`), fora da busca (`noindex`), com o caminho de volta.
+- Sitemap com a data da última mudança, a imagem de compartilhamento e o vídeo do Hero.
+
+### Alterado
+- Metadados divididos: o layout guarda o que vale para todas as páginas (autor, palavras-chave, regras para o Googlebot, prévia grande de imagem e vídeo); a home e o Glossário têm canonical, `hreflang` e Open Graph próprios. O Glossário passa a ter imagem de compartilhamento.
+- Texto alternativo da imagem de compartilhamento descreve o que ela mostra.
+- `robots.txt` deixa de fora os `.txt` de dados que o Next gera (não são páginas).
+
+### Testes
+- `qa.py`: T192 confere título, descrição, canonical, Open Graph, um h1 por página, títulos sem pular nível, JSON-LD válido, sitemap, robots, manifesto e a 404.
+
+---
+
 ## [5.3.0] — 2026-10-23 · MINOR
 
 ### Alterado (celular)

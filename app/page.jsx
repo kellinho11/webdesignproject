@@ -11,6 +11,14 @@ import Cta from '@/components/sections/Cta';
 import SiteFooter from '@/components/sections/SiteFooter';
 import Bridge from '@/components/story/Bridge';
 import Space from '@/components/live/Space';
+import JsonLd from '@/components/seo/JsonLd';
+import { SITE } from '@/lib/site';
+import { HOME, OG, homeLd } from '@/lib/seo';
+
+export const metadata = {
+  alternates: { canonical: '/', languages: { 'pt-BR': '/' } },
+  openGraph: { ...OG, type: 'website', url: '/', title: HOME.title, description: HOME.description, videos: [{ url: `${SITE}/videos/computador-quantico.mp4`, type: 'video/mp4', width: 1080, height: 1080 }] },
+};
 
 // Um circuito de uma ponta à outra: o visitante é o qubit. Ele entra em |0⟩ no Hero, passa por
 // uma porta em cada seção (H, Rz, U, SWAP) e é medido nos Investidores. As pontes entre as seções
@@ -18,6 +26,7 @@ import Space from '@/components/live/Space';
 export default function Home() {
   return (
     <>
+      <JsonLd data={homeLd(HOME)} />
       <Space />
       <Intro />
       <SiteHeader />

@@ -1,6 +1,7 @@
 import { Sora, JetBrains_Mono, Instrument_Serif } from 'next/font/google';
 import { BOOT_SCRIPT } from '@/lib/boot';
 import { SITE } from '@/lib/site';
+import { HOME, OG } from '@/lib/seo';
 import './globals.css';
 
 // Fontes baixadas no build e servidas pelo próprio site: sem chamada ao Google na visita.
@@ -8,17 +9,23 @@ const sora = Sora({ subsets: ['latin'], weight: ['400', '500', '600', '700', '80
 const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
 const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], variable: '--font-serif', display: 'swap' });
 
-const title = 'SynapseQ · IA × Computação Quântica';
-const description = 'SynapseQ combina modelos de linguagem de última geração com processamento quântico para resolver problemas que a computação clássica ainda não alcançou.';
-
-// favicon (app/icon.svg) e imagem de compartilhamento (app/opengraph-image.png) entram sozinhos
+// Metadados de todas as páginas; cada página completa com título, descrição, canonical e Open
+// Graph próprios. Favicon, ícone da Apple, manifesto e imagem de compartilhamento são arquivos de
+// app/ que o Next liga sozinho.
 export const metadata = {
   metadataBase: new URL(SITE),
-  title: { default: title, template: '%s · SynapseQ' },
-  description,
-  alternates: { canonical: '/' },
-  openGraph: { type: 'website', locale: 'pt_BR', url: '/', siteName: 'SynapseQ', title, description, videos: [{ url: `${SITE}/videos/computador-quantico.mp4`, type: 'video/mp4', width: 1080, height: 1080 }] },
-  twitter: { card: 'summary_large_image', title, description },
+  title: { default: HOME.title, template: '%s · SynapseQ' },
+  description: HOME.description,
+  applicationName: 'SynapseQ',
+  authors: [{ name: 'kellinho11', url: 'https://github.com/kellinho11' }],
+  creator: 'kellinho11',
+  publisher: 'SynapseQ',
+  keywords: ['computação quântica', 'inteligência artificial', 'qubit', 'QPU', 'QAOA', 'VQE', 'algoritmo de Grover', 'otimização', 'API quântica', 'SynapseQ'],
+  category: 'technology',
+  formatDetection: { telephone: false, email: false, address: false },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-video-preview': -1, 'max-snippet': -1 } },
+  openGraph: { ...OG, type: 'website', title: HOME.title, description: HOME.description },
+  twitter: { card: 'summary_large_image', title: HOME.title, description: HOME.description },
 };
 
 export const viewport = { themeColor: '#07090F' };
