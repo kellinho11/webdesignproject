@@ -68,4 +68,4 @@ html[data-motion="off"] *::after { animation-play-state: paused !important; }
 }
 .motion-toggle svg { width: 10px; height: 10px; fill: currentColor; }
 .motion-toggle:hover, .motion-toggle[aria-pressed="true"] { color: var(--ice); border-color: var(--ice); }
-@media (max-width: 760px) { .motion-toggle span { display: none; } }
+@media (max-width: 760px) { .motion-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }   /* some da tela, não do leitor de tela */

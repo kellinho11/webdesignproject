@@ -62,7 +62,7 @@
   .btn-primary:hover { transform: none; }
 }
 @media (max-width: 560px) {
-  .btn__label { display: none; }
+  .btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }   /* o link continua com nome para leitor de tela */
 }
 
 .term {

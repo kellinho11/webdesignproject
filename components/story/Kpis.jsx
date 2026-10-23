@@ -7,7 +7,7 @@ export default function Kpis({ items, className = '' }) {
         <div key={k.label}>
           <dt>{k.label}</dt>
           <dd {...(k.count ? { 'data-count': k.count, 'data-dec': k.dec, 'data-suffix': k.suffix } : {})}>{k.value}</dd>
-          {k.note && <p className="kpis__note">{k.note}</p>}
+          {k.note && <dd className="kpis__note">{k.note}</dd>}
         </div>
       ))}
     </dl>

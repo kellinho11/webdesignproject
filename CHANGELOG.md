@@ -20,6 +20,19 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.1] — 2026-10-23 · PATCH
+
+### Corrigido
+- **A CSP por hash não chegava ao site publicado**: com `"framework": "nextjs"`, a Vercel servia a saída do próprio construtor do Next, não a pasta `out/` que o `scripts/csp.mjs` completa. O `vercel.json` passa a rodar `npm run build` e publicar `out/` como site estático (`cleanUrls` mantém `/glossario` sem `.html`), com cache de um ano para os arquivos com hash em `/_next/static/` e de uma semana para os vídeos.
+- **Botão "Pausar movimento" e link "Portal do Investidor" sem nome para leitor de tela no celular**: o texto era escondido com `display: none`. Agora some só da tela (`ceu.css`, `componentes.css`, `header.css`).
+- Notas dos KPIs eram `<p>` dentro de `<dl>`; viraram `<dd>` (`Kpis.jsx`, `dados.css`).
+- Descrições da home e do Glossário passavam da largura que o Google mostra (1026 e 989px, para cerca de 920px) e saíam cortadas; os títulos ganharam as palavras que as pessoas buscam ("IA e computação quântica numa só API", "Glossário de computação quântica").
+
+### Testes
+- `qa.py`: T196 confere nome acessível em todo link e botão (390 e 1440px) e a estrutura das `<dl>`.
+
+---
+
 ## [5.5.0] — 2026-10-23 · MINOR
 
 ### Segurança

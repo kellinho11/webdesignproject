@@ -223,7 +223,7 @@
   .site-nav__gate { display: none; }
 }
 @media (min-width: 1081px) and (max-width: 1180px) {
-  .header__actions .btn__label { display: none; }
+  .header__actions .btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 /* Glossário: sai da página (nova guia), separado das seções por um fio */
 @media (min-width: 1081px) {

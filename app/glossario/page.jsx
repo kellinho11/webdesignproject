@@ -7,8 +7,8 @@ import JsonLd from '@/components/seo/JsonLd';
 import { TERMS } from '@/lib/glossario';
 import { OG, OG_IMAGE, glossaryLd } from '@/lib/seo';
 
-const title = 'Glossário quântico';
-const description = 'Qubit, superposição, emaranhamento, medição, QAOA, Grover: os termos de computação quântica usados pela SynapseQ, explicados em linguagem simples.';
+const title = 'Glossário de computação quântica';
+const description = 'Qubit, superposição, medição, QAOA, Grover: os termos de computação quântica do site da SynapseQ, em linguagem simples.';
 
 export const metadata = {
   title,
