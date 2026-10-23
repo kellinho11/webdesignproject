@@ -109,3 +109,8 @@
 .code__tabs button:hover, .code__copy:hover { color: var(--ice); }
 .code__body { margin: 0; padding: 16px; overflow-x: auto; font: 400 12.5px/1.7 var(--fonte-codigo); color: rgba(var(--ink-rgb), 0.86); }
 
+
+/* toque: alvo de 44px onde o dedo é o ponteiro */
+@media (pointer: coarse) {
+  .code__tabs button, .code__copy { min-height: 44px; }
+}

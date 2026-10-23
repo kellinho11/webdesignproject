@@ -20,6 +20,20 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.3.0] — 2026-10-23 · MINOR
+
+### Alterado (celular)
+- Vídeo do Hero sem os controles nativos, que no celular cobriam a legenda do próprio vídeo: um botão abaixo dele pausa e retoma. A escolha de quem pausou vale até tocar de novo, e com movimento reduzido o vídeo espera o toque.
+- O circuito de fundo do Hero sai em uma coluna (até 1000px): ficava atrás do vídeo e dos números.
+- Filme da Tecnologia: os rótulos "clássico" e "quântico" do gráfico não se encostam mais em telas estreitas.
+- Alvos de toque de 44px onde o dedo é o ponteiro (`pointer: coarse`): pausa dos filmes, "Rodar na Demo", abas do código, notas das pontes, marca e links do rodapé, trilha do Glossário. Cada regra fica no arquivo do seu componente.
+- Sem o retângulo cinza do toque em links e botões, sem atraso de duplo toque e sem o iOS aumentar o texto ao girar a tela.
+
+### Testes
+- `qa.py`: T191 varre 320, 390 e 768px atrás de imagem, vídeo, canvas ou SVG sobre outro ou sobre texto, e de alvos de toque menores que 44px; T191c confere o botão do vídeo.
+
+---
+
 ## [5.2.0] — 2026-10-23 · MINOR
 
 ### Adicionado

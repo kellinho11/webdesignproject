@@ -131,3 +131,8 @@
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .film__bar, .film__caption--over { background: rgba(var(--surface-2-rgb), 0.96); }
 }
+
+/* toque: alvo de 44px onde o dedo é o ponteiro */
+@media (pointer: coarse) {
+  .film__toggle { width: 44px; height: 44px; }
+}

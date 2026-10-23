@@ -7,6 +7,9 @@
 .gloss__trail li + li::before { content: "/"; margin-right: 8px; color: var(--hair); }
 .gloss__trail a { color: var(--text-secondary); }
 .gloss__trail a:hover { color: var(--text-primary); }
+@media (pointer: coarse) {
+  .gloss__trail a { display: inline-flex; align-items: center; min-height: 44px; }
+}
 .gloss__title { max-width: 14ch; }
 .gloss__lead { max-width: 56ch; margin: clamp(20px, 3vw, 32px) 0 0; color: rgba(var(--ink-rgb), 0.72); }
 

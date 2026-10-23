@@ -59,3 +59,8 @@
 @media (max-width: 900px) {
   .case .film, .case__body, .case:nth-child(even) .film, .case:nth-child(even) .case__body { grid-column: 1 / -1; grid-row: auto; }
 }
+
+/* toque: alvo de 44px onde o dedo é o ponteiro */
+@media (pointer: coarse) {
+  .case__run { min-height: 44px; }
+}

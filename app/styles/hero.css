@@ -195,7 +195,7 @@ html:not(.js) .hero__circuit { opacity: 0.42; }
 .hero__lab { grid-column: 8 / -1; }
 .hero__film { position: relative; margin: 0; }
 .hero__film video { display: block; width: 100%; height: auto; aspect-ratio: 1; border: 1px solid var(--hair); background: #07090F; }
-.hero__film figcaption { margin-top: 10px; font: 500 11px/1.4 var(--fonte-codigo); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+.hero__film figcaption { display: flex; align-items: center; gap: 12px; margin-top: 10px; font: 500 11px/1.4 var(--fonte-codigo); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
 .hero__kpis { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: clamp(36px, 6vh, 64px) 0 0; border-top: 1px solid var(--hair); }
 .hero__kpis div { padding: 14px 16px 0 0; }
 .hero__kpis div + div { padding-left: 16px; border-left: 1px solid var(--hair); }
@@ -203,6 +203,8 @@ html:not(.js) .hero__circuit { opacity: 0.42; }
 .hero__kpis dd { margin: 6px 0 0; font: 700 clamp(22px, 2.6vw, 34px)/1 var(--fonte-titulo); letter-spacing: -0.03em; color: var(--text-strong); }
 .hero__backers { grid-column: 1 / -1; }
 @media (max-width: 1000px) {
+  /* o circuito de fundo ficava atrás do vídeo e dos números: em uma coluna ele sai */
+  .hero__circuit { display: none; }
   .hero__main, .hero__lab { grid-column: 1 / -1; }
   .hero__lab { margin-top: 36px; max-width: 520px; }
   .hero__kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }

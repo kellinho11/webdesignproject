@@ -90,7 +90,7 @@ export function compare(ctx, t, w, h, b) {
     const upto = 60 * reveal, pe = [], pq = [];
     for (let k = 0; k <= upto; k += 0.5) { pe.push([X(k), expY(k)]); pq.push([X(k), sqY(k)]); }
     line(ctx, pe, INK, 2, 0.75); line(ctx, pq, BLUE, 3);
-    label(ctx, 'clássico · O(2ⁿ)', X(Math.min(upto, 50)) - 10, expY(Math.min(upto, 50)), { align: 'right', alpha: 0.75 });
+    label(ctx, 'clássico · O(2ⁿ)', X(Math.min(upto, 55)) - 10, expY(Math.min(upto, 55)), { align: 'right', alpha: 0.75 });
     label(ctx, 'quântico · O(√2ⁿ)', X(Math.min(upto, 60)), sqY(Math.min(upto, 60)) - 16, { align: 'right', color: ICE });
     const x = X(n); line(ctx, [[x, T], [x, B]], INK, 1, 0.3 * reveal);
     dot(ctx, x, expY(n), 5, INK, reveal); dot(ctx, x, sqY(n), 6, BLUE, reveal);

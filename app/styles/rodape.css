@@ -41,3 +41,9 @@
 .footer__circuit li { display: flex; align-items: center; gap: 8px; }
 .footer__circuit li + li::before { content: ""; width: clamp(16px, 4vw, 48px); height: 1px; background: var(--hair); margin: 0 10px; }
 .footer__circuit b { padding: 4px 6px; border: 1px solid var(--ice); color: var(--ice); font-weight: 500; }
+
+/* toque: alvo de 44px onde o dedo é o ponteiro */
+@media (pointer: coarse) {
+  .footer__nav { row-gap: 0; }
+  .footer__nav a, .footer__brand .brand { display: inline-flex; align-items: center; min-height: 44px; }
+}
