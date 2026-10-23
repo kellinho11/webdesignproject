@@ -4,6 +4,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "out",
   "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [{ "source": "/404", "destination": "/", "permanent": false }],
   "headers": [
     {
       "source": "/(.*)",

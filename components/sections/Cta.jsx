@@ -30,7 +30,11 @@ export default function Cta() {
             <li><b>2028</b>SQ-256</li>
           </ol>
         </div>
-        <form className="form sentence" id="investor-form" noValidate>
+        {/* nasce desabilitado: sem JS, o envio iria por GET e poria nome e e-mail na URL.
+            lib/behaviors/form.js libera o fieldset quando a validação está pronta */}
+        <form className="form sentence" id="investor-form" method="post" noValidate>
+          <fieldset className="form__set" disabled>
+          <legend className="sr-only">Pedido de acesso ao data room</legend>
           <p className="sentence__body">
             <span className="sentence__lead">Para investidores ·</span>
             {' '}Meu nome é <span className="field" style={{ '--w': '15ch' }}><label htmlFor="f-name" className="sr-only">Nome completo</label><input id="f-name" name="name" type="text" autoComplete="name" placeholder="nome completo" maxLength={80} required /><span className="field__error" aria-live="polite"></span></span>,
@@ -41,6 +45,8 @@ export default function Cta() {
           {/* isca para robôs: invisível para pessoas e fora do Tab; quem preenche é descartado */}
           <p className="form__trap" aria-hidden="true"><label>Site <input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></p>
           <button type="submit" className="btn-primary form__submit">Solicitar acesso ao data room <span className="btn__arrow" aria-hidden="true">→</span></button>
+          </fieldset>
+          <noscript><p className="form__nojs">O formulário precisa de JavaScript ligado.</p></noscript>
         </form>
 
         <div className="form__success" id="form-success" hidden>

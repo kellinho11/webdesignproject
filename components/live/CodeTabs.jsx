@@ -3,10 +3,13 @@
 import { useState } from 'react';
 
 // Exemplo de chamada da API em três linguagens, com cópia. Abas acessíveis: setas trocam de aba.
+// Nenhuma chave aparece aqui, nem de mentira: este texto vai para o JS do site e qualquer um o lê no
+// DevTools. Nos três exemplos a chave vem da variável de ambiente SQ_KEY, no servidor de quem usa a API.
 const SNIPPETS = {
-  Python: `from synapseq import Client
+  Python: `import os
+from synapseq import Client
 
-sq = Client(api_key="sk_live_…")
+sq = Client(api_key=os.environ["SQ_KEY"])
 job = sq.solve(
     algorithm="QAOA",
     problem="portfolio_optimization",

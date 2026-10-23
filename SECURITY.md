@@ -15,6 +15,26 @@ portas de ataque mais comuns não existem aqui. As que existem estão fechadas a
 | **Formulário abusado** | Texto gigante, caracteres invisíveis, opção inventada no DevTools, robô | `maxlength`, limpeza do texto (`lib/validate.js`), faixa só da lista, campo-isca para robôs e tempo mínimo de preenchimento. O formulário é uma demonstração: não envia nem guarda nada. |
 | **Acesso a câmera, microfone etc.** | Um script tenta pedir permissões | `Permissions-Policy` nega todas. |
 
+## Inspecionar o site (DevTools, aba Sources)
+
+Tudo o que o navegador baixa pode ser lido por qualquer pessoa: em **Inspecionar → Sources** aparecem
+o HTML, o JS, o CSS e os dados de cada página. Por isso o site foi feito para não ter nada a esconder ali:
+
+- **Nenhuma chave nem segredo** (`key`, `sk_`, `pk_`, token, senha, chave privada). O site não chama
+  nenhuma API paga nem serviço externo, então não precisa de chave nenhuma no navegador.
+- O exemplo de código da seção Quantum Engineering mostra como usar a API **sem** escrever a chave: nos
+  três exemplos ela vem da variável de ambiente `SQ_KEY`, no servidor de quem usa a API
+  (`os.environ["SQ_KEY"]`, `process.env.SQ_KEY`, `$SQ_KEY`). Uma chave colada no código do site, mesmo
+  de exemplo, iria para o JS publicado.
+- Arquivos `.env` ficam fora do Git (`.gitignore`), e os source maps não são publicados (403): o código
+  que chega ao navegador é só o compilado.
+- `qa.py` (T198) varre tudo o que o visitante baixa e todos os arquivos do Git atrás de padrões de chave
+  (`sk_live_`, `pk_test_`, `sk-…`, `AKIA…`, `ghp_…`, `AIza…`, JWT, chave privada PEM,
+  `api_key` com valor escrito) e falha se achar qualquer um.
+
+Mexer no código pelo DevTools só muda a cópia de quem mexeu: não há servidor nem banco do outro lado
+para alterar, e a próxima visita recebe o site original.
+
 ## SQL injection
 
 SQL injection acontece quando o servidor monta uma consulta colando o texto do usuário dentro dela:
@@ -39,7 +59,7 @@ cuidam de formato e tamanho, e devem ser repetidas no servidor.
 
 ## Conferir
 
-- `qa.py` testa os cabeçalhos, a CSP por hash e o formulário com textos de ataque (T192–T194).
+- `qa.py` testa os cabeçalhos, a CSP por hash e o formulário com textos de ataque (T193–T195), procura segredos (T198) e repete os ataques que já quebraram o site (T197).
 - Os cabeçalhos no ar: <https://securityheaders.com/?q=webdesignproject-nine.vercel.app>.
 - Achou um problema? Abra um aviso privado em
   <https://github.com/kellinho11/webdesignproject/security/advisories/new>.

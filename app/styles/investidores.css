@@ -10,6 +10,9 @@
 }
 .form { margin-top: 40px; text-align: left; }
 /* campo-isca (anti-robô): fora da tela, sem foco e escondido de leitores de tela */
+.form__set { min-width: 0; margin: 0; padding: 0; border: 0; }
+.form__set:disabled { opacity: 0.55; }
+.form__nojs { margin-top: 12px; font: 500 12px/1.4 var(--fonte-codigo); color: var(--text-secondary); }
 .form__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .field {
   display: flex;

@@ -20,6 +20,25 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.3] — 2026-10-23 · PATCH
+
+### Corrigido (achados tentando quebrar o site)
+- **Sem JavaScript, enviar o formulário punha nome e e-mail na URL** (o `<form>` sem `method` envia por GET), e daí para o histórico, os logs e o Referer. O formulário agora nasce desabilitado (`<fieldset disabled>`), avisa que precisa de JavaScript e só é liberado por `lib/behaviors/form.js`; `method="post"` como segunda barreira.
+- **Em 280px (Galaxy Fold dobrado) o botão do menu passava 31px da tela.** Até 300px o cabeçalho mostra só o logo (o link continua com nome para leitor de tela).
+- **"404 falsas" com status 200**: `scripts/limpa.mjs` tira de `out/` a cópia `/_not-found` que o Next gera, e `/404` redireciona para o início. `/glossario/` (com barra) redireciona para `/glossario` (`trailingSlash: false`).
+
+### Segurança
+- O exemplo de código da API mostrava uma chave de exemplo com prefixo `sk_live_` escrita no código: não era uma chave real, mas parecia uma no DevTools e dispararia scanners de segredo. Agora os três exemplos leem a chave da variável de ambiente `SQ_KEY`.
+- `SECURITY.md` explica o que se vê inspecionando o site (aba Sources): nenhuma chave nem segredo, sem source maps, `.env` fora do Git. O histórico do Git (64 commits) foi varrido: nenhuma chave real.
+
+### Alterado
+- Dependabot agrupa `remotion` e `@remotion/*` num pedido só (os dois andam sempre na mesma versão).
+
+### Testes
+- `qa.py`: T197 repete os três ataques que quebraram o site (formulário sem JS, 280px, `/_not-found`); T198 varre tudo o que o visitante baixa e todos os arquivos do Git atrás de chaves (`sk_`, `pk_`, `sk-`, `AKIA`, `ghp_`, `AIza`, JWT, chave privada, `api_key="…"`).
+
+---
+
 ## [5.5.2] — 2026-10-23 · PATCH
 
 ### Atualizado

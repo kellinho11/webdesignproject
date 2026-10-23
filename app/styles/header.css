@@ -189,6 +189,12 @@
     padding: 0 6px 0 14px;
   }
 }
+/* telas de 300px ou menos (Galaxy Fold dobrado, 280px): o nome sai e fica só o logo (o link
+   continua com nome pelo aria-label), senão o botão do menu passa da tela */
+@media (max-width: 300px) {
+  .site-header .brand__name { display: none; }
+  .site-header .header__inner { padding-left: 10px; }
+}
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .site-header .header__inner::before,
   .nav-open .site-nav { -webkit-backdrop-filter: none; backdrop-filter: none; }
