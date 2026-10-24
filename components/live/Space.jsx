@@ -41,7 +41,8 @@ export default function Space() {
   useEffect(() => {
     LAYERS.forEach((L, i) => {
       const el = refs.current[i];
-      el.style.backgroundImage = `url(${tile(L, 7 + i * 131)})`;
+      // canvas bloqueado (extensão de privacidade): o céu fica sem as estrelas desenhadas, o resto segue
+      try { el.style.backgroundImage = `url(${tile(L, 7 + i * 131)})`; } catch (e) { return; }
       el.style.backgroundSize = `${L.tile}px ${L.tile}px`;
       el.style.setProperty('--tile', `${L.tile}px`);
     });

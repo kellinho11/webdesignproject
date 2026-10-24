@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <main id="topo" className="gloss lost">
       <div className="container">
-        <a href="/" className="brand" aria-label="SynapseQ · início"><Logo defs /><span className="brand__name">SynapseQ</span></a>
+        <a href="/" className="brand" aria-label="SynapseQ · início"><Logo defs /><span className="brand__name" translate="no">SynapseQ</span></a>
         <p className="ed-num"><span>404</span>Medição sem resultado</p>
         <h1 className="ed-title"><span className="tl">Este endereço</span> <span className="tl">colapsou em <span className="kw">nada.</span></span></h1>
         <p className="gloss__lead">A página que você procurou não existe. Volte para o início ou consulte o Glossário.</p>

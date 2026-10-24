@@ -28,7 +28,7 @@ export default function Glossario() {
         <div className="container header__inner">
           <a href="/" className="brand" aria-label="SynapseQ · início">
             <Logo defs />
-            <span className="brand__name">SynapseQ</span>
+            <span className="brand__name" translate="no">SynapseQ</span>
           </a>
           <a href="/" className="btn-secondary btn--sm">Voltar ao site</a>
         </div>

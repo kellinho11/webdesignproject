@@ -4,7 +4,7 @@
 *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
 /* o fundo de verdade é o céu (.space, preso atrás de tudo); o html segura a cor enquanto ele carrega */
-html { background: #04050B; }
+html { background: #04050B; color-scheme: dark; }
 /* celular: o iOS não aumenta o texto ao girar a tela, e o toque não pisca um retângulo cinza
    (os estados de foco e de pressão de cada botão já respondem ao toque) */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }

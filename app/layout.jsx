@@ -28,7 +28,8 @@ export const metadata = {
   twitter: { card: 'summary_large_image', title: HOME.title, description: HOME.description },
 };
 
-export const viewport = { themeColor: '#07090F' };
+// o site é escuro: select, barras de rolagem e campos nativos também (mesmo com o sistema em modo claro)
+export const viewport = { themeColor: '#07090F', colorScheme: 'dark' };
 
 export default function RootLayout({ children }) {
   return (

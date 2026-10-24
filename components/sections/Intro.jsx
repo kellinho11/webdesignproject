@@ -5,10 +5,24 @@
 // página. Quando a íris começa a abrir, a página destrava e o Hero entra por baixo; no fim, a
 // sobreposição sai. Tocar na tela, "Pular" ou Esc entram na hora. O Player chega num pedaço de JS
 // separado, só para quem vê a intro.
-import { useCallback, useEffect, useRef, useState } from 'react';
+// A intro nunca derruba a página: se o pedaço do Player não chegar (rede ruim, bloqueador) ou o
+// Player quebrar tocando, ela sai na hora. Sem isso, o erro subia e o Next trocava o site inteiro
+// pela tela "This page couldn't load".
+import { Component, useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-const IntroPlayer = dynamic(() => import('@/components/intro/IntroPlayer'), { ssr: false });
+function IntroFalhou({ onEnded }) {
+  useEffect(() => { onEnded(); }, [onEnded]);
+  return null;
+}
+const IntroPlayer = dynamic(() => import('@/components/intro/IntroPlayer').catch(() => ({ default: IntroFalhou })), { ssr: false });
+
+class SemQuebrar extends Component {
+  state = { erro: false };
+  static getDerivedStateFromError() { return { erro: true }; }
+  componentDidCatch() { this.props.onError(); }
+  render() { return this.state.erro ? null : this.props.children; }
+}
 
 export default function Intro() {
   const [open, setOpen] = useState(true);
@@ -42,7 +56,7 @@ export default function Intro() {
   return (
     <div className={`intro ${state}`} id="loader" role="dialog" aria-modal="true" aria-label="Entrando no SynapseQ" tabIndex={-1} ref={dialogRef}>
       <button type="button" className="intro__stage" id="intro-start" aria-label="Entrar no site" onClick={skip}>
-        <IntroPlayer onReady={ready} onReveal={enter} onEnded={end} />
+        <SemQuebrar onError={end}><IntroPlayer onReady={ready} onReveal={enter} onEnded={end} /></SemQuebrar>
       </button>
       <button type="button" className="intro__skip" id="intro-skip" onClick={skip}>Pular</button>
     </div>

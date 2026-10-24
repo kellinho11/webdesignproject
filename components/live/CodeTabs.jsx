@@ -41,10 +41,10 @@ export default function CodeTabs() {
   const [copied, setCopied] = useState(false);
   const key = (e) => {
     const i = NAMES.indexOf(tab);
-    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-      const n = NAMES[(i + (e.key === 'ArrowRight' ? 1 : NAMES.length - 1)) % NAMES.length];
-      setTab(n); document.getElementById(`code-tab-${n}`)?.focus();
-    }
+    const to = { ArrowRight: (i + 1) % NAMES.length, ArrowLeft: (i + NAMES.length - 1) % NAMES.length, Home: 0, End: NAMES.length - 1 }[e.key];
+    if (to === undefined) return;
+    e.preventDefault();   // Home/End não rolam a página
+    setTab(NAMES[to]); document.getElementById(`code-tab-${NAMES[to]}`)?.focus();
   };
   const copy = async () => {
     try { await navigator.clipboard.writeText(SNIPPETS[tab]); setCopied(true); setTimeout(() => setCopied(false), 1400); } catch (e) { /* sem permissão de área de transferência */ }
@@ -59,7 +59,7 @@ export default function CodeTabs() {
         </div>
         <button type="button" className="code__copy" onClick={copy}>{copied ? 'Copiado' : 'Copiar'}</button>
       </div>
-      <pre className="code__body" id="code-panel" role="tabpanel" aria-labelledby={`code-tab-${tab}`} tabIndex={0}><code>{SNIPPETS[tab]}</code></pre>
+      <pre className="code__body" id="code-panel" role="tabpanel" translate="no" aria-labelledby={`code-tab-${tab}`} tabIndex={0}><code>{SNIPPETS[tab]}</code></pre>
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default function SiteHeader() {
   <div className="container header__inner">
     <a href="#topo" className="brand" aria-label="SynapseQ · início">
       <Logo defs />
-      <span className="brand__name">SynapseQ</span>
+      <span className="brand__name" translate="no">SynapseQ</span>
     </a>
 
     <nav className="site-nav" id="site-nav" aria-label="Principal">

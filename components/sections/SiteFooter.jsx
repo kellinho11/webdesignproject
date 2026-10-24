@@ -10,7 +10,7 @@ export default function SiteFooter({ home = '' }) {
     <div className="footer__brand">
       <a href={`${home}#topo`} className="brand" aria-label="SynapseQ · início">{' '}
         <Logo size={28} />{' '}
-        <span className="brand__name">SynapseQ</span>{' '}
+        <span className="brand__name" translate="no">SynapseQ</span>{' '}
       </a>
       <p className="footer__tagline">IA × Computação Quântica</p>
       <nav className="footer__nav" aria-label="Projeto">

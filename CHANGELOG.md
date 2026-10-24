@@ -20,6 +20,21 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.5] — 2026-10-24 · PATCH
+
+### Corrigido (achados atacando as suposições internas do site)
+- **Se o pedaço de JS do Remotion não chegasse (rede instável, bloqueador, proxy), o site inteiro virava a tela branca "This page couldn't load".** O `next/dynamic` lançava o erro de carregamento e nada o segurava. Agora a intro sai na hora se o Player não chegar, e um limite de erro em volta dele faz o mesmo se ele quebrar tocando (`Intro.jsx`).
+- **Com o canvas bloqueado (extensões de privacidade, navegadores antirrastreio), o site inteiro caía.** Os filmes ficam com a moldura, o degradê e a legenda, sem a cena, e o céu fica sem as estrelas desenhadas; o resto da página segue (`Film.jsx`, `Space.jsx`).
+- **Com o tradutor automático do navegador, o formulário não enviava**: as opções da faixa não tinham `value`, então o valor era o texto, que o tradutor muda. Agora cada opção tem um valor fixo (`Cta.jsx`, `lib/validate.js`). O código de exemplo e o nome SynapseQ ficam marcados para não traduzir.
+- Página de erro própria (`app/error.jsx`), escura e em português, com "Tentar de novo", para qualquer falha inesperada; antes aparecia a tela branca do Next em inglês.
+- O site declara `color-scheme: dark`: com o sistema em modo claro, o menu do `select` e as barras de rolagem apareciam claros (`layout.jsx`, `base.css`).
+- Abas do código de exemplo aceitam Home e End, como no padrão de abas acessíveis (`CodeTabs.jsx`).
+
+### Testes
+- `qa.py`: T200 bloqueia o pedaço do Remotion e o canvas e confere que o site fica inteiro, traduz as opções e envia o formulário, confere o `color-scheme` com o sistema claro e Home/End nas abas.
+
+---
+
 ## [5.5.4] — 2026-10-24 · PATCH
 
 ### Corrigido (defeitos visuais achados olhando o site)

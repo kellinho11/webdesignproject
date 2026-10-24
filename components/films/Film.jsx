@@ -51,7 +51,12 @@ export default function Film({ scene, duration, chapters, title, poster = durati
   }, []);
 
   useEffect(() => {
-    const root = rootRef.current, canvas = canvasRef.current, ctx = canvas.getContext('2d'), s = state.current;
+    const root = rootRef.current, canvas = canvasRef.current, s = state.current;
+    // canvas bloqueado (extensão de privacidade, navegador antifingerprint): o filme fica com a
+    // moldura, o degradê e a legenda, sem a cena; o resto da página não cai junto
+    let ctx = null;
+    try { ctx = canvas.getContext('2d'); } catch (e) { /* bloqueado */ }
+    if (!ctx) { root.dataset.nocanvas = 'true'; return undefined; }
     const draw = SCENES[scene];
     const FPS = 24;
     setMono(monoFont(root));
