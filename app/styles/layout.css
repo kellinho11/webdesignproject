@@ -53,7 +53,7 @@ main { position: relative; }
   text-transform: uppercase;
   color: var(--text-secondary);
 }
-.ed-num > span:first-child { color: var(--ice); letter-spacing: 0.04em; }
+.ed-num > span:first-child { flex: none; white-space: nowrap; color: var(--ice); letter-spacing: 0.04em; }   /* "§ 04" nunca quebra */
 .ed-title {
   grid-column: 1 / span 9;
   margin: 0;

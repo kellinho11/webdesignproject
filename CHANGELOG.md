@@ -20,6 +20,20 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.5.4] — 2026-10-24 · PATCH
+
+### Corrigido (defeitos visuais achados olhando o site)
+- **Demo**: a chuva de 0 e 1 passava por trás da barra de título do filme e por cima do contador "shots". A cena desenhava a chuva no canvas inteiro, contra a regra das próprias cenas (só o fundo ocupa o canvas todo; o conteúdo fica na área livre `b`). Agora fica dentro de `b` e, no celular, abaixo das duas linhas de rótulo.
+- **"§ 04" quebrava em duas linhas** no celular, espremido pelo rótulo longo ao lado (`layout.css`).
+- **Cabeçalho**: a cápsula flutua sem fundo e o texto da página aparecia cortado na faixa acima dela. Um véu em degradê esmaece o conteúdo ao passar por trás (`header.css`).
+- **Hero**: o circuito de fundo passava por baixo da legenda do vídeo; no desktop ele some antes da coluna do vídeo (`hero.css`).
+- **Rodapé**: os links do projeto caíam sozinhos numa segunda linha; agora ficam embaixo da marca, e no desktop marca, seções (em duas colunas) e ficha técnica dividem a mesma linha. No celular, o mapa do circuito vira uma grade sem os traços soltos no começo das linhas (`SiteFooter.jsx`, `rodape.css`).
+
+### Testes
+- `qa.py`: T199 lê os pixels do canvas da Demo sob a barra de título (no site anterior, brilho 255; agora, 0), confere "§ 0N" numa linha, o véu do cabeçalho e o rodapé em uma linha no desktop.
+
+---
+
 ## [5.5.3] — 2026-10-23 · PATCH
 
 ### Corrigido (achados tentando quebrar o site)

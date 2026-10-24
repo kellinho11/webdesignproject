@@ -171,8 +171,11 @@ export function demo(ctx, t, w, h, b, o = {}) {
   const cell = 13, cw = cell * 0.62;
   // fundo: grade fria quase apagada; à esquerda, rastros de 0 e 1 caindo (cada rastro é um shot medido)
   ascii(ctx, w, h, cell, (x, y) => (x < 0.3 ? 0 : 0.07));
+  // a chuva é conteúdo, não fundo: fica dentro de b (antes passava por trás da barra de título) e,
+  // em tela estreita, abaixo das duas linhas de rótulo, que lá ficam por cima dela
+  const tight = b.w < 520, rainTop = b.y + (tight ? 46 : 0);
   ctx.font = `${cell}px ${MONO}`; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
-  const rainCols = Math.floor((b.x + b.w * 0.26) / cw), rainRows = Math.ceil(h / cell);
+  const rainCols = Math.floor((b.w * 0.26) / cw), rainRows = Math.floor((b.y + b.h - rainTop) / cell);
   for (let c = 0; c < rainCols; c += 2) {
     const speed = 0.25 + rand(c) * 0.35, len = 6 + Math.floor(rand(c + 3) * 8);
     const head = ((t * speed + rand(c + 9)) % 1.4) * rainRows * 1.1;
@@ -180,7 +183,7 @@ export function demo(ctx, t, w, h, b, o = {}) {
       const r = Math.floor(head) - k; if (r < 0 || r >= rainRows) continue;
       const hot = rand(c * 31 + r) < 0.18;
       ctx.fillStyle = `rgba(${k === 0 ? ICE : hot ? VIOLET : INK}, ${(k === 0 ? 0.95 : 0.55) * (1 - k / len)})`;
-      ctx.fillText(rand(c * 7 + r + Math.floor(t * 4)) < 0.5 ? '0' : '1', c * cw, r * cell);
+      ctx.fillText(rand(c * 7 + r + Math.floor(t * 4)) < 0.5 ? '0' : '1', b.x + c * cw, rainTop + r * cell);
     }
   }
   // histograma em blocos ASCII: colunas de caracteres empilhados na grade
@@ -199,7 +202,6 @@ export function demo(ctx, t, w, h, b, o = {}) {
     if (slot > 52) label(ctx, bits, x0 + i * slot + slot / 2, base + 12, { size: 10, align: 'center', alpha: i === WIN ? 0.95 : 0.45, color: i === WIN ? VIOLET : INK });
   });
   // em tela estreita os dois rótulos não cabem lado a lado: o resultado desce uma linha
-  const tight = b.w < 520;
   label(ctx, `shots ${shots.toLocaleString('pt-BR')} / 1.024`, tight ? b.x + 4 : x0, b.y + 10, { color: ICE });
   const win = easeOut(phase(t, 10, 11.5));
   if (win > 0) label(ctx, `|${BITS[WIN]}⟩ · ${Math.round(PROB[WIN] * 100)}% · ${run.what}`, tight ? b.x + 4 : b.x + b.w - 4, b.y + (tight ? 28 : 10), { align: tight ? 'left' : 'right', color: VIOLET, weight: 600, alpha: win });

@@ -202,6 +202,10 @@ html:not(.js) .hero__circuit { opacity: 0.42; }
 .hero__kpis dt { font: 500 10px/1.3 var(--fonte-codigo); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
 .hero__kpis dd { margin: 6px 0 0; font: 700 clamp(22px, 2.6vw, 34px)/1 var(--fonte-titulo); letter-spacing: -0.03em; color: var(--text-strong); }
 .hero__backers { grid-column: 1 / -1; }
+/* duas colunas: o circuito some antes da coluna do vídeo (passava por baixo da legenda dele) */
+@media (min-width: 1001px) {
+  .hero__circuit { -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 56%); mask-image: linear-gradient(90deg, #000 40%, transparent 56%); }
+}
 @media (max-width: 1000px) {
   /* o circuito de fundo ficava atrás do vídeo e dos números: em uma coluna ele sai */
   .hero__circuit { display: none; }

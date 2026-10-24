@@ -13,6 +13,11 @@ export default function SiteFooter({ home = '' }) {
         <span className="brand__name">SynapseQ</span>{' '}
       </a>
       <p className="footer__tagline">IA × Computação Quântica</p>
+      <nav className="footer__nav" aria-label="Projeto">
+        <a href="/glossario" target={home ? undefined : '_blank'} rel={home ? undefined : 'noopener'} aria-current={home ? 'page' : undefined}>Glossário{!home && <NewTab />}</a>{' '}
+        <a href="https://github.com/kellinho11/webdesignproject" target="_blank" rel="noopener noreferrer">GitHub<NewTab /></a>{' '}
+        <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens<NewTab /></a>
+      </nav>
     </div>
     <nav className="footer__nav" aria-label="Seções">
       <a href={`${home}#tecnologia`}>Tecnologia</a>{' '}
@@ -26,11 +31,6 @@ export default function SiteFooter({ home = '' }) {
       <div><dt>Operação</dt><dd>Criostato de diluição · 15 mK</dd></div>
       <div><dt>Acesso</dt><dd>api.synapseq.ai · 3 regiões</dd></div>
     </dl>
-    <nav className="footer__nav" aria-label="Projeto">
-      <a href="/glossario" target={home ? undefined : '_blank'} rel={home ? undefined : 'noopener'} aria-current={home ? 'page' : undefined}>Glossário{!home && <NewTab />}</a>{' '}
-      <a href="https://github.com/kellinho11/webdesignproject" target="_blank" rel="noopener noreferrer">GitHub<NewTab /></a>{' '}
-      <a href="https://www.facens.br" target="_blank" rel="noopener noreferrer">Facens<NewTab /></a>
-    </nav>
   </div>
   <ol className="container footer__circuit" aria-label="O circuito desta página">
     <li><b>|0⟩</b>Início</li><li><b>H</b>Tecnologia</li><li><b>Rz</b>Casos de uso</li><li><b>U</b>Demo</li><li><b>SW</b>Quantum Engineering</li><li><b>M</b>Investidores</li>

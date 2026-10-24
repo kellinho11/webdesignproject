@@ -41,6 +41,17 @@
 .footer__circuit li { display: flex; align-items: center; gap: 8px; }
 .footer__circuit li + li::before { content: ""; width: clamp(16px, 4vw, 48px); height: 1px; background: var(--hair); margin: 0 10px; }
 .footer__circuit b { padding: 4px 6px; border: 1px solid var(--ice); color: var(--ice); font-weight: 500; }
+/* no celular a linha quebrava com o traço de ligação no começo: vira uma grade, sem os traços */
+@media (max-width: 640px) {
+  .footer__circuit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
+  .footer__circuit li + li::before { display: none; }
+}
+.footer__brand .footer__nav { margin-top: 18px; gap: 8px 24px; }
+/* desktop: marca (com os links do projeto), seções e ficha lado a lado, numa linha só */
+@media (min-width: 1000px) {
+  .footer__inner { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: clamp(32px, 4vw, 64px); align-items: start; }
+  .footer__inner > .footer__nav { display: grid; grid-template-columns: repeat(2, max-content); justify-content: center; gap: 12px clamp(24px, 3vw, 48px); }
+}
 
 /* toque: alvo de 44px onde o dedo é o ponteiro */
 @media (pointer: coarse) {
