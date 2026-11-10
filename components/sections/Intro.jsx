@@ -15,7 +15,10 @@ function IntroFalhou({ onEnded }) {
   useEffect(() => { onEnded(); }, [onEnded]);
   return null;
 }
-const IntroPlayer = dynamic(() => import('@/components/intro/IntroPlayer').catch(() => ({ default: IntroFalhou })), { ssr: false });
+const loadPlayer = () => import('@/components/intro/IntroPlayer').catch(() => ({ default: IntroFalhou }));
+// o pedaço do Player começa a baixar assim que este arquivo roda, sem esperar o React montar a página
+const early = typeof window !== 'undefined' && window.__introPending ? loadPlayer() : null;
+const IntroPlayer = dynamic(() => early || loadPlayer(), { ssr: false });
 
 class SemQuebrar extends Component {
   state = { erro: false };

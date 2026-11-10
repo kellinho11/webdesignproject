@@ -39,14 +39,22 @@ const TWINKLES = Array.from({ length: 14 }, (_, i) => ({
 export default function Space() {
   const refs = useRef([]);
   useEffect(() => {
-    LAYERS.forEach((L, i) => {
-      const el = refs.current[i];
+    // as estrelas são desenhadas quando o navegador fica livre, uma camada por vez: na carga, o
+    // processador fica para o que o visitante vê primeiro
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 60));
+    const cancel = window.cancelIdleCallback || clearTimeout;
+    let job = 0;
+    const paintLayer = (i) => {
+      const L = LAYERS[i], el = refs.current[i];
+      if (!L || !el) return;
       // canvas bloqueado (extensão de privacidade): o céu fica sem as estrelas desenhadas, o resto segue
       try { el.style.backgroundImage = `url(${tile(L, 7 + i * 131)})`; } catch (e) { return; }
       el.style.backgroundSize = `${L.tile}px ${L.tile}px`;
       el.style.setProperty('--tile', `${L.tile}px`);
-    });
-    if (reducedMotion()) return undefined;
+      job = idle(() => paintLayer(i + 1));
+    };
+    job = idle(() => paintLayer(0));
+    if (reducedMotion()) return () => cancel(job);
     let raf = 0;
     const move = () => {
       raf = 0;
@@ -56,7 +64,7 @@ export default function Space() {
     const on = () => { if (!raf) raf = requestAnimationFrame(move); };
     window.addEventListener('scroll', on, { passive: true });
     move();
-    return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf); };
+    return () => { cancel(job); window.removeEventListener('scroll', on); cancelAnimationFrame(raf); };
   }, []);
 
   return (

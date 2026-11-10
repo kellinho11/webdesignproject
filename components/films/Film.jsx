@@ -19,11 +19,26 @@ import { latest, listen, motionPaused } from '@/lib/signals';
 // - listen: segue o algoritmo escolhido nos Casos (sinal algo);
 // - com movimento reduzido, não toca sozinho: mostra o quadro-resumo (poster) e a legenda final;
 // - desenha a 24 quadros por segundo, com resolução de no máximo 1,5× (1,25× no celular).
+// - só se prepara (folha de glifos, medidas, primeiro quadro) quando chega perto da tela: na carga, os
+//   filmes lá de baixo não custam nada.
+const NEAR = '600px 0px';
 const live = new Set();
 const LIMIT = 1;
 function elect() {
   const ranked = [...live].filter((f) => f.wants()).sort((a, b) => b.ratio - a.ratio);
   live.forEach((f) => { const k = ranked.indexOf(f); f.allow(k > -1 && k < LIMIT); });
+}
+
+// enquanto a página rola, o filme visível segura o quadro: redesenhar a cena disputava cada quadro com
+// a rolagem (medido: 7% de quadros travados com processador 4× mais lento, 0% sem o desenho). Ele
+// volta a tocar 140 ms depois de a rolagem parar. O filme da Demo não entra nisso: lá a rolagem é o tempo.
+let scrolling = false, scrollTimer = 0;
+if (typeof window !== 'undefined') {
+  window.addEventListener('scroll', () => {
+    scrolling = true;
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => { scrolling = false; }, 140);
+  }, { passive: true });
 }
 
 const fmt = (s) => `00:${String(Math.floor(s)).padStart(2, '0')}`;
@@ -43,11 +58,14 @@ export default function Film({ scene, duration, chapters, title, poster = durati
   // filme estreito (celular, cartões): a legenda sai de cima da cena e vai para baixo da tela
   const [narrow, setNarrow] = useState(false);
   const place = captions === 'below' || narrow ? 'below' : 'over';
+  const [near, setNear] = useState(false);
 
   useEffect(() => {
     const ro = new ResizeObserver(([e]) => setNarrow(e.contentRect.width < 520));
     ro.observe(rootRef.current);
-    return () => ro.disconnect();
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setNear(true); io.disconnect(); } }, { rootMargin: NEAR });
+    io.observe(rootRef.current);
+    return () => { ro.disconnect(); io.disconnect(); };
   }, []);
 
   useEffect(() => {
@@ -57,6 +75,9 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     let ctx = null;
     try { ctx = canvas.getContext('2d'); } catch (e) { /* bloqueado */ }
     if (!ctx) { root.dataset.nocanvas = 'true'; return undefined; }
+    // com movimento reduzido o filme já nasce pausado (o botão diz "Reproduzir"), mesmo antes de se preparar
+    if (!scrub && reducedMotion() && !s.held) { s.held = true; s.paused = true; s.t = poster; setPaused(true); }
+    if (!near) return undefined;
     const draw = SCENES[scene];
     const FPS = 24;
     setMono(monoFont(root));
@@ -90,7 +111,9 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     const tick = (now) => {
       s.raf = requestAnimationFrame(tick);
       const dt = Math.min(0.1, (now - (s.last || now)) / 1000);
-      s.last = now; s.acc += dt;
+      s.last = now;
+      if (scrolling) return;
+      s.acc += dt;
       if (s.acc < 1 / FPS) return;
       s.t = (s.t + s.acc) % duration; s.acc = 0;
       paint();
@@ -107,11 +130,13 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     s.sync = elect;
 
     if (scrub) s.paused = true;
-    else if (reducedMotion()) { s.paused = true; s.t = poster; setPaused(true); }
 
     // rolagem (scrub) e clique/arraste na linha do tempo levam o filme a um instante
     const seek = (q) => { s.t = Math.min(duration - 0.001, Math.max(0, q * duration)); paint(); };
     const onSeek = (e) => seek(e.detail);
+    // o filme da Demo se prepara depois de a rolagem já ter mandado o instante (recarregar no meio
+    // da Demo): pega o que ficou guardado na seção
+    const kept = scrub ? parseFloat(root.closest('.scrub')?.style.getPropertyValue('--p')) : NaN;
     const track = trackRef.current;
     const at = (e) => { const r = track.getBoundingClientRect(); seek((e.clientX - r.left) / r.width); };
     const down = (e) => { if (scrub) return; track.setPointerCapture(e.pointerId); at(e); track.addEventListener('pointermove', at); };
@@ -130,6 +155,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
     const io = new IntersectionObserver(([e]) => { s.visible = e.isIntersecting; me.ratio = e.intersectionRatio; elect(); }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
     io.observe(root);
     resize();
+    if (kept > 0) seek(kept);
     return () => {
       live.delete(me); elect();
       ro.disconnect(); io.disconnect();
@@ -140,7 +166,7 @@ export default function Film({ scene, duration, chapters, title, poster = durati
       offMotion();
       cancelAnimationFrame(s.raf); s.raf = 0;
     };
-  }, [scene, duration, chapters, poster, place, scrub, follow]);
+  }, [scene, duration, chapters, poster, place, scrub, follow, near]);
 
   const toggle = () => {
     const s = state.current;

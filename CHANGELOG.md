@@ -20,6 +20,28 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.7.0] — 2026-11-10 · MINOR
+
+### Adicionado
+- **Troca de página com transição**: ir do início ao Glossário (e voltar) faz um fundido curto em vez de um corte seco (`@view-transition`, só sem "reduzir movimento"; navegadores sem suporte trocam como antes) (`base.css`).
+
+### Mudado (fluidez, medida antes e depois)
+- **Os filmes só se preparam quando chegam perto da tela.** Antes os seis montavam a folha de glifos, mediam e desenhavam o primeiro quadro na carga, mesmo lá embaixo. O bloqueio da carga (Lighthouse, celular) caiu de 418 para 170 ms (`Film.jsx`).
+- **O filme visível segura o quadro enquanto a página rola** e volta a tocar 140 ms depois. Redesenhar a cena disputava cada quadro com a rolagem: com o processador 4× mais lento, os quadros travados caíram de 4% para 1,2% (`Film.jsx`). O filme da Demo não muda: nele a rolagem é o tempo.
+- **A intro só toca se puder começar logo.** Se o resto do JS não chegar em 1,5 s (rede ou aparelho lento), ela sai e o Hero entra de uma vez, sem a escada de atrasos. Antes esperava até 5 s no escuro e ainda tocava 2 s de animação: numa rede 4G lenta simulada, o conteúdo aparecia aos 6,4 s e agora aos 2,4 s (`lib/boot.js`, `hero.css`).
+- O pedaço de JS da intro começa a baixar assim que o arquivo da página roda, sem esperar o React montar (`Intro.jsx`).
+- As estrelas do céu são desenhadas quando o navegador fica livre, uma camada por vez (`Space.jsx`).
+
+### Corrigido
+- Com "reduzir movimento", um filme ainda não preparado mostrava o botão "Pausar" sem nada tocando; agora já nasce como "Reproduzir".
+
+### Medição (build local com compressão, Lighthouse 12 celular, mediana)
+- Nota de desempenho 78 → 85 (rede simulada) e 59 → 76 (rede limitada de verdade); página visualmente pronta em 8,3 s → 3,5 s na rede limitada. A meta de 90 não foi atingida: o que resta é o custo do React montar a página.
+- Testado e descartado: `content-visibility` nas seções de baixo (ganho dentro do ruído, risco nas âncoras) e pré-carregar a capa do vídeo (sem efeito).
+
+### Testes
+- T202 (filmes longe da tela não se preparam na carga; transição de página) e T202b (JS que não chega: a intro sai em 1,5 s). T21 passa a rolar até cada filme antes de conferir o quadro. `qa.py` 189/189; baterias de quebra 47/47 e 14/14.
+
 ## [5.6.0] — 2026-11-10 · MINOR
 
 ### Mudado

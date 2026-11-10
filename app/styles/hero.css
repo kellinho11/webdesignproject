@@ -120,6 +120,10 @@ html:not(.js) .hero__circuit { opacity: 0.42; }
   transition: opacity .7s var(--ease) var(--d, 0ms), transform .7s var(--ease) var(--d, 0ms), box-shadow .3s var(--ease);
 }
 
+/* a intro não tocou (o JS demorou, ou quem vê pulou antes dele): o Hero entra de uma vez, sem a escada
+   de atrasos, para o conteúdo não esperar mais */
+.intro-skipped .is-loaded .hero-in { transition-duration: .35s, .35s, .3s; transition-delay: 0s; }
+
 @media (prefers-reduced-motion: reduce) {
   .hero-in { transform: none !important; }
   .hero__circuit-inner,

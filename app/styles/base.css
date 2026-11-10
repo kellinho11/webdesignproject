@@ -32,6 +32,12 @@ dd { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+/* trocar de página (início ↔ Glossário) com um fundido curto em vez de um corte seco; navegadores sem
+   suporte ignoram a regra e trocam como antes */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; }
+}
 body::after {
   content: "";
   position: fixed;
