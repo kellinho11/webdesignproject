@@ -20,6 +20,17 @@ Versões `0.x` são o desenvolvimento inicial: o site ainda não tinha conteúdo
 
 ---
 
+## [5.6.0] — 2026-11-10 · MINOR
+
+### Mudado
+- **Casos de Uso contam para que serve, em linguagem de investidor.** Cada caso abre pelo setor (Finanças, Farmacêutica, Antifraude) e não mais pelo nome do algoritmo, e conta a mesma história em três linhas de uma frase: **Hoje** (o problema do cliente), **Com quântico** (o que o algoritmo faz, com a definição do Glossário no termo) e **Resultado** (o ganho para o negócio). No lugar das três métricas soltas, duas linhas: **quem compra** e um dado do produto. O conteúdo foi trocado, não somado (`Cases.jsx`, `casos.css`).
+- As legendas dos três filmes passam a narrar o mesmo exemplo prático (ativos e risco, molécula candidata, registros suspeitos) em vez do vocabulário do algoritmo.
+- Título do caso de fármacos: "Triagem em dias, não em meses.", igual ao número que ele mostra (14 meses → 9 dias); antes dizia "anos em minutos".
+- A definição do termo, nesses cartões, abre presa à linha e não centrada no termo: na coluna da direita ela saía da tela.
+
+### Testes
+- T201: os três casos têm as três linhas, "quem compra" e o termo com definição, em 1440, 1024 e 390 px, com a definição inteira dentro da tela. `qa.py` 187/187.
+
 ## [5.5.5] — 2026-10-24 · PATCH
 
 ### Corrigido (achados atacando as suposições internas do site)

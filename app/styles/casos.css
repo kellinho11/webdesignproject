@@ -12,8 +12,20 @@
 .case .film { gap: 12px; }
 .case__body { display: grid; align-content: start; }
 .case__title { font: 600 20px/1.25 var(--fonte-titulo); color: var(--text-strong); }
-.case__fact { font: 500 13px/1.5 var(--fonte-codigo); color: var(--text-secondary); }
-.case__fact span { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ice); margin-bottom: 2px; }
+/* a história do caso em três linhas: rótulo à esquerda, uma frase à direita; o resultado em destaque */
+.case__story { display: grid; gap: 10px; margin: 8px 0 0; padding: 0; list-style: none; }
+.case__story li { display: grid; grid-template-columns: 96px minmax(0, 1fr); column-gap: 12px; align-items: baseline; font-size: 14px; line-height: 1.5; color: rgba(var(--ink-rgb), 0.78); }
+.case__story li > span:first-child { font: 500 10px/1.5 var(--fonte-codigo); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ice); }
+.case__story li:last-child { color: var(--text-strong); font-weight: 600; }
+@media (max-width: 420px) {
+  .case__story li { grid-template-columns: minmax(0, 1fr); }
+}
+/* a definição do termo abre presa à linha, não ao termo: centrada nele, sairia da tela na coluna da direita */
+.case__story li { position: relative; }
+.case__story .term { position: static; }
+.case__story .term::after { left: 0; max-width: min(320px, 100%); transform: translateY(4px); }
+.case__story .term:hover::after,
+.case__story .term:focus::after { transform: none; }
 
 /* ---- Casos: três linhas iguais, o filme alterna de lado; o texto ao lado com antes e depois ---- */
 .cases { padding-block: clamp(40px, 6vh, 72px) clamp(64px, 8vw, 112px); }
@@ -54,8 +66,8 @@
 .case__run:active { transform: scale(0.97); }
 .case__metrics { display: grid; margin: 6px 0 0; }
 .case__metrics div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid rgba(var(--ink-rgb), 0.08); }
-.case__metrics dt { font-size: 13px; color: var(--text-secondary); }
-.case__metrics dd { margin: 0; font: 600 14px/1.3 var(--fonte-titulo); color: var(--text-strong); text-align: right; }
+.case__metrics dt { flex: none; font-size: 13px; color: var(--text-secondary); }
+.case__metrics dd { margin: 0; font: 600 13px/1.4 var(--fonte-titulo); color: var(--text-strong); text-align: right; }
 @media (max-width: 900px) {
   .case .film, .case__body, .case:nth-child(even) .film, .case:nth-child(even) .case__body { grid-column: 1 / -1; grid-row: auto; }
 }
